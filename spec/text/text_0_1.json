@@ -1,0 +1,151 @@
+[
+  {
+    "Apply": {
+      "ViewBox": {
+        "minx": {
+          "Constant": 0.0
+        },
+        "miny": {
+          "Constant": 0.0
+        },
+        "width": {
+          "Constant": 1000.0
+        },
+        "height": {
+          "Constant": 300.0
+        }
+      }
+    }
+  },
+  {
+    "Apply": {
+      "Fill": {
+        "paint": {
+          "Constant": "None"
+        }
+      }
+    }
+  },
+  {
+    "Element": {
+      "Canvas": {
+        "width": {
+          "Constant": {
+            "Cm": 10.0
+          }
+        },
+        "height": {
+          "Constant": {
+            "Cm": 3.0
+          }
+        }
+      }
+    }
+  },
+  {
+    "Apply": {
+      "Font": {
+        "family": {
+          "Constant": [
+            {
+              "Generic": "Verdana"
+            }
+          ]
+        },
+        "size": {
+          "Constant": {
+            "Px": 55.0
+          }
+        }
+      }
+    }
+  },
+  {
+    "Apply": {
+      "Fill": {
+        "paint": {
+          "Constant": {
+            "Color": [
+              0,
+              0,
+              255
+            ]
+          }
+        }
+      }
+    }
+  },
+  {
+    "Element": {
+      "Text": {
+        "x": {
+          "Constant": [
+            {
+              "Px": 250.0
+            }
+          ]
+        },
+        "y": {
+          "Constant": [
+            {
+              "Px": 150.0
+            }
+          ]
+        }
+      }
+    }
+  },
+  {
+    "Leaf": {
+      "Characters": "Hello, out there"
+    }
+  },
+  "Pop",
+  {
+    "Apply": {
+      "Stroke": {
+        "paint": {
+          "Constant": {
+            "Color": [
+              0,
+              0,
+              255
+            ]
+          }
+        },
+        "width": {
+          "Constant": {
+            "Px": 2.0
+          }
+        }
+      }
+    }
+  },
+  {
+    "Leaf": {
+      "Rect": {
+        "x": {
+          "Constant": {
+            "Px": 1.0
+          }
+        },
+        "y": {
+          "Constant": {
+            "Px": 1.0
+          }
+        },
+        "width": {
+          "Constant": {
+            "Px": 998.0
+          }
+        },
+        "height": {
+          "Constant": {
+            "Px": 298.0
+          }
+        }
+      }
+    }
+  },
+  "Pop"
+]

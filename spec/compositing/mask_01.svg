@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 800 300" height="3cm" xmlns:xlink="http://www.w3.org/1999/xlink" width="8cm">
+    <defs>
+        <linearGradient y1="0" x1="0" gradientUnits="userSpaceOnUse" y2="0" id="Gradient" x2="800">
+            <stop stop-color="rgb(255,255,255)" offset="0" stop-opacity="0"></stop>
+            <stop offset="1" stop-color="rgb(255,255,255)" stop-opacity="1"></stop>
+        </linearGradient>
+        <mask id="Mask" x="0" y="0" height="300" width="800" maskUnits="userSpaceOnUse">
+            <rect height="300" fill="url(#Gradient)" y="0" width="800" x="0"></rect>
+        </mask><text text-anchor="middle" id="Text" font-family="Verdana" x="400" font-size="100" y="200">Masked
+            text</text>
+    </defs>
+    <rect height="300" x="0" fill="rgb(255,128,128)" y="0" width="800"></rect>
+    <use mask="url(#Mask)" xlink:href="#Text" fill="rgb(0,0,255)"></use>
+    <use stroke-width="2" xlink:href="#Text" fill="none" stroke="rgb(0,0,0)"></use>
+</svg>

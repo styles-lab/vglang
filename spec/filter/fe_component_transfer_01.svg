@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"
+    xmlns="http://www.w3.org/2000/svg" width="8cm" viewBox="0 0 800 400" height="4cm">
+    <defs>
+        <linearGradient id="MyGradient" gradientUnits="userSpaceOnUse" x2="600" y1="0" y2="0" x1="100">
+            <stop stop-color="rgb(255,0,0)" offset="0"></stop>
+            <stop offset="0.33" stop-color="rgb(0,255,0)"></stop>
+            <stop stop-color="rgb(0,0,255)" offset="0.67"></stop>
+            <stop offset="1" stop-color="rgb(0,0,0)"></stop>
+        </linearGradient>
+        <filter y="0%" height="100%" id="Identity" width="100%" filterUnits="objectBoundingBox" x="0%">
+            <feComponentTransfer>
+                <feFuncR type="identity"></feFuncR>
+                <feFuncG type="identity"></feFuncG>
+                <feFuncB type="identity"></feFuncB>
+                <feFuncA type="identity"></feFuncA>
+            </feComponentTransfer>
+        </filter>
+        <filter height="100%" width="100%" id="Table" filterUnits="objectBoundingBox" y="0%" x="0%">
+            <feComponentTransfer>
+                <feFuncR type="table" tableValues="0,0,1,1"></feFuncR>
+                <feFuncG tableValues="1,1,0,0" type="table"></feFuncG>
+                <feFuncB tableValues="0,1,1,0" type="table"></feFuncB>
+            </feComponentTransfer>
+        </filter>
+        <filter y="0%" filterUnits="objectBoundingBox" height="100%" id="Linear" x="0%" width="100%">
+            <feComponentTransfer>
+                <feFuncR slope="0.5" intercept="0.25" type="linear"></feFuncR>
+                <feFuncG intercept="0" slope="0.5" type="linear"></feFuncG>
+                <feFuncB intercept="0.5" slope="0.5" type="linear"></feFuncB>
+            </feComponentTransfer>
+        </filter>
+        <filter filterUnits="objectBoundingBox" height="100%" id="Gamma" y="0%" width="100%" x="0%">
+            <feComponentTransfer>
+                <feFuncR type="gamma" offset="0" amplitude="2" exponent="5"></feFuncR>
+                <feFuncG exponent="3" offset="0" type="gamma" amplitude="2"></feFuncG>
+                <feFuncB exponent="1" type="gamma" amplitude="2" offset="0"></feFuncB>
+            </feComponentTransfer>
+        </filter>
+    </defs>
+    <rect fill="none" x="1" y="1" stroke="rgb(0,0,255)" height="398" width="798"></rect>
+    <g font-size="75" font-weight="bold" font-family="Verdana" fill="url(#MyGradient)">
+        <rect width="600" height="20" x="100" y="0"></rect><text x="100" y="90">Identity</text><text
+            filter="url(#Table)" x="100" y="190">TableLookup</text><text filter="url(#Linear)" y="290"
+            x="100">LinearFunc</text><text x="100" filter="url(#Gamma)" y="390">GammaFunc</text>
+    </g>
+</svg>

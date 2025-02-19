@@ -1,0 +1,255 @@
+[
+  {
+    "Apply": {
+      "ViewBox": {
+        "minx": {
+          "Constant": 0.0
+        },
+        "miny": {
+          "Constant": 0.0
+        },
+        "width": {
+          "Constant": 1000.0
+        },
+        "height": {
+          "Constant": 300.0
+        }
+      }
+    }
+  },
+  {
+    "Element": {
+      "Canvas": {
+        "width": {
+          "Constant": {
+            "Cm": 12.0
+          }
+        },
+        "height": {
+          "Constant": {
+            "Cm": 3.6
+          }
+        }
+      }
+    }
+  },
+  {
+    "Apply": {
+      "Id": "MyPath"
+    }
+  },
+  {
+    "Leaf": {
+      "Path": {
+        "events": {
+          "Constant": [
+            {
+              "MoveTo": [
+                100.0,
+                200.0
+              ]
+            },
+            {
+              "CubicBezier": {
+                "ctrl1": [
+                  200.0,
+                  100.0
+                ],
+                "ctrl2": [
+                  300.0,
+                  0.0
+                ],
+                "to_point": [
+                  400.0,
+                  100.0
+                ]
+              }
+            },
+            {
+              "CubicBezier": {
+                "ctrl1": [
+                  500.0,
+                  200.0
+                ],
+                "ctrl2": [
+                  600.0,
+                  300.0
+                ],
+                "to_point": [
+                  700.0,
+                  200.0
+                ]
+              }
+            },
+            {
+              "CubicBezier": {
+                "ctrl1": [
+                  800.0,
+                  100.0
+                ],
+                "ctrl2": [
+                  900.0,
+                  100.0
+                ],
+                "to_point": [
+                  900.0,
+                  100.0
+                ]
+              }
+            }
+          ]
+        }
+      }
+    }
+  },
+  {
+    "Apply": {
+      "Fill": {
+        "paint": {
+          "Constant": "None"
+        }
+      }
+    }
+  },
+  {
+    "Apply": {
+      "Stroke": {
+        "paint": {
+          "Constant": {
+            "Color": [
+              255,
+              0,
+              0
+            ]
+          }
+        }
+      }
+    }
+  },
+  {
+    "Leaf": {
+      "Use": {
+        "Constant": {
+          "Local": "MyPath"
+        }
+      }
+    }
+  },
+  {
+    "Apply": {
+      "Font": {
+        "family": {
+          "Constant": [
+            {
+              "Generic": "Verdana"
+            }
+          ]
+        },
+        "size": {
+          "Constant": {
+            "Px": 42.5
+          }
+        }
+      }
+    }
+  },
+  {
+    "Apply": {
+      "Fill": {
+        "paint": {
+          "Constant": {
+            "Color": [
+              0,
+              0,
+              255
+            ]
+          }
+        }
+      }
+    }
+  },
+  {
+    "Element": {
+      "Text": {}
+    }
+  },
+  {
+    "Element": {
+      "TextPath": {
+        "start_offset": {
+          "Constant": {
+            "Percent": 10.0
+          }
+        },
+        "href": {
+          "Constant": {
+            "Local": "MyPath"
+          }
+        }
+      }
+    }
+  },
+  {
+    "Leaf": {
+      "Characters": "We go up, then we go down, then up again"
+    }
+  },
+  "Pop",
+  "Pop",
+  {
+    "Apply": {
+      "Fill": {
+        "paint": {
+          "Constant": "None"
+        }
+      }
+    }
+  },
+  {
+    "Apply": {
+      "Stroke": {
+        "paint": {
+          "Constant": {
+            "Color": [
+              0,
+              0,
+              255
+            ]
+          }
+        },
+        "width": {
+          "Constant": {
+            "Px": 2.0
+          }
+        }
+      }
+    }
+  },
+  {
+    "Leaf": {
+      "Rect": {
+        "x": {
+          "Constant": {
+            "Px": 1.0
+          }
+        },
+        "y": {
+          "Constant": {
+            "Px": 1.0
+          }
+        },
+        "width": {
+          "Constant": {
+            "Px": 998.0
+          }
+        },
+        "height": {
+          "Constant": {
+            "Px": 298.0
+          }
+        }
+      }
+    }
+  },
+  "Pop"
+]

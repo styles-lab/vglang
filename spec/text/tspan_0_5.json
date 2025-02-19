@@ -1,0 +1,365 @@
+[
+  {
+    "Apply": {
+      "ViewBox": {
+        "minx": {
+          "Constant": 0.0
+        },
+        "miny": {
+          "Constant": 0.0
+        },
+        "width": {
+          "Constant": 500.0
+        },
+        "height": {
+          "Constant": 120.0
+        }
+      }
+    }
+  },
+  {
+    "Element": {
+      "Canvas": {
+        "width": {
+          "Constant": {
+            "Percent": 100.0
+          }
+        },
+        "height": {
+          "Constant": {
+            "Percent": 100.0
+          }
+        }
+      }
+    }
+  },
+  {
+    "Apply": {
+      "Font": {
+        "family": {
+          "Constant": [
+            {
+              "Generic": "Arial"
+            },
+            "SansSerif"
+          ]
+        },
+        "size": {
+          "Constant": {
+            "Px": 32.0
+          }
+        }
+      }
+    }
+  },
+  {
+    "Apply": {
+      "Fill": {
+        "paint": {
+          "Constant": {
+            "Color": [
+              255,
+              0,
+              0
+            ]
+          }
+        }
+      }
+    }
+  },
+  {
+    "Element": {
+      "Text": {
+        "x": {
+          "Constant": [
+            {
+              "Px": 40.0
+            }
+          ]
+        },
+        "y": {
+          "Constant": [
+            {
+              "Px": 40.0
+            }
+          ]
+        },
+        "rotate": {
+          "Constant": [
+            {
+              "Deg": 5.0
+            },
+            {
+              "Deg": 15.0
+            },
+            {
+              "Deg": 25.0
+            },
+            {
+              "Deg": 35.0
+            },
+            {
+              "Deg": 45.0
+            },
+            {
+              "Deg": 55.0
+            }
+          ]
+        }
+      }
+    }
+  },
+  {
+    "Leaf": {
+      "Characters": "Not"
+    }
+  },
+  {
+    "Apply": {
+      "Fill": {
+        "paint": {
+          "Constant": {
+            "Color": [
+              255,
+              165,
+              0
+            ]
+          }
+        }
+      }
+    }
+  },
+  {
+    "Element": {
+      "TextSpan": {
+        "rotate": {
+          "Constant": [
+            {
+              "Deg": -10.0
+            },
+            {
+              "Deg": -20.0
+            },
+            {
+              "Deg": -30.0
+            },
+            {
+              "Deg": -40.0
+            }
+          ]
+        }
+      }
+    }
+  },
+  {
+    "Leaf": {
+      "Characters": "all characters"
+    }
+  },
+  {
+    "Apply": {
+      "Fill": {
+        "paint": {
+          "Constant": {
+            "Color": [
+              255,
+              255,
+              0
+            ]
+          }
+        }
+      }
+    }
+  },
+  {
+    "Element": {
+      "TextSpan": {
+        "rotate": {
+          "Constant": [
+            {
+              "Deg": 70.0
+            },
+            {
+              "Deg": 60.0
+            },
+            {
+              "Deg": 50.0
+            },
+            {
+              "Deg": 40.0
+            },
+            {
+              "Deg": 30.0
+            },
+            {
+              "Deg": 20.0
+            },
+            {
+              "Deg": 10.0
+            }
+          ]
+        }
+      }
+    }
+  },
+  {
+    "Leaf": {
+      "Characters": "in"
+    }
+  },
+  {
+    "Element": {
+      "TextSpan": {}
+    }
+  },
+  {
+    "Leaf": {
+      "Characters": "the"
+    }
+  },
+  "Pop",
+  "Pop",
+  {
+    "Apply": {
+      "Fill": {
+        "paint": {
+          "Constant": {
+            "Color": [
+              255,
+              165,
+              0
+            ]
+          }
+        }
+      }
+    }
+  },
+  {
+    "Element": {
+      "TextSpan": {
+        "x": {
+          "Constant": [
+            {
+              "Px": 40.0
+            }
+          ]
+        },
+        "y": {
+          "Constant": [
+            {
+              "Px": 90.0
+            }
+          ]
+        }
+      }
+    }
+  },
+  {
+    "Leaf": {
+      "Characters": "text"
+    }
+  },
+  "Pop",
+  {
+    "Leaf": {
+      "Characters": "have a"
+    }
+  },
+  "Pop",
+  {
+    "Apply": {
+      "Fill": {
+        "paint": {
+          "Constant": {
+            "Color": [
+              0,
+              0,
+              255
+            ]
+          }
+        }
+      }
+    }
+  },
+  {
+    "Element": {
+      "TextSpan": {
+        "rotate": {
+          "Constant": [
+            {
+              "Deg": -10.0
+            }
+          ]
+        }
+      }
+    }
+  },
+  {
+    "Leaf": {
+      "Characters": "specified"
+    }
+  },
+  "Pop",
+  {
+    "Leaf": {
+      "Characters": "rotation"
+    }
+  },
+  "Pop",
+  {
+    "Apply": {
+      "Fill": {
+        "paint": {
+          "Constant": "None"
+        }
+      }
+    }
+  },
+  {
+    "Apply": {
+      "Stroke": {
+        "paint": {
+          "Constant": {
+            "Color": [
+              0,
+              0,
+              255
+            ]
+          }
+        },
+        "width": {
+          "Constant": {
+            "Px": 2.0
+          }
+        }
+      }
+    }
+  },
+  {
+    "Leaf": {
+      "Rect": {
+        "x": {
+          "Constant": {
+            "Px": 1.0
+          }
+        },
+        "y": {
+          "Constant": {
+            "Px": 1.0
+          }
+        },
+        "width": {
+          "Constant": {
+            "Px": 498.0
+          }
+        },
+        "height": {
+          "Constant": {
+            "Px": 118.0
+          }
+        }
+      }
+    }
+  },
+  "Pop"
+]
