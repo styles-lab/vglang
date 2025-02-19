@@ -61,6 +61,10 @@ pub enum ParseKind {
     ViewBox,
     #[error("preserveAspectRatio")]
     PreserveAspectRatio,
+    #[error("transform-list")]
+    TransformList,
+    #[error("background")]
+    Background,
 }
 
 /// Parsing result type, returns by this module functions.

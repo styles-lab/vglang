@@ -242,7 +242,7 @@ enum Coords {
 
 /// A `transform` matrix type.
 enum Transform {
-    Translate(float,float), 
+    Translate(float,#[option] float), 
     Matrix([float;6]),
     Scale(float,#[option] float), 
     Rotate { angle: float, #[option] center: Point },

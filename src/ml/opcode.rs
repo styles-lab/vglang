@@ -261,7 +261,10 @@ pub enum Coords {
 #[derive(Debug, PartialEq, PartialOrd, Clone)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum Transform {
-    Translate(f32, f32),
+    Translate(
+        f32,
+        #[serde(skip_serializing_if = "Option::is_none")] Option<f32>,
+    ),
     Matrix([f32; 6usize]),
     Scale(
         f32,

@@ -88,18 +88,22 @@ fn parse_number_prv(ctx: &mut ParseContext<'_>) -> parserc::Result<Span> {
             .unwrap_or(trunc.unwrap_or(comma))
             .extend_to_inclusive(exponent.unwrap_or(fract.unwrap_or(comma))))
     } else {
-        let trunc = trunc.ok_or_else(|| {
-            log::error!(
-                target: SVG_PARSE_ERROR,span:serde = ctx.span();
-                "expect number trunc part."
-            );
-            ControlFlow::Fatal
-        })?;
-
         let exponent = parse_exponent
             .ok()
             .fatal("expect number fract part.", ctx.span())
             .parse(ctx)?;
+
+        let trunc = trunc.ok_or_else(|| {
+            if exponent.is_some() {
+                log::error!(
+                    target: SVG_PARSE_ERROR,span:serde = ctx.span();
+                    "expect number trunc part."
+                );
+                ControlFlow::Fatal
+            } else {
+                ControlFlow::Recoverable
+            }
+        })?;
 
         if let Some(sign) = sign {
             Ok(sign.extend_to_inclusive(exponent.unwrap_or(trunc)))

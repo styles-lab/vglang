@@ -17,7 +17,7 @@ use super::{
 fn parse_rgb(ctx: &mut ParseContext<'_>) -> parserc::Result<Color> {
     ensure_keyword_insensitive("rgb(").parse(ctx)?;
 
-    skip_ws(ctx)?;
+    skip_ws.ok().parse(ctx)?;
 
     let mut rgb: [Span; 3] = Default::default();
 
@@ -40,14 +40,14 @@ fn parse_rgb(ctx: &mut ParseContext<'_>) -> parserc::Result<Color> {
             rgb[i] = span;
         }
 
-        skip_ws(ctx)?;
+        skip_ws.ok().parse(ctx)?;
 
         if i != 2 {
             ensure_char(',')
                 .fatal("expect whitespace and/or a comma", ctx.span())
                 .parse(ctx)?;
 
-            skip_ws(ctx)?;
+            skip_ws.ok().parse(ctx)?;
         }
     }
 

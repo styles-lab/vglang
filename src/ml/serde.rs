@@ -2473,7 +2473,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::Transform {
                 match variant_index {
                     0usize => Ok(super::opcode::Transform::Translate(
                         node.deserialize_field::<f32>("translate", 0usize, None)?,
-                        node.deserialize_field::<f32>("translate", 1usize, None)?,
+                        node.deserialize_field::<Option<f32>>("translate", 1usize, None)?,
                     )),
                     1usize => Ok(super::opcode::Transform::Matrix(
                         node.deserialize_field::<[f32; 6usize]>("matrix", 0usize, None)?,
@@ -2511,7 +2511,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::Transform {
                 match variant {
                     "translate" => Ok(super::opcode::Transform::Translate(
                         node.deserialize_field::<f32>("translate", 0usize, None)?,
-                        node.deserialize_field::<f32>("translate", 1usize, None)?,
+                        node.deserialize_field::<Option<f32>>("translate", 1usize, None)?,
                     )),
                     "matrix" => Ok(super::opcode::Transform::Matrix(
                         node.deserialize_field::<[f32; 6usize]>("matrix", 0usize, None)?,

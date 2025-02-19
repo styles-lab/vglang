@@ -26,10 +26,10 @@ pub(super) fn parse_iri_prv(ctx: &mut ParseContext<'_>) -> parserc::Result<(Span
 
 pub(super) fn parse_func_iri_prv(ctx: &mut ParseContext<'_>) -> parserc::Result<FuncIri> {
     ensure_keyword("url").parse(ctx)?;
-    skip_ws(ctx)?;
+    skip_ws.ok().parse(ctx)?;
     ensure_char('(').parse(ctx)?;
 
-    skip_ws(ctx)?;
+    skip_ws.ok().parse(ctx)?;
 
     ensure_char('#').parse(ctx)?;
 
@@ -37,7 +37,7 @@ pub(super) fn parse_func_iri_prv(ctx: &mut ParseContext<'_>) -> parserc::Result<
         .parse(ctx)?
         .ok_or(ControlFlow::Fatal)?;
 
-    skip_ws(ctx)?;
+    skip_ws.ok().parse(ctx)?;
     ensure_char(')').parse(ctx)?;
 
     Ok(FuncIri(ctx.as_str(span).to_string()))
