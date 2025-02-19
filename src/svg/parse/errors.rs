@@ -57,6 +57,10 @@ pub enum ParseKind {
     Angles,
     #[error("length-list")]
     Lengths,
+    #[error("viewBox")]
+    ViewBox,
+    #[error("preserveAspectRatio")]
+    PreserveAspectRatio,
 }
 
 /// Parsing result type, returns by this module functions.

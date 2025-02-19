@@ -1,4 +1,4 @@
-//! this module provides [`FromStr`](std::str::FromStr) implementations for core opcode types.
+//! this module provides [`FromSvg`] implementations for vglang core opcode types.
 
 mod errors;
 pub use errors::*;
@@ -14,6 +14,8 @@ mod length;
 mod paint;
 mod path;
 mod point;
+mod variant;
+mod viewbox;
 
 /// Parse vglang data value from svg str.
 pub trait FromSvg: Sized {
