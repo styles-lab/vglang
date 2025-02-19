@@ -294,80 +294,73 @@ pub enum ClipRule {
     Nonzero,
     EvenOdd,
 }
+#[doc = " Draws a cubic Bézier curve from the current point to `to` point,"]
+#[doc = " using `ctrl1` as the control point at the beginning of the curve and `ctrl2` as the control point at the end of the curve."]
+#[derive(Debug, PartialEq, PartialOrd, Clone)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct CubicBezier {
+    pub ctrl1: Point,
+    pub ctrl2: Point,
+    pub to: Point,
+}
+#[doc = " (smooth) Draws a cubic Bézier curve from the current point to `to` point,"]
+#[doc = " using `ctrl1` as the control point at the beginning of the curve and `ctrl2` as the control point at the end of the curve."]
+#[derive(Debug, PartialEq, PartialOrd, Clone)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct CubicBezierSmooth {
+    pub ctrl2: Point,
+    pub to: Point,
+}
+#[doc = " Draws a quadratic Bézier curve from the current point to `to` point using `ctrl` as the control point."]
+#[derive(Debug, PartialEq, PartialOrd, Clone)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct QuadraticBezier {
+    pub ctrl: Point,
+    pub to: Point,
+}
+#[doc = " Draws an elliptical arc from the current point to `to` point."]
+#[doc = " "]
+#[doc = " The center (cx, cy) of the ellipse is calculated automatically to satisfy the constraints"]
+#[doc = " imposed by the other parameters."]
+#[derive(Debug, PartialEq, PartialOrd, Clone)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct Arc {
+    pub rx: f32,
+    pub ry: f32,
+    pub x_rotation: f32,
+    pub large_arc: bool,
+    pub sweep: bool,
+    pub to: Point,
+}
 #[doc = " A direction that representation a path drawing commander."]
 #[derive(Debug, PartialEq, PartialOrd, Clone)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum PathEvent {
     #[doc = " Close the current subpath by drawing a straight line from the current point to current subpath's initial point."]
     Close,
-    #[doc = " (absolute) Start a new sub-path at the given (x,y) coordinate."]
-    MoveTo(Point),
-    #[doc = " (relative) Start a new sub-path at the given (x,y) coordinate."]
-    MoveToRelative(Point),
-    #[doc = " (absolute) Draw a line from the current point to the given (x,y) coordinate which becomes the new current point."]
-    LineTo(Point),
-    #[doc = " (relative) Draw a line from the current point to the given (x,y) coordinate which becomes the new current point."]
-    LineToRelative(Point),
-    #[doc = " (absolute) Draw a line from the current point to the given (x,y) coordinate which becomes the new current point."]
-    Horizontal(f32),
-    #[doc = " (relative) Draw a line from the current point to the given (x,y) coordinate which becomes the new current point."]
-    HorizontalRelative(f32),
-    #[doc = " (absolute) Draw a line from the current point to the given (x,y) coordinate which becomes the new current point."]
-    Vertical(f32),
-    #[doc = " (relative) Draw a line from the current point to the given (x,y) coordinate which becomes the new current point."]
-    VerticalRelative(f32),
-    #[doc = " (absolute) Draws a cubic Bézier curve from the current point to `to` point,"]
+    #[doc = " Start a new sub-path at the given (x,y) coordinate."]
+    MoveTo { points: Vec<Point>, relative: bool },
+    #[doc = " Draw a line from the current point to the given (x,y) coordinate which becomes the new current point."]
+    LineTo { points: Vec<Point>, relative: bool },
+    #[doc = " Draw a line from the current point to the given (x,y) coordinate which becomes the new current point."]
+    Horizontal(f32, bool),
+    #[doc = " Draw a line from the current point to the given (x,y) coordinate which becomes the new current point."]
+    Vertical(f32, bool),
+    #[doc = " Draws a cubic Bézier curve from the current point to `to` point,"]
     #[doc = " using `ctrl1` as the control point at the beginning of the curve and `ctrl2` as the control point at the end of the curve."]
-    CubicBezier {
-        ctrl1: Point,
-        ctrl2: Point,
-        to_point: Point,
-    },
-    #[doc = " (relative) Draws a cubic Bézier curve from the current point to `to` point,"]
-    #[doc = " using `ctrl1` as the control point at the beginning of the curve and `ctrl2` as the control point at the end of the curve."]
-    CubicBezierRelative {
-        ctrl1: Point,
-        ctrl2: Point,
-        to_point: Point,
-    },
+    CubicBezier(Vec<CubicBezier>, bool),
     #[doc = " (smooth) Draws a cubic Bézier curve from the current point to `to` point,"]
     #[doc = " using `ctrl1` as the control point at the beginning of the curve and `ctrl2` as the control point at the end of the curve."]
-    CubicBezierSmooth { ctrl2: Point, to_point: Point },
-    #[doc = " (smooth, relative)Draws a cubic Bézier curve from the current point to `to` point,"]
-    #[doc = " using `ctrl1` as the control point at the beginning of the curve and `ctrl2` as the control point at the end of the curve."]
-    CubicBezierSmoothRelative { ctrl2: Point, to_point: Point },
-    #[doc = " (absolute) Draws a quadratic Bézier curve from the current point to `to` point using `ctrl` as the control point."]
-    QuadraticBezier { ctrl: Point, to_point: Point },
-    #[doc = " (relative) Draws a quadratic Bézier curve from the current point to `to` point using `ctrl` as the control point."]
-    QuadraticBezierRelative { ctrl: Point, to_point: Point },
+    CubicBezierSmooth(Vec<CubicBezierSmooth>, bool),
+    #[doc = " Draws a quadratic Bézier curve from the current point to `to` point using `ctrl` as the control point."]
+    QuadraticBezier(Vec<QuadraticBezier>, bool),
     #[doc = " (smooth) Draws a quadratic Bézier curve from the current point to `to` point using `ctrl` as the control point."]
-    QuadraticBezierSmooth(Point),
-    #[doc = " (smooth,relative) Draws a quadratic Bézier curve from the current point to `to` point using `ctrl` as the control point."]
-    QuadraticBezierSmoothRelative(Point),
+    QuadraticBezierSmooth(Vec<Point>, bool),
     #[doc = " Draws an elliptical arc from the current point to `to` point."]
     #[doc = " "]
     #[doc = " The center (cx, cy) of the ellipse is calculated automatically to satisfy the constraints"]
     #[doc = " imposed by the other parameters."]
-    Arc {
-        rx: f32,
-        ry: f32,
-        x_rotation: f32,
-        large_arc: bool,
-        sweep: bool,
-        to_point: Point,
-    },
-    #[doc = " (relative) Draws an elliptical arc from the current point to `to` point."]
-    #[doc = " "]
-    #[doc = " The center (cx, cy) of the ellipse is calculated automatically to satisfy the constraints"]
-    #[doc = " imposed by the other parameters."]
-    ArcRelative {
-        rx: f32,
-        ry: f32,
-        x_rotation: f32,
-        large_arc: bool,
-        sweep: bool,
-        to_point: Point,
-    },
+    Arc(Vec<Arc>, bool),
 }
 #[doc = " The ‘fill-rule’ property indicates the algorithm which is to be used to determine what parts of the canvas are"]
 #[doc = " included inside the shape. For a simple, non-intersecting path, it is intuitively clear what region lies \"inside\";"]
@@ -1970,6 +1963,14 @@ pub enum Data {
     ListOfChannel(Box<Vec<Channel>>),
     ClipRule(Box<ClipRule>),
     ListOfClipRule(Box<Vec<ClipRule>>),
+    CubicBezier(Box<CubicBezier>),
+    ListOfCubicBezier(Box<Vec<CubicBezier>>),
+    CubicBezierSmooth(Box<CubicBezierSmooth>),
+    ListOfCubicBezierSmooth(Box<Vec<CubicBezierSmooth>>),
+    QuadraticBezier(Box<QuadraticBezier>),
+    ListOfQuadraticBezier(Box<Vec<QuadraticBezier>>),
+    Arc(Box<Arc>),
+    ListOfArc(Box<Vec<Arc>>),
     PathEvent(Box<PathEvent>),
     ListOfPathEvent(Box<Vec<PathEvent>>),
     FillRule(Box<FillRule>),
@@ -2769,6 +2770,118 @@ impl<'a> TryFrom<&'a Data> for &'a Vec<ClipRule> {
     fn try_from(value: &'a Data) -> Result<Self, Self::Error> {
         match value {
             Data::ListOfClipRule(v) => Ok(v),
+            _ => Err(()),
+        }
+    }
+}
+impl From<CubicBezier> for Data {
+    fn from(value: CubicBezier) -> Self {
+        Data::CubicBezier(Box::new(value))
+    }
+}
+impl<'a> TryFrom<&'a Data> for &'a CubicBezier {
+    type Error = ();
+    fn try_from(value: &'a Data) -> Result<Self, Self::Error> {
+        match value {
+            Data::CubicBezier(v) => Ok(v),
+            _ => Err(()),
+        }
+    }
+}
+impl From<Vec<CubicBezier>> for Data {
+    fn from(value: Vec<CubicBezier>) -> Self {
+        Data::ListOfCubicBezier(Box::new(value))
+    }
+}
+impl<'a> TryFrom<&'a Data> for &'a Vec<CubicBezier> {
+    type Error = ();
+    fn try_from(value: &'a Data) -> Result<Self, Self::Error> {
+        match value {
+            Data::ListOfCubicBezier(v) => Ok(v),
+            _ => Err(()),
+        }
+    }
+}
+impl From<CubicBezierSmooth> for Data {
+    fn from(value: CubicBezierSmooth) -> Self {
+        Data::CubicBezierSmooth(Box::new(value))
+    }
+}
+impl<'a> TryFrom<&'a Data> for &'a CubicBezierSmooth {
+    type Error = ();
+    fn try_from(value: &'a Data) -> Result<Self, Self::Error> {
+        match value {
+            Data::CubicBezierSmooth(v) => Ok(v),
+            _ => Err(()),
+        }
+    }
+}
+impl From<Vec<CubicBezierSmooth>> for Data {
+    fn from(value: Vec<CubicBezierSmooth>) -> Self {
+        Data::ListOfCubicBezierSmooth(Box::new(value))
+    }
+}
+impl<'a> TryFrom<&'a Data> for &'a Vec<CubicBezierSmooth> {
+    type Error = ();
+    fn try_from(value: &'a Data) -> Result<Self, Self::Error> {
+        match value {
+            Data::ListOfCubicBezierSmooth(v) => Ok(v),
+            _ => Err(()),
+        }
+    }
+}
+impl From<QuadraticBezier> for Data {
+    fn from(value: QuadraticBezier) -> Self {
+        Data::QuadraticBezier(Box::new(value))
+    }
+}
+impl<'a> TryFrom<&'a Data> for &'a QuadraticBezier {
+    type Error = ();
+    fn try_from(value: &'a Data) -> Result<Self, Self::Error> {
+        match value {
+            Data::QuadraticBezier(v) => Ok(v),
+            _ => Err(()),
+        }
+    }
+}
+impl From<Vec<QuadraticBezier>> for Data {
+    fn from(value: Vec<QuadraticBezier>) -> Self {
+        Data::ListOfQuadraticBezier(Box::new(value))
+    }
+}
+impl<'a> TryFrom<&'a Data> for &'a Vec<QuadraticBezier> {
+    type Error = ();
+    fn try_from(value: &'a Data) -> Result<Self, Self::Error> {
+        match value {
+            Data::ListOfQuadraticBezier(v) => Ok(v),
+            _ => Err(()),
+        }
+    }
+}
+impl From<Arc> for Data {
+    fn from(value: Arc) -> Self {
+        Data::Arc(Box::new(value))
+    }
+}
+impl<'a> TryFrom<&'a Data> for &'a Arc {
+    type Error = ();
+    fn try_from(value: &'a Data) -> Result<Self, Self::Error> {
+        match value {
+            Data::Arc(v) => Ok(v),
+            _ => Err(()),
+        }
+    }
+}
+impl From<Vec<Arc>> for Data {
+    fn from(value: Vec<Arc>) -> Self {
+        Data::ListOfArc(Box::new(value))
+    }
+}
+impl<'a> TryFrom<&'a Data> for &'a Vec<Arc> {
+    type Error = ();
+    fn try_from(value: &'a Data) -> Result<Self, Self::Error> {
+        match value {
+            Data::ListOfArc(v) => Ok(v),
             _ => Err(()),
         }
     }

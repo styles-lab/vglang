@@ -65,6 +65,8 @@ pub enum ParseKind {
     TransformList,
     #[error("background")]
     Background,
+    #[error("path-event-list")]
+    PathEvents,
 }
 
 /// Parsing result type, returns by this module functions.

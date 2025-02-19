@@ -256,61 +256,61 @@ enum Channel { R,G,B,A }
 /// The  property only applies to graphics elements that are contained within a [`ClipPath`](ClipPath) element.
 enum ClipRule { Nonzero, EvenOdd }
 
+
+/// Draws a cubic Bézier curve from the current point to `to` point,
+/// using `ctrl1` as the control point at the beginning of the curve and `ctrl2` as the control point at the end of the curve.
+data CubicBezier{ ctrl1: Point, ctrl2: Point, to: Point }
+/// (smooth) Draws a cubic Bézier curve from the current point to `to` point,
+/// using `ctrl1` as the control point at the beginning of the curve and `ctrl2` as the control point at the end of the curve.
+data CubicBezierSmooth{ ctrl2: Point, to: Point }
+/// Draws a quadratic Bézier curve from the current point to `to` point using `ctrl` as the control point.
+data QuadraticBezier{ ctrl: Point, to: Point }
+/// Draws an elliptical arc from the current point to `to` point.
+///
+/// The center (cx, cy) of the ellipse is calculated automatically to satisfy the constraints
+/// imposed by the other parameters.
+data Arc {
+    rx: float,
+    ry:float, 
+    x_rotation: float, 
+    large_arc: bool, 
+    sweep: bool, 
+    to: Point, 
+}
+
 /// A direction that representation a path drawing commander.
 enum PathEvent {
     /// Close the current subpath by drawing a straight line from the current point to current subpath's initial point.
     Close,
-    /// (absolute) Start a new sub-path at the given (x,y) coordinate.
-    MoveTo(Point), 
-    /// (relative) Start a new sub-path at the given (x,y) coordinate.
-    MoveToRelative(Point),
-    /// (absolute) Draw a line from the current point to the given (x,y) coordinate which becomes the new current point.
-    LineTo(Point),
-    /// (relative) Draw a line from the current point to the given (x,y) coordinate which becomes the new current point.
-    LineToRelative(Point),
-    /// (absolute) Draw a line from the current point to the given (x,y) coordinate which becomes the new current point.
-    Horizontal(float),
-    /// (relative) Draw a line from the current point to the given (x,y) coordinate which becomes the new current point.
-    HorizontalRelative(float),
-      /// (absolute) Draw a line from the current point to the given (x,y) coordinate which becomes the new current point.
-    Vertical(float),
-    /// (relative) Draw a line from the current point to the given (x,y) coordinate which becomes the new current point.
-    VerticalRelative(float),
-    /// (absolute) Draws a cubic Bézier curve from the current point to `to` point,
+    /// Start a new sub-path at the given (x,y) coordinate.
+    MoveTo {
+        points: vec[Point],
+        relative: bool,
+    }, 
+    /// Draw a line from the current point to the given (x,y) coordinate which becomes the new current point.
+    LineTo {
+        points: vec[Point],
+        relative: bool,
+    },
+    /// Draw a line from the current point to the given (x,y) coordinate which becomes the new current point.
+    Horizontal(float,bool),
+    /// Draw a line from the current point to the given (x,y) coordinate which becomes the new current point.
+    Vertical(float, bool),
+    /// Draws a cubic Bézier curve from the current point to `to` point,
     /// using `ctrl1` as the control point at the beginning of the curve and `ctrl2` as the control point at the end of the curve.
-    CubicBezier{ ctrl1: Point, ctrl2: Point, to_point: Point },
-    /// (relative) Draws a cubic Bézier curve from the current point to `to` point,
-    /// using `ctrl1` as the control point at the beginning of the curve and `ctrl2` as the control point at the end of the curve.
-    CubicBezierRelative{ ctrl1: Point, ctrl2: Point, to_point: Point },
+    CubicBezier(vec[CubicBezier],bool),
     /// (smooth) Draws a cubic Bézier curve from the current point to `to` point,
     /// using `ctrl1` as the control point at the beginning of the curve and `ctrl2` as the control point at the end of the curve.
-    CubicBezierSmooth{ ctrl2: Point, to_point: Point },
-    /// (smooth, relative)Draws a cubic Bézier curve from the current point to `to` point,
-    /// using `ctrl1` as the control point at the beginning of the curve and `ctrl2` as the control point at the end of the curve.
-    CubicBezierSmoothRelative{ ctrl2: Point, to_point: Point },
-    /// (absolute) Draws a quadratic Bézier curve from the current point to `to` point using `ctrl` as the control point.
-    QuadraticBezier{ ctrl: Point, to_point: Point },
-    /// (relative) Draws a quadratic Bézier curve from the current point to `to` point using `ctrl` as the control point.
-    QuadraticBezierRelative{ ctrl: Point, to_point: Point },
+    CubicBezierSmooth(vec[CubicBezierSmooth],bool),
+    /// Draws a quadratic Bézier curve from the current point to `to` point using `ctrl` as the control point.
+    QuadraticBezier(vec[QuadraticBezier],bool),
     /// (smooth) Draws a quadratic Bézier curve from the current point to `to` point using `ctrl` as the control point.
-    QuadraticBezierSmooth(Point),
-    /// (smooth,relative) Draws a quadratic Bézier curve from the current point to `to` point using `ctrl` as the control point.
-    QuadraticBezierSmoothRelative(Point),
+    QuadraticBezierSmooth(vec[Point], bool),
     /// Draws an elliptical arc from the current point to `to` point.
     ///
     /// The center (cx, cy) of the ellipse is calculated automatically to satisfy the constraints
     /// imposed by the other parameters.
-    Arc {
-        rx: float,ry:float, x_rotation: float, large_arc: bool, sweep: bool, to_point: Point
-    },
-
-    /// (relative) Draws an elliptical arc from the current point to `to` point.
-    ///
-    /// The center (cx, cy) of the ellipse is calculated automatically to satisfy the constraints
-    /// imposed by the other parameters.
-    ArcRelative {
-        rx: float,ry:float, x_rotation: float, large_arc: bool, sweep: bool, to_point: Point
-    }
+    Arc(vec[Arc],bool),
 }
 
 /// The ‘fill-rule’ property indicates the algorithm which is to be used to determine what parts of the canvas are

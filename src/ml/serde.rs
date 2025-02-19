@@ -2695,6 +2695,184 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::ClipRule {
         deserializer.deserialize_enum(13usize, "clipRule", V)
     }
 }
+impl mlang_rs::rt::serde::ser::Serialize for super::opcode::CubicBezier {
+    fn serialize<S>(&self, serializer: S) -> Result<(), S::Error>
+    where
+        S: mlang_rs::rt::serde::ser::Serializer,
+    {
+        use mlang_rs::rt::serde::ser::SerializeNode;
+        let mut serializer = serializer.serialize_data(14usize, "cubicBezier", 3usize)?;
+        serializer.serialize_field(0usize, Some("ctrl1"), &self.ctrl1)?;
+        serializer.serialize_field(1usize, Some("ctrl2"), &self.ctrl2)?;
+        serializer.serialize_field(2usize, Some("to"), &self.to)?;
+        serializer.finish()
+    }
+}
+impl mlang_rs::rt::serde::de::Deserialize for super::opcode::CubicBezier {
+    type Value = super::opcode::CubicBezier;
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: mlang_rs::rt::serde::de::Deserializer,
+    {
+        use mlang_rs::rt::serde::de::*;
+        let _ = deserializer;
+        struct V;
+        impl Visitor for V {
+            type Value = super::opcode::CubicBezier;
+            #[allow(unused_mut)]
+            fn visit_node<A>(self, mut data: A) -> Result<Self::Value, A::Error>
+            where
+                A: NodeAccess,
+            {
+                let _ = data;
+                use super::opcode::*;
+                let value = CubicBezier {
+                    ctrl1: data.deserialize_field::<Point>("cubicBezier", 0usize, Some("ctrl1"))?,
+                    ctrl2: data.deserialize_field::<Point>("cubicBezier", 1usize, Some("ctrl2"))?,
+                    to: data.deserialize_field::<Point>("cubicBezier", 2usize, Some("to"))?,
+                };
+                Ok(value)
+            }
+        }
+        deserializer.deserialize_data(14usize, "cubicBezier", V)
+    }
+}
+impl mlang_rs::rt::serde::ser::Serialize for super::opcode::CubicBezierSmooth {
+    fn serialize<S>(&self, serializer: S) -> Result<(), S::Error>
+    where
+        S: mlang_rs::rt::serde::ser::Serializer,
+    {
+        use mlang_rs::rt::serde::ser::SerializeNode;
+        let mut serializer = serializer.serialize_data(15usize, "cubicBezierSmooth", 2usize)?;
+        serializer.serialize_field(0usize, Some("ctrl2"), &self.ctrl2)?;
+        serializer.serialize_field(1usize, Some("to"), &self.to)?;
+        serializer.finish()
+    }
+}
+impl mlang_rs::rt::serde::de::Deserialize for super::opcode::CubicBezierSmooth {
+    type Value = super::opcode::CubicBezierSmooth;
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: mlang_rs::rt::serde::de::Deserializer,
+    {
+        use mlang_rs::rt::serde::de::*;
+        let _ = deserializer;
+        struct V;
+        impl Visitor for V {
+            type Value = super::opcode::CubicBezierSmooth;
+            #[allow(unused_mut)]
+            fn visit_node<A>(self, mut data: A) -> Result<Self::Value, A::Error>
+            where
+                A: NodeAccess,
+            {
+                let _ = data;
+                use super::opcode::*;
+                let value = CubicBezierSmooth {
+                    ctrl2: data.deserialize_field::<Point>(
+                        "cubicBezierSmooth",
+                        0usize,
+                        Some("ctrl2"),
+                    )?,
+                    to: data.deserialize_field::<Point>("cubicBezierSmooth", 1usize, Some("to"))?,
+                };
+                Ok(value)
+            }
+        }
+        deserializer.deserialize_data(15usize, "cubicBezierSmooth", V)
+    }
+}
+impl mlang_rs::rt::serde::ser::Serialize for super::opcode::QuadraticBezier {
+    fn serialize<S>(&self, serializer: S) -> Result<(), S::Error>
+    where
+        S: mlang_rs::rt::serde::ser::Serializer,
+    {
+        use mlang_rs::rt::serde::ser::SerializeNode;
+        let mut serializer = serializer.serialize_data(16usize, "quadraticBezier", 2usize)?;
+        serializer.serialize_field(0usize, Some("ctrl"), &self.ctrl)?;
+        serializer.serialize_field(1usize, Some("to"), &self.to)?;
+        serializer.finish()
+    }
+}
+impl mlang_rs::rt::serde::de::Deserialize for super::opcode::QuadraticBezier {
+    type Value = super::opcode::QuadraticBezier;
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: mlang_rs::rt::serde::de::Deserializer,
+    {
+        use mlang_rs::rt::serde::de::*;
+        let _ = deserializer;
+        struct V;
+        impl Visitor for V {
+            type Value = super::opcode::QuadraticBezier;
+            #[allow(unused_mut)]
+            fn visit_node<A>(self, mut data: A) -> Result<Self::Value, A::Error>
+            where
+                A: NodeAccess,
+            {
+                let _ = data;
+                use super::opcode::*;
+                let value = QuadraticBezier {
+                    ctrl: data.deserialize_field::<Point>(
+                        "quadraticBezier",
+                        0usize,
+                        Some("ctrl"),
+                    )?,
+                    to: data.deserialize_field::<Point>("quadraticBezier", 1usize, Some("to"))?,
+                };
+                Ok(value)
+            }
+        }
+        deserializer.deserialize_data(16usize, "quadraticBezier", V)
+    }
+}
+impl mlang_rs::rt::serde::ser::Serialize for super::opcode::Arc {
+    fn serialize<S>(&self, serializer: S) -> Result<(), S::Error>
+    where
+        S: mlang_rs::rt::serde::ser::Serializer,
+    {
+        use mlang_rs::rt::serde::ser::SerializeNode;
+        let mut serializer = serializer.serialize_data(17usize, "arc", 6usize)?;
+        serializer.serialize_field(0usize, Some("rx"), &self.rx)?;
+        serializer.serialize_field(1usize, Some("ry"), &self.ry)?;
+        serializer.serialize_field(2usize, Some("xRotation"), &self.x_rotation)?;
+        serializer.serialize_field(3usize, Some("largeArc"), &self.large_arc)?;
+        serializer.serialize_field(4usize, Some("sweep"), &self.sweep)?;
+        serializer.serialize_field(5usize, Some("to"), &self.to)?;
+        serializer.finish()
+    }
+}
+impl mlang_rs::rt::serde::de::Deserialize for super::opcode::Arc {
+    type Value = super::opcode::Arc;
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: mlang_rs::rt::serde::de::Deserializer,
+    {
+        use mlang_rs::rt::serde::de::*;
+        let _ = deserializer;
+        struct V;
+        impl Visitor for V {
+            type Value = super::opcode::Arc;
+            #[allow(unused_mut)]
+            fn visit_node<A>(self, mut data: A) -> Result<Self::Value, A::Error>
+            where
+                A: NodeAccess,
+            {
+                let _ = data;
+                use super::opcode::*;
+                let value = Arc {
+                    rx: data.deserialize_field::<f32>("arc", 0usize, Some("rx"))?,
+                    ry: data.deserialize_field::<f32>("arc", 1usize, Some("ry"))?,
+                    x_rotation: data.deserialize_field::<f32>("arc", 2usize, Some("xRotation"))?,
+                    large_arc: data.deserialize_field::<bool>("arc", 3usize, Some("largeArc"))?,
+                    sweep: data.deserialize_field::<bool>("arc", 4usize, Some("sweep"))?,
+                    to: data.deserialize_field::<Point>("arc", 5usize, Some("to"))?,
+                };
+                Ok(value)
+            }
+        }
+        deserializer.deserialize_data(17usize, "arc", V)
+    }
+}
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::PathEvent {
     fn serialize<S>(&self, serializer: S) -> Result<(), S::Error>
     where
@@ -2704,225 +2882,95 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::PathEvent {
         match self {
             Self::Close => {
                 let serializer =
-                    serializer.serialize_enum(14usize, "pathEvent", "close", 0usize, 0usize)?;
+                    serializer.serialize_enum(18usize, "pathEvent", "close", 0usize, 0usize)?;
                 serializer.finish()
             }
-            Self::MoveTo(p0) => {
+            Self::MoveTo { points, relative } => {
                 let mut serializer =
-                    serializer.serialize_enum(14usize, "pathEvent", "moveTo", 1usize, 1usize)?;
-                serializer.serialize_field(0usize, None, p0)?;
+                    serializer.serialize_enum(18usize, "pathEvent", "moveTo", 1usize, 2usize)?;
+                serializer.serialize_field(0usize, Some("points"), points)?;
+                serializer.serialize_field(1usize, Some("relative"), relative)?;
                 serializer.finish()
             }
-            Self::MoveToRelative(p0) => {
-                let mut serializer = serializer.serialize_enum(
-                    14usize,
-                    "pathEvent",
-                    "moveToRelative",
-                    2usize,
-                    1usize,
-                )?;
-                serializer.serialize_field(0usize, None, p0)?;
-                serializer.finish()
-            }
-            Self::LineTo(p0) => {
+            Self::LineTo { points, relative } => {
                 let mut serializer =
-                    serializer.serialize_enum(14usize, "pathEvent", "lineTo", 3usize, 1usize)?;
-                serializer.serialize_field(0usize, None, p0)?;
+                    serializer.serialize_enum(18usize, "pathEvent", "lineTo", 2usize, 2usize)?;
+                serializer.serialize_field(0usize, Some("points"), points)?;
+                serializer.serialize_field(1usize, Some("relative"), relative)?;
                 serializer.finish()
             }
-            Self::LineToRelative(p0) => {
+            Self::Horizontal(p0, p1) => {
                 let mut serializer = serializer.serialize_enum(
-                    14usize,
-                    "pathEvent",
-                    "lineToRelative",
-                    4usize,
-                    1usize,
-                )?;
-                serializer.serialize_field(0usize, None, p0)?;
-                serializer.finish()
-            }
-            Self::Horizontal(p0) => {
-                let mut serializer = serializer.serialize_enum(
-                    14usize,
+                    18usize,
                     "pathEvent",
                     "horizontal",
-                    5usize,
-                    1usize,
+                    3usize,
+                    2usize,
                 )?;
                 serializer.serialize_field(0usize, None, p0)?;
+                serializer.serialize_field(1usize, None, p1)?;
                 serializer.finish()
             }
-            Self::HorizontalRelative(p0) => {
-                let mut serializer = serializer.serialize_enum(
-                    14usize,
-                    "pathEvent",
-                    "horizontalRelative",
-                    6usize,
-                    1usize,
-                )?;
-                serializer.serialize_field(0usize, None, p0)?;
-                serializer.finish()
-            }
-            Self::Vertical(p0) => {
+            Self::Vertical(p0, p1) => {
                 let mut serializer =
-                    serializer.serialize_enum(14usize, "pathEvent", "vertical", 7usize, 1usize)?;
+                    serializer.serialize_enum(18usize, "pathEvent", "vertical", 4usize, 2usize)?;
                 serializer.serialize_field(0usize, None, p0)?;
+                serializer.serialize_field(1usize, None, p1)?;
                 serializer.finish()
             }
-            Self::VerticalRelative(p0) => {
+            Self::CubicBezier(p0, p1) => {
                 let mut serializer = serializer.serialize_enum(
-                    14usize,
-                    "pathEvent",
-                    "verticalRelative",
-                    8usize,
-                    1usize,
-                )?;
-                serializer.serialize_field(0usize, None, p0)?;
-                serializer.finish()
-            }
-            Self::CubicBezier {
-                ctrl1,
-                ctrl2,
-                to_point,
-            } => {
-                let mut serializer = serializer.serialize_enum(
-                    14usize,
+                    18usize,
                     "pathEvent",
                     "cubicBezier",
-                    9usize,
-                    3usize,
+                    5usize,
+                    2usize,
                 )?;
-                serializer.serialize_field(0usize, Some("ctrl1"), ctrl1)?;
-                serializer.serialize_field(1usize, Some("ctrl2"), ctrl2)?;
-                serializer.serialize_field(2usize, Some("to_point"), to_point)?;
+                serializer.serialize_field(0usize, None, p0)?;
+                serializer.serialize_field(1usize, None, p1)?;
                 serializer.finish()
             }
-            Self::CubicBezierRelative {
-                ctrl1,
-                ctrl2,
-                to_point,
-            } => {
+            Self::CubicBezierSmooth(p0, p1) => {
                 let mut serializer = serializer.serialize_enum(
-                    14usize,
-                    "pathEvent",
-                    "cubicBezierRelative",
-                    10usize,
-                    3usize,
-                )?;
-                serializer.serialize_field(0usize, Some("ctrl1"), ctrl1)?;
-                serializer.serialize_field(1usize, Some("ctrl2"), ctrl2)?;
-                serializer.serialize_field(2usize, Some("to_point"), to_point)?;
-                serializer.finish()
-            }
-            Self::CubicBezierSmooth { ctrl2, to_point } => {
-                let mut serializer = serializer.serialize_enum(
-                    14usize,
+                    18usize,
                     "pathEvent",
                     "cubicBezierSmooth",
-                    11usize,
+                    6usize,
                     2usize,
                 )?;
-                serializer.serialize_field(0usize, Some("ctrl2"), ctrl2)?;
-                serializer.serialize_field(1usize, Some("to_point"), to_point)?;
+                serializer.serialize_field(0usize, None, p0)?;
+                serializer.serialize_field(1usize, None, p1)?;
                 serializer.finish()
             }
-            Self::CubicBezierSmoothRelative { ctrl2, to_point } => {
+            Self::QuadraticBezier(p0, p1) => {
                 let mut serializer = serializer.serialize_enum(
-                    14usize,
-                    "pathEvent",
-                    "cubicBezierSmoothRelative",
-                    12usize,
-                    2usize,
-                )?;
-                serializer.serialize_field(0usize, Some("ctrl2"), ctrl2)?;
-                serializer.serialize_field(1usize, Some("to_point"), to_point)?;
-                serializer.finish()
-            }
-            Self::QuadraticBezier { ctrl, to_point } => {
-                let mut serializer = serializer.serialize_enum(
-                    14usize,
+                    18usize,
                     "pathEvent",
                     "quadraticBezier",
-                    13usize,
+                    7usize,
                     2usize,
                 )?;
-                serializer.serialize_field(0usize, Some("ctrl"), ctrl)?;
-                serializer.serialize_field(1usize, Some("to_point"), to_point)?;
+                serializer.serialize_field(0usize, None, p0)?;
+                serializer.serialize_field(1usize, None, p1)?;
                 serializer.finish()
             }
-            Self::QuadraticBezierRelative { ctrl, to_point } => {
+            Self::QuadraticBezierSmooth(p0, p1) => {
                 let mut serializer = serializer.serialize_enum(
-                    14usize,
-                    "pathEvent",
-                    "quadraticBezierRelative",
-                    14usize,
-                    2usize,
-                )?;
-                serializer.serialize_field(0usize, Some("ctrl"), ctrl)?;
-                serializer.serialize_field(1usize, Some("to_point"), to_point)?;
-                serializer.finish()
-            }
-            Self::QuadraticBezierSmooth(p0) => {
-                let mut serializer = serializer.serialize_enum(
-                    14usize,
+                    18usize,
                     "pathEvent",
                     "quadraticBezierSmooth",
-                    15usize,
-                    1usize,
+                    8usize,
+                    2usize,
                 )?;
                 serializer.serialize_field(0usize, None, p0)?;
+                serializer.serialize_field(1usize, None, p1)?;
                 serializer.finish()
             }
-            Self::QuadraticBezierSmoothRelative(p0) => {
-                let mut serializer = serializer.serialize_enum(
-                    14usize,
-                    "pathEvent",
-                    "quadraticBezierSmoothRelative",
-                    16usize,
-                    1usize,
-                )?;
-                serializer.serialize_field(0usize, None, p0)?;
-                serializer.finish()
-            }
-            Self::Arc {
-                rx,
-                ry,
-                x_rotation,
-                large_arc,
-                sweep,
-                to_point,
-            } => {
+            Self::Arc(p0, p1) => {
                 let mut serializer =
-                    serializer.serialize_enum(14usize, "pathEvent", "arc", 17usize, 6usize)?;
-                serializer.serialize_field(0usize, Some("rx"), rx)?;
-                serializer.serialize_field(1usize, Some("ry"), ry)?;
-                serializer.serialize_field(2usize, Some("x_rotation"), x_rotation)?;
-                serializer.serialize_field(3usize, Some("large_arc"), large_arc)?;
-                serializer.serialize_field(4usize, Some("sweep"), sweep)?;
-                serializer.serialize_field(5usize, Some("to_point"), to_point)?;
-                serializer.finish()
-            }
-            Self::ArcRelative {
-                rx,
-                ry,
-                x_rotation,
-                large_arc,
-                sweep,
-                to_point,
-            } => {
-                let mut serializer = serializer.serialize_enum(
-                    14usize,
-                    "pathEvent",
-                    "arcRelative",
-                    18usize,
-                    6usize,
-                )?;
-                serializer.serialize_field(0usize, Some("rx"), rx)?;
-                serializer.serialize_field(1usize, Some("ry"), ry)?;
-                serializer.serialize_field(2usize, Some("x_rotation"), x_rotation)?;
-                serializer.serialize_field(3usize, Some("large_arc"), large_arc)?;
-                serializer.serialize_field(4usize, Some("sweep"), sweep)?;
-                serializer.serialize_field(5usize, Some("to_point"), to_point)?;
+                    serializer.serialize_enum(18usize, "pathEvent", "arc", 9usize, 2usize)?;
+                serializer.serialize_field(0usize, None, p0)?;
+                serializer.serialize_field(1usize, None, p1)?;
                 serializer.finish()
             }
         }
@@ -2952,178 +3000,74 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::PathEvent {
                 let _ = node;
                 match variant_index {
                     0usize => Ok(super::opcode::PathEvent::Close),
-                    1usize => Ok(super::opcode::PathEvent::MoveTo(
-                        node.deserialize_field::<super::opcode::Point>("moveTo", 0usize, None)?,
-                    )),
-                    2usize => Ok(super::opcode::PathEvent::MoveToRelative(
-                        node.deserialize_field::<super::opcode::Point>(
-                            "moveToRelative",
+                    1usize => Ok(super::opcode::PathEvent::MoveTo {
+                        points: node.deserialize_field::<Vec<super::opcode::Point>>(
+                            "moveTo",
                             0usize,
-                            None,
+                            Some("points"),
                         )?,
-                    )),
-                    3usize => Ok(super::opcode::PathEvent::LineTo(
-                        node.deserialize_field::<super::opcode::Point>("lineTo", 0usize, None)?,
-                    )),
-                    4usize => Ok(super::opcode::PathEvent::LineToRelative(
-                        node.deserialize_field::<super::opcode::Point>(
-                            "lineToRelative",
+                        relative: node.deserialize_field::<bool>(
+                            "moveTo",
+                            1usize,
+                            Some("relative"),
+                        )?,
+                    }),
+                    2usize => Ok(super::opcode::PathEvent::LineTo {
+                        points: node.deserialize_field::<Vec<super::opcode::Point>>(
+                            "lineTo",
                             0usize,
-                            None,
+                            Some("points"),
                         )?,
-                    )),
-                    5usize => Ok(super::opcode::PathEvent::Horizontal(
+                        relative: node.deserialize_field::<bool>(
+                            "lineTo",
+                            1usize,
+                            Some("relative"),
+                        )?,
+                    }),
+                    3usize => Ok(super::opcode::PathEvent::Horizontal(
                         node.deserialize_field::<f32>("horizontal", 0usize, None)?,
+                        node.deserialize_field::<bool>("horizontal", 1usize, None)?,
                     )),
-                    6usize => Ok(super::opcode::PathEvent::HorizontalRelative(
-                        node.deserialize_field::<f32>("horizontalRelative", 0usize, None)?,
-                    )),
-                    7usize => Ok(super::opcode::PathEvent::Vertical(
+                    4usize => Ok(super::opcode::PathEvent::Vertical(
                         node.deserialize_field::<f32>("vertical", 0usize, None)?,
+                        node.deserialize_field::<bool>("vertical", 1usize, None)?,
                     )),
-                    8usize => Ok(super::opcode::PathEvent::VerticalRelative(
-                        node.deserialize_field::<f32>("verticalRelative", 0usize, None)?,
-                    )),
-                    9usize => Ok(super::opcode::PathEvent::CubicBezier {
-                        ctrl1: node.deserialize_field::<super::opcode::Point>(
+                    5usize => Ok(super::opcode::PathEvent::CubicBezier(
+                        node.deserialize_field::<Vec<super::opcode::CubicBezier>>(
                             "cubicBezier",
                             0usize,
-                            Some("ctrl1"),
+                            None,
                         )?,
-                        ctrl2: node.deserialize_field::<super::opcode::Point>(
-                            "cubicBezier",
-                            1usize,
-                            Some("ctrl2"),
-                        )?,
-                        to_point: node.deserialize_field::<super::opcode::Point>(
-                            "cubicBezier",
-                            2usize,
-                            Some("toPoint"),
-                        )?,
-                    }),
-                    10usize => Ok(super::opcode::PathEvent::CubicBezierRelative {
-                        ctrl1: node.deserialize_field::<super::opcode::Point>(
-                            "cubicBezierRelative",
-                            0usize,
-                            Some("ctrl1"),
-                        )?,
-                        ctrl2: node.deserialize_field::<super::opcode::Point>(
-                            "cubicBezierRelative",
-                            1usize,
-                            Some("ctrl2"),
-                        )?,
-                        to_point: node.deserialize_field::<super::opcode::Point>(
-                            "cubicBezierRelative",
-                            2usize,
-                            Some("toPoint"),
-                        )?,
-                    }),
-                    11usize => Ok(super::opcode::PathEvent::CubicBezierSmooth {
-                        ctrl2: node.deserialize_field::<super::opcode::Point>(
+                        node.deserialize_field::<bool>("cubicBezier", 1usize, None)?,
+                    )),
+                    6usize => Ok(super::opcode::PathEvent::CubicBezierSmooth(
+                        node.deserialize_field::<Vec<super::opcode::CubicBezierSmooth>>(
                             "cubicBezierSmooth",
                             0usize,
-                            Some("ctrl2"),
+                            None,
                         )?,
-                        to_point: node.deserialize_field::<super::opcode::Point>(
-                            "cubicBezierSmooth",
-                            1usize,
-                            Some("toPoint"),
-                        )?,
-                    }),
-                    12usize => Ok(super::opcode::PathEvent::CubicBezierSmoothRelative {
-                        ctrl2: node.deserialize_field::<super::opcode::Point>(
-                            "cubicBezierSmoothRelative",
-                            0usize,
-                            Some("ctrl2"),
-                        )?,
-                        to_point: node.deserialize_field::<super::opcode::Point>(
-                            "cubicBezierSmoothRelative",
-                            1usize,
-                            Some("toPoint"),
-                        )?,
-                    }),
-                    13usize => Ok(super::opcode::PathEvent::QuadraticBezier {
-                        ctrl: node.deserialize_field::<super::opcode::Point>(
+                        node.deserialize_field::<bool>("cubicBezierSmooth", 1usize, None)?,
+                    )),
+                    7usize => Ok(super::opcode::PathEvent::QuadraticBezier(
+                        node.deserialize_field::<Vec<super::opcode::QuadraticBezier>>(
                             "quadraticBezier",
                             0usize,
-                            Some("ctrl"),
+                            None,
                         )?,
-                        to_point: node.deserialize_field::<super::opcode::Point>(
-                            "quadraticBezier",
-                            1usize,
-                            Some("toPoint"),
-                        )?,
-                    }),
-                    14usize => Ok(super::opcode::PathEvent::QuadraticBezierRelative {
-                        ctrl: node.deserialize_field::<super::opcode::Point>(
-                            "quadraticBezierRelative",
-                            0usize,
-                            Some("ctrl"),
-                        )?,
-                        to_point: node.deserialize_field::<super::opcode::Point>(
-                            "quadraticBezierRelative",
-                            1usize,
-                            Some("toPoint"),
-                        )?,
-                    }),
-                    15usize => Ok(super::opcode::PathEvent::QuadraticBezierSmooth(
-                        node.deserialize_field::<super::opcode::Point>(
+                        node.deserialize_field::<bool>("quadraticBezier", 1usize, None)?,
+                    )),
+                    8usize => Ok(super::opcode::PathEvent::QuadraticBezierSmooth(
+                        node.deserialize_field::<Vec<super::opcode::Point>>(
                             "quadraticBezierSmooth",
                             0usize,
                             None,
                         )?,
+                        node.deserialize_field::<bool>("quadraticBezierSmooth", 1usize, None)?,
                     )),
-                    16usize => Ok(super::opcode::PathEvent::QuadraticBezierSmoothRelative(
-                        node.deserialize_field::<super::opcode::Point>(
-                            "quadraticBezierSmoothRelative",
-                            0usize,
-                            None,
-                        )?,
+                    9usize => Ok(super::opcode::PathEvent::Arc(
+                        node.deserialize_field::<Vec<super::opcode::Arc>>("arc", 0usize, None)?,
+                        node.deserialize_field::<bool>("arc", 1usize, None)?,
                     )),
-                    17usize => Ok(super::opcode::PathEvent::Arc {
-                        rx: node.deserialize_field::<f32>("arc", 0usize, Some("rx"))?,
-                        ry: node.deserialize_field::<f32>("arc", 1usize, Some("ry"))?,
-                        x_rotation: node.deserialize_field::<f32>(
-                            "arc",
-                            2usize,
-                            Some("xRotation"),
-                        )?,
-                        large_arc: node.deserialize_field::<bool>(
-                            "arc",
-                            3usize,
-                            Some("largeArc"),
-                        )?,
-                        sweep: node.deserialize_field::<bool>("arc", 4usize, Some("sweep"))?,
-                        to_point: node.deserialize_field::<super::opcode::Point>(
-                            "arc",
-                            5usize,
-                            Some("toPoint"),
-                        )?,
-                    }),
-                    18usize => Ok(super::opcode::PathEvent::ArcRelative {
-                        rx: node.deserialize_field::<f32>("arcRelative", 0usize, Some("rx"))?,
-                        ry: node.deserialize_field::<f32>("arcRelative", 1usize, Some("ry"))?,
-                        x_rotation: node.deserialize_field::<f32>(
-                            "arcRelative",
-                            2usize,
-                            Some("xRotation"),
-                        )?,
-                        large_arc: node.deserialize_field::<bool>(
-                            "arcRelative",
-                            3usize,
-                            Some("largeArc"),
-                        )?,
-                        sweep: node.deserialize_field::<bool>(
-                            "arcRelative",
-                            4usize,
-                            Some("sweep"),
-                        )?,
-                        to_point: node.deserialize_field::<super::opcode::Point>(
-                            "arcRelative",
-                            5usize,
-                            Some("toPoint"),
-                        )?,
-                    }),
                     _ => Err(
                         Error::UnknownVariantIndex("pathEvent".to_string(), variant_index).into(),
                     ),
@@ -3138,191 +3082,81 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::PathEvent {
                 let _ = node;
                 match variant {
                     "close" => Ok(super::opcode::PathEvent::Close),
-                    "moveTo" => Ok(super::opcode::PathEvent::MoveTo(
-                        node.deserialize_field::<super::opcode::Point>("moveTo", 0usize, None)?,
-                    )),
-                    "moveToRelative" => Ok(super::opcode::PathEvent::MoveToRelative(
-                        node.deserialize_field::<super::opcode::Point>(
-                            "moveToRelative",
+                    "moveTo" => Ok(super::opcode::PathEvent::MoveTo {
+                        points: node.deserialize_field::<Vec<super::opcode::Point>>(
+                            "moveTo",
                             0usize,
-                            None,
+                            Some("points"),
                         )?,
-                    )),
-                    "lineTo" => Ok(super::opcode::PathEvent::LineTo(
-                        node.deserialize_field::<super::opcode::Point>("lineTo", 0usize, None)?,
-                    )),
-                    "lineToRelative" => Ok(super::opcode::PathEvent::LineToRelative(
-                        node.deserialize_field::<super::opcode::Point>(
-                            "lineToRelative",
+                        relative: node.deserialize_field::<bool>(
+                            "moveTo",
+                            1usize,
+                            Some("relative"),
+                        )?,
+                    }),
+                    "lineTo" => Ok(super::opcode::PathEvent::LineTo {
+                        points: node.deserialize_field::<Vec<super::opcode::Point>>(
+                            "lineTo",
                             0usize,
-                            None,
+                            Some("points"),
                         )?,
-                    )),
+                        relative: node.deserialize_field::<bool>(
+                            "lineTo",
+                            1usize,
+                            Some("relative"),
+                        )?,
+                    }),
                     "horizontal" => Ok(super::opcode::PathEvent::Horizontal(
                         node.deserialize_field::<f32>("horizontal", 0usize, None)?,
-                    )),
-                    "horizontalRelative" => Ok(super::opcode::PathEvent::HorizontalRelative(
-                        node.deserialize_field::<f32>("horizontalRelative", 0usize, None)?,
+                        node.deserialize_field::<bool>("horizontal", 1usize, None)?,
                     )),
                     "vertical" => Ok(super::opcode::PathEvent::Vertical(
                         node.deserialize_field::<f32>("vertical", 0usize, None)?,
+                        node.deserialize_field::<bool>("vertical", 1usize, None)?,
                     )),
-                    "verticalRelative" => Ok(super::opcode::PathEvent::VerticalRelative(
-                        node.deserialize_field::<f32>("verticalRelative", 0usize, None)?,
-                    )),
-                    "cubicBezier" => Ok(super::opcode::PathEvent::CubicBezier {
-                        ctrl1: node.deserialize_field::<super::opcode::Point>(
+                    "cubicBezier" => Ok(super::opcode::PathEvent::CubicBezier(
+                        node.deserialize_field::<Vec<super::opcode::CubicBezier>>(
                             "cubicBezier",
                             0usize,
-                            Some("ctrl1"),
+                            None,
                         )?,
-                        ctrl2: node.deserialize_field::<super::opcode::Point>(
-                            "cubicBezier",
-                            1usize,
-                            Some("ctrl2"),
-                        )?,
-                        to_point: node.deserialize_field::<super::opcode::Point>(
-                            "cubicBezier",
-                            2usize,
-                            Some("toPoint"),
-                        )?,
-                    }),
-                    "cubicBezierRelative" => Ok(super::opcode::PathEvent::CubicBezierRelative {
-                        ctrl1: node.deserialize_field::<super::opcode::Point>(
-                            "cubicBezierRelative",
-                            0usize,
-                            Some("ctrl1"),
-                        )?,
-                        ctrl2: node.deserialize_field::<super::opcode::Point>(
-                            "cubicBezierRelative",
-                            1usize,
-                            Some("ctrl2"),
-                        )?,
-                        to_point: node.deserialize_field::<super::opcode::Point>(
-                            "cubicBezierRelative",
-                            2usize,
-                            Some("toPoint"),
-                        )?,
-                    }),
-                    "cubicBezierSmooth" => Ok(super::opcode::PathEvent::CubicBezierSmooth {
-                        ctrl2: node.deserialize_field::<super::opcode::Point>(
+                        node.deserialize_field::<bool>("cubicBezier", 1usize, None)?,
+                    )),
+                    "cubicBezierSmooth" => Ok(super::opcode::PathEvent::CubicBezierSmooth(
+                        node.deserialize_field::<Vec<super::opcode::CubicBezierSmooth>>(
                             "cubicBezierSmooth",
                             0usize,
-                            Some("ctrl2"),
+                            None,
                         )?,
-                        to_point: node.deserialize_field::<super::opcode::Point>(
-                            "cubicBezierSmooth",
-                            1usize,
-                            Some("toPoint"),
-                        )?,
-                    }),
-                    "cubicBezierSmoothRelative" => {
-                        Ok(super::opcode::PathEvent::CubicBezierSmoothRelative {
-                            ctrl2: node.deserialize_field::<super::opcode::Point>(
-                                "cubicBezierSmoothRelative",
-                                0usize,
-                                Some("ctrl2"),
-                            )?,
-                            to_point: node.deserialize_field::<super::opcode::Point>(
-                                "cubicBezierSmoothRelative",
-                                1usize,
-                                Some("toPoint"),
-                            )?,
-                        })
-                    }
-                    "quadraticBezier" => Ok(super::opcode::PathEvent::QuadraticBezier {
-                        ctrl: node.deserialize_field::<super::opcode::Point>(
+                        node.deserialize_field::<bool>("cubicBezierSmooth", 1usize, None)?,
+                    )),
+                    "quadraticBezier" => Ok(super::opcode::PathEvent::QuadraticBezier(
+                        node.deserialize_field::<Vec<super::opcode::QuadraticBezier>>(
                             "quadraticBezier",
                             0usize,
-                            Some("ctrl"),
+                            None,
                         )?,
-                        to_point: node.deserialize_field::<super::opcode::Point>(
-                            "quadraticBezier",
-                            1usize,
-                            Some("toPoint"),
-                        )?,
-                    }),
-                    "quadraticBezierRelative" => {
-                        Ok(super::opcode::PathEvent::QuadraticBezierRelative {
-                            ctrl: node.deserialize_field::<super::opcode::Point>(
-                                "quadraticBezierRelative",
-                                0usize,
-                                Some("ctrl"),
-                            )?,
-                            to_point: node.deserialize_field::<super::opcode::Point>(
-                                "quadraticBezierRelative",
-                                1usize,
-                                Some("toPoint"),
-                            )?,
-                        })
-                    }
+                        node.deserialize_field::<bool>("quadraticBezier", 1usize, None)?,
+                    )),
                     "quadraticBezierSmooth" => Ok(super::opcode::PathEvent::QuadraticBezierSmooth(
-                        node.deserialize_field::<super::opcode::Point>(
+                        node.deserialize_field::<Vec<super::opcode::Point>>(
                             "quadraticBezierSmooth",
                             0usize,
                             None,
                         )?,
+                        node.deserialize_field::<bool>("quadraticBezierSmooth", 1usize, None)?,
                     )),
-                    "quadraticBezierSmoothRelative" => {
-                        Ok(super::opcode::PathEvent::QuadraticBezierSmoothRelative(
-                            node.deserialize_field::<super::opcode::Point>(
-                                "quadraticBezierSmoothRelative",
-                                0usize,
-                                None,
-                            )?,
-                        ))
-                    }
-                    "arc" => Ok(super::opcode::PathEvent::Arc {
-                        rx: node.deserialize_field::<f32>("arc", 0usize, Some("rx"))?,
-                        ry: node.deserialize_field::<f32>("arc", 1usize, Some("ry"))?,
-                        x_rotation: node.deserialize_field::<f32>(
-                            "arc",
-                            2usize,
-                            Some("xRotation"),
-                        )?,
-                        large_arc: node.deserialize_field::<bool>(
-                            "arc",
-                            3usize,
-                            Some("largeArc"),
-                        )?,
-                        sweep: node.deserialize_field::<bool>("arc", 4usize, Some("sweep"))?,
-                        to_point: node.deserialize_field::<super::opcode::Point>(
-                            "arc",
-                            5usize,
-                            Some("toPoint"),
-                        )?,
-                    }),
-                    "arcRelative" => Ok(super::opcode::PathEvent::ArcRelative {
-                        rx: node.deserialize_field::<f32>("arcRelative", 0usize, Some("rx"))?,
-                        ry: node.deserialize_field::<f32>("arcRelative", 1usize, Some("ry"))?,
-                        x_rotation: node.deserialize_field::<f32>(
-                            "arcRelative",
-                            2usize,
-                            Some("xRotation"),
-                        )?,
-                        large_arc: node.deserialize_field::<bool>(
-                            "arcRelative",
-                            3usize,
-                            Some("largeArc"),
-                        )?,
-                        sweep: node.deserialize_field::<bool>(
-                            "arcRelative",
-                            4usize,
-                            Some("sweep"),
-                        )?,
-                        to_point: node.deserialize_field::<super::opcode::Point>(
-                            "arcRelative",
-                            5usize,
-                            Some("toPoint"),
-                        )?,
-                    }),
+                    "arc" => Ok(super::opcode::PathEvent::Arc(
+                        node.deserialize_field::<Vec<super::opcode::Arc>>("arc", 0usize, None)?,
+                        node.deserialize_field::<bool>("arc", 1usize, None)?,
+                    )),
                     _ => Err(
                         Error::UnknownVariant("pathEvent".to_string(), variant.to_string()).into(),
                     ),
                 }
             }
         }
-        deserializer.deserialize_enum(14usize, "pathEvent", V)
+        deserializer.deserialize_enum(18usize, "pathEvent", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FillRule {
@@ -3334,12 +3168,12 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FillRule {
         match self {
             Self::Nonzero => {
                 let serializer =
-                    serializer.serialize_enum(15usize, "fillRule", "nonzero", 0usize, 0usize)?;
+                    serializer.serialize_enum(19usize, "fillRule", "nonzero", 0usize, 0usize)?;
                 serializer.finish()
             }
             Self::Evenodd => {
                 let serializer =
-                    serializer.serialize_enum(15usize, "fillRule", "evenodd", 1usize, 0usize)?;
+                    serializer.serialize_enum(19usize, "fillRule", "evenodd", 1usize, 0usize)?;
                 serializer.finish()
             }
         }
@@ -3391,7 +3225,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::FillRule {
                 }
             }
         }
-        deserializer.deserialize_enum(15usize, "fillRule", V)
+        deserializer.deserialize_enum(19usize, "fillRule", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::StrokeLineCap {
@@ -3403,12 +3237,12 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::StrokeLineCap {
         match self {
             Self::Butt => {
                 let serializer =
-                    serializer.serialize_enum(16usize, "stroke-linecap", "butt", 0usize, 0usize)?;
+                    serializer.serialize_enum(20usize, "stroke-linecap", "butt", 0usize, 0usize)?;
                 serializer.finish()
             }
             Self::Round => {
                 let serializer = serializer.serialize_enum(
-                    16usize,
+                    20usize,
                     "stroke-linecap",
                     "round",
                     1usize,
@@ -3418,7 +3252,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::StrokeLineCap {
             }
             Self::Square => {
                 let serializer = serializer.serialize_enum(
-                    16usize,
+                    20usize,
                     "stroke-linecap",
                     "square",
                     2usize,
@@ -3481,7 +3315,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::StrokeLineCap {
                 }
             }
         }
-        deserializer.deserialize_enum(16usize, "stroke-linecap", V)
+        deserializer.deserialize_enum(20usize, "stroke-linecap", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::StrokeLineJoin {
@@ -3493,7 +3327,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::StrokeLineJoin {
         match self {
             Self::Miter(p0) => {
                 let mut serializer = serializer.serialize_enum(
-                    17usize,
+                    21usize,
                     "stroke-linejoin",
                     "miter",
                     0usize,
@@ -3504,7 +3338,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::StrokeLineJoin {
             }
             Self::Round => {
                 let serializer = serializer.serialize_enum(
-                    17usize,
+                    21usize,
                     "stroke-linejoin",
                     "round",
                     1usize,
@@ -3514,7 +3348,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::StrokeLineJoin {
             }
             Self::Bevel => {
                 let serializer = serializer.serialize_enum(
-                    17usize,
+                    21usize,
                     "stroke-linejoin",
                     "bevel",
                     2usize,
@@ -3581,7 +3415,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::StrokeLineJoin {
                 }
             }
         }
-        deserializer.deserialize_enum(17usize, "stroke-linejoin", V)
+        deserializer.deserialize_enum(21usize, "stroke-linejoin", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::SpreadMethod {
@@ -3593,12 +3427,12 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::SpreadMethod {
         match self {
             Self::Pad => {
                 let serializer =
-                    serializer.serialize_enum(18usize, "spreadMethod", "pad", 0usize, 0usize)?;
+                    serializer.serialize_enum(22usize, "spreadMethod", "pad", 0usize, 0usize)?;
                 serializer.finish()
             }
             Self::Reflect => {
                 let serializer = serializer.serialize_enum(
-                    18usize,
+                    22usize,
                     "spreadMethod",
                     "reflect",
                     1usize,
@@ -3608,7 +3442,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::SpreadMethod {
             }
             Self::Repeat => {
                 let serializer =
-                    serializer.serialize_enum(18usize, "spreadMethod", "repeat", 2usize, 0usize)?;
+                    serializer.serialize_enum(22usize, "spreadMethod", "repeat", 2usize, 0usize)?;
                 serializer.finish()
             }
         }
@@ -3665,7 +3499,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::SpreadMethod {
                 }
             }
         }
-        deserializer.deserialize_enum(18usize, "spreadMethod", V)
+        deserializer.deserialize_enum(22usize, "spreadMethod", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FontStyle {
@@ -3677,17 +3511,17 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FontStyle {
         match self {
             Self::Normal => {
                 let serializer =
-                    serializer.serialize_enum(19usize, "fontStyle", "normal", 0usize, 0usize)?;
+                    serializer.serialize_enum(23usize, "fontStyle", "normal", 0usize, 0usize)?;
                 serializer.finish()
             }
             Self::Italic => {
                 let serializer =
-                    serializer.serialize_enum(19usize, "fontStyle", "italic", 1usize, 0usize)?;
+                    serializer.serialize_enum(23usize, "fontStyle", "italic", 1usize, 0usize)?;
                 serializer.finish()
             }
             Self::Oblique => {
                 let serializer =
-                    serializer.serialize_enum(19usize, "fontStyle", "oblique", 2usize, 0usize)?;
+                    serializer.serialize_enum(23usize, "fontStyle", "oblique", 2usize, 0usize)?;
                 serializer.finish()
             }
         }
@@ -3741,7 +3575,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::FontStyle {
                 }
             }
         }
-        deserializer.deserialize_enum(19usize, "fontStyle", V)
+        deserializer.deserialize_enum(23usize, "fontStyle", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FontVariant {
@@ -3753,12 +3587,12 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FontVariant {
         match self {
             Self::Normal => {
                 let serializer =
-                    serializer.serialize_enum(20usize, "fontVariant", "normal", 0usize, 0usize)?;
+                    serializer.serialize_enum(24usize, "fontVariant", "normal", 0usize, 0usize)?;
                 serializer.finish()
             }
             Self::SmallCaps => {
                 let serializer = serializer.serialize_enum(
-                    20usize,
+                    24usize,
                     "fontVariant",
                     "smallCaps",
                     1usize,
@@ -3816,7 +3650,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::FontVariant {
                 }
             }
         }
-        deserializer.deserialize_enum(20usize, "fontVariant", V)
+        deserializer.deserialize_enum(24usize, "fontVariant", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FontWeight {
@@ -3828,67 +3662,67 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FontWeight {
         match self {
             Self::Normal => {
                 let serializer =
-                    serializer.serialize_enum(21usize, "fontWeight", "normal", 0usize, 0usize)?;
+                    serializer.serialize_enum(25usize, "fontWeight", "normal", 0usize, 0usize)?;
                 serializer.finish()
             }
             Self::Bold => {
                 let serializer =
-                    serializer.serialize_enum(21usize, "fontWeight", "bold", 1usize, 0usize)?;
+                    serializer.serialize_enum(25usize, "fontWeight", "bold", 1usize, 0usize)?;
                 serializer.finish()
             }
             Self::Bolder => {
                 let serializer =
-                    serializer.serialize_enum(21usize, "fontWeight", "bolder", 2usize, 0usize)?;
+                    serializer.serialize_enum(25usize, "fontWeight", "bolder", 2usize, 0usize)?;
                 serializer.finish()
             }
             Self::Lighter => {
                 let serializer =
-                    serializer.serialize_enum(21usize, "fontWeight", "lighter", 3usize, 0usize)?;
+                    serializer.serialize_enum(25usize, "fontWeight", "lighter", 3usize, 0usize)?;
                 serializer.finish()
             }
             Self::W100 => {
                 let serializer =
-                    serializer.serialize_enum(21usize, "fontWeight", "w100", 4usize, 0usize)?;
+                    serializer.serialize_enum(25usize, "fontWeight", "w100", 4usize, 0usize)?;
                 serializer.finish()
             }
             Self::W200 => {
                 let serializer =
-                    serializer.serialize_enum(21usize, "fontWeight", "w200", 5usize, 0usize)?;
+                    serializer.serialize_enum(25usize, "fontWeight", "w200", 5usize, 0usize)?;
                 serializer.finish()
             }
             Self::W300 => {
                 let serializer =
-                    serializer.serialize_enum(21usize, "fontWeight", "w300", 6usize, 0usize)?;
+                    serializer.serialize_enum(25usize, "fontWeight", "w300", 6usize, 0usize)?;
                 serializer.finish()
             }
             Self::W400 => {
                 let serializer =
-                    serializer.serialize_enum(21usize, "fontWeight", "w400", 7usize, 0usize)?;
+                    serializer.serialize_enum(25usize, "fontWeight", "w400", 7usize, 0usize)?;
                 serializer.finish()
             }
             Self::W500 => {
                 let serializer =
-                    serializer.serialize_enum(21usize, "fontWeight", "w500", 8usize, 0usize)?;
+                    serializer.serialize_enum(25usize, "fontWeight", "w500", 8usize, 0usize)?;
                 serializer.finish()
             }
             Self::W600 => {
                 let serializer =
-                    serializer.serialize_enum(21usize, "fontWeight", "w600", 9usize, 0usize)?;
+                    serializer.serialize_enum(25usize, "fontWeight", "w600", 9usize, 0usize)?;
                 serializer.finish()
             }
             Self::W700 => {
                 let serializer =
-                    serializer.serialize_enum(21usize, "fontWeight", "w700", 10usize, 0usize)?;
+                    serializer.serialize_enum(25usize, "fontWeight", "w700", 10usize, 0usize)?;
                 serializer.finish()
             }
             Self::W800 => {
                 let serializer =
-                    serializer.serialize_enum(21usize, "fontWeight", "w800", 11usize, 0usize)?;
+                    serializer.serialize_enum(25usize, "fontWeight", "w800", 11usize, 0usize)?;
                 serializer.finish()
             }
             Self::W900 => {
                 let serializer =
-                    serializer.serialize_enum(21usize, "fontWeight", "w900", 12usize, 0usize)?;
+                    serializer.serialize_enum(25usize, "fontWeight", "w900", 12usize, 0usize)?;
                 serializer.finish()
             }
         }
@@ -3962,7 +3796,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::FontWeight {
                 }
             }
         }
-        deserializer.deserialize_enum(21usize, "fontWeight", V)
+        deserializer.deserialize_enum(25usize, "fontWeight", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FontFamily {
@@ -3974,12 +3808,12 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FontFamily {
         match self {
             Self::Serif => {
                 let serializer =
-                    serializer.serialize_enum(22usize, "fontFamily", "serif", 0usize, 0usize)?;
+                    serializer.serialize_enum(26usize, "fontFamily", "serif", 0usize, 0usize)?;
                 serializer.finish()
             }
             Self::SansSerif => {
                 let serializer = serializer.serialize_enum(
-                    22usize,
+                    26usize,
                     "fontFamily",
                     "sansSerif",
                     1usize,
@@ -3989,17 +3823,17 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FontFamily {
             }
             Self::Cursive => {
                 let serializer =
-                    serializer.serialize_enum(22usize, "fontFamily", "cursive", 2usize, 0usize)?;
+                    serializer.serialize_enum(26usize, "fontFamily", "cursive", 2usize, 0usize)?;
                 serializer.finish()
             }
             Self::Fantasy => {
                 let serializer =
-                    serializer.serialize_enum(22usize, "fontFamily", "fantasy", 3usize, 0usize)?;
+                    serializer.serialize_enum(26usize, "fontFamily", "fantasy", 3usize, 0usize)?;
                 serializer.finish()
             }
             Self::Monospace => {
                 let serializer = serializer.serialize_enum(
-                    22usize,
+                    26usize,
                     "fontFamily",
                     "monospace",
                     4usize,
@@ -4009,7 +3843,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FontFamily {
             }
             Self::Generic(p0) => {
                 let mut serializer =
-                    serializer.serialize_enum(22usize, "fontFamily", "generic", 5usize, 1usize)?;
+                    serializer.serialize_enum(26usize, "fontFamily", "generic", 5usize, 1usize)?;
                 serializer.serialize_field(0usize, None, p0)?;
                 serializer.finish()
             }
@@ -4074,7 +3908,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::FontFamily {
                 }
             }
         }
-        deserializer.deserialize_enum(22usize, "fontFamily", V)
+        deserializer.deserialize_enum(26usize, "fontFamily", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FontStretch {
@@ -4086,17 +3920,17 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FontStretch {
         match self {
             Self::Normal => {
                 let serializer =
-                    serializer.serialize_enum(23usize, "fontStretch", "normal", 0usize, 0usize)?;
+                    serializer.serialize_enum(27usize, "fontStretch", "normal", 0usize, 0usize)?;
                 serializer.finish()
             }
             Self::Wider => {
                 let serializer =
-                    serializer.serialize_enum(23usize, "fontStretch", "wider", 1usize, 0usize)?;
+                    serializer.serialize_enum(27usize, "fontStretch", "wider", 1usize, 0usize)?;
                 serializer.finish()
             }
             Self::Narrower => {
                 let serializer = serializer.serialize_enum(
-                    23usize,
+                    27usize,
                     "fontStretch",
                     "narrower",
                     2usize,
@@ -4106,7 +3940,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FontStretch {
             }
             Self::UltraCondensed => {
                 let serializer = serializer.serialize_enum(
-                    23usize,
+                    27usize,
                     "fontStretch",
                     "ultraCondensed",
                     3usize,
@@ -4116,7 +3950,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FontStretch {
             }
             Self::ExtraCondensed => {
                 let serializer = serializer.serialize_enum(
-                    23usize,
+                    27usize,
                     "fontStretch",
                     "extraCondensed",
                     4usize,
@@ -4126,7 +3960,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FontStretch {
             }
             Self::Condensed => {
                 let serializer = serializer.serialize_enum(
-                    23usize,
+                    27usize,
                     "fontStretch",
                     "condensed",
                     5usize,
@@ -4136,7 +3970,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FontStretch {
             }
             Self::SemiCondensed => {
                 let serializer = serializer.serialize_enum(
-                    23usize,
+                    27usize,
                     "fontStretch",
                     "semiCondensed",
                     6usize,
@@ -4146,7 +3980,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FontStretch {
             }
             Self::SemiExpanded => {
                 let serializer = serializer.serialize_enum(
-                    23usize,
+                    27usize,
                     "fontStretch",
                     "semiExpanded",
                     7usize,
@@ -4156,7 +3990,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FontStretch {
             }
             Self::Expanded => {
                 let serializer = serializer.serialize_enum(
-                    23usize,
+                    27usize,
                     "fontStretch",
                     "expanded",
                     8usize,
@@ -4166,7 +4000,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FontStretch {
             }
             Self::ExtraExpanded => {
                 let serializer = serializer.serialize_enum(
-                    23usize,
+                    27usize,
                     "fontStretch",
                     "extraExpanded",
                     9usize,
@@ -4176,7 +4010,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FontStretch {
             }
             Self::UltraExpanded => {
                 let serializer = serializer.serialize_enum(
-                    23usize,
+                    27usize,
                     "fontStretch",
                     "ultraExpanded",
                     10usize,
@@ -4252,7 +4086,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::FontStretch {
                 }
             }
         }
-        deserializer.deserialize_enum(23usize, "fontStretch", V)
+        deserializer.deserialize_enum(27usize, "fontStretch", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::Background {
@@ -4264,7 +4098,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::Background {
         match self {
             Self::Accumulate => {
                 let serializer = serializer.serialize_enum(
-                    24usize,
+                    28usize,
                     "background",
                     "accumulate",
                     0usize,
@@ -4274,7 +4108,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::Background {
             }
             Self::New(p0) => {
                 let mut serializer =
-                    serializer.serialize_enum(24usize, "background", "new", 1usize, 1usize)?;
+                    serializer.serialize_enum(28usize, "background", "new", 1usize, 1usize)?;
                 serializer.serialize_field(0usize, None, p0)?;
                 serializer.finish()
             }
@@ -4335,7 +4169,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::Background {
                 }
             }
         }
-        deserializer.deserialize_enum(24usize, "background", V)
+        deserializer.deserialize_enum(28usize, "background", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::BackgroundNew {
@@ -4344,7 +4178,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::BackgroundNew {
         S: mlang_rs::rt::serde::ser::Serializer,
     {
         use mlang_rs::rt::serde::ser::SerializeNode;
-        let mut serializer = serializer.serialize_data(25usize, "backgroundNew", 4usize)?;
+        let mut serializer = serializer.serialize_data(29usize, "backgroundNew", 4usize)?;
         serializer.serialize_field(0usize, Some("x"), &self.x)?;
         serializer.serialize_field(1usize, Some("y"), &self.y)?;
         serializer.serialize_field(2usize, Some("width"), &self.width)?;
@@ -4383,7 +4217,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::BackgroundNew {
                 Ok(value)
             }
         }
-        deserializer.deserialize_data(25usize, "backgroundNew", V)
+        deserializer.deserialize_data(29usize, "backgroundNew", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FeIn {
@@ -4395,17 +4229,17 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FeIn {
         match self {
             Self::SourceGraphic => {
                 let serializer =
-                    serializer.serialize_enum(26usize, "feIn", "SourceGraphic", 0usize, 0usize)?;
+                    serializer.serialize_enum(30usize, "feIn", "SourceGraphic", 0usize, 0usize)?;
                 serializer.finish()
             }
             Self::SourceAlpha => {
                 let serializer =
-                    serializer.serialize_enum(26usize, "feIn", "SourceAlpha", 1usize, 0usize)?;
+                    serializer.serialize_enum(30usize, "feIn", "SourceAlpha", 1usize, 0usize)?;
                 serializer.finish()
             }
             Self::BackgroundImage => {
                 let serializer = serializer.serialize_enum(
-                    26usize,
+                    30usize,
                     "feIn",
                     "BackgroundImage",
                     2usize,
@@ -4415,7 +4249,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FeIn {
             }
             Self::BackgroundAlpha => {
                 let serializer = serializer.serialize_enum(
-                    26usize,
+                    30usize,
                     "feIn",
                     "BackgroundAlpha",
                     3usize,
@@ -4425,17 +4259,17 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FeIn {
             }
             Self::FillPaint => {
                 let serializer =
-                    serializer.serialize_enum(26usize, "feIn", "FillPaint", 4usize, 0usize)?;
+                    serializer.serialize_enum(30usize, "feIn", "FillPaint", 4usize, 0usize)?;
                 serializer.finish()
             }
             Self::StrokePaint => {
                 let serializer =
-                    serializer.serialize_enum(26usize, "feIn", "StrokePaint", 5usize, 0usize)?;
+                    serializer.serialize_enum(30usize, "feIn", "StrokePaint", 5usize, 0usize)?;
                 serializer.finish()
             }
             Self::Result(p0) => {
                 let mut serializer =
-                    serializer.serialize_enum(26usize, "feIn", "result", 6usize, 1usize)?;
+                    serializer.serialize_enum(30usize, "feIn", "result", 6usize, 1usize)?;
                 serializer.serialize_field(0usize, None, p0)?;
                 serializer.finish()
             }
@@ -4498,7 +4332,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::FeIn {
                 }
             }
         }
-        deserializer.deserialize_enum(26usize, "feIn", V)
+        deserializer.deserialize_enum(30usize, "feIn", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FeOut {
@@ -4510,12 +4344,12 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FeOut {
         match self {
             Self::Position => {
                 let serializer =
-                    serializer.serialize_enum(27usize, "feOut", "position", 0usize, 0usize)?;
+                    serializer.serialize_enum(31usize, "feOut", "position", 0usize, 0usize)?;
                 serializer.finish()
             }
             Self::Named(p0) => {
                 let mut serializer =
-                    serializer.serialize_enum(27usize, "feOut", "named", 1usize, 1usize)?;
+                    serializer.serialize_enum(31usize, "feOut", "named", 1usize, 1usize)?;
                 serializer.serialize_field(0usize, None, p0)?;
                 serializer.finish()
             }
@@ -4570,7 +4404,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::FeOut {
                 }
             }
         }
-        deserializer.deserialize_enum(27usize, "feOut", V)
+        deserializer.deserialize_enum(31usize, "feOut", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FeBlendMode {
@@ -4582,12 +4416,12 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FeBlendMode {
         match self {
             Self::Normal => {
                 let serializer =
-                    serializer.serialize_enum(28usize, "feBlendMode", "normal", 0usize, 0usize)?;
+                    serializer.serialize_enum(32usize, "feBlendMode", "normal", 0usize, 0usize)?;
                 serializer.finish()
             }
             Self::Multiply => {
                 let serializer = serializer.serialize_enum(
-                    28usize,
+                    32usize,
                     "feBlendMode",
                     "multiply",
                     1usize,
@@ -4597,17 +4431,17 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FeBlendMode {
             }
             Self::Screen => {
                 let serializer =
-                    serializer.serialize_enum(28usize, "feBlendMode", "screen", 2usize, 0usize)?;
+                    serializer.serialize_enum(32usize, "feBlendMode", "screen", 2usize, 0usize)?;
                 serializer.finish()
             }
             Self::Darken => {
                 let serializer =
-                    serializer.serialize_enum(28usize, "feBlendMode", "darken", 3usize, 0usize)?;
+                    serializer.serialize_enum(32usize, "feBlendMode", "darken", 3usize, 0usize)?;
                 serializer.finish()
             }
             Self::Lighten => {
                 let serializer =
-                    serializer.serialize_enum(28usize, "feBlendMode", "lighten", 4usize, 0usize)?;
+                    serializer.serialize_enum(32usize, "feBlendMode", "lighten", 4usize, 0usize)?;
                 serializer.finish()
             }
         }
@@ -4666,7 +4500,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::FeBlendMode {
                 }
             }
         }
-        deserializer.deserialize_enum(28usize, "feBlendMode", V)
+        deserializer.deserialize_enum(32usize, "feBlendMode", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::TextLengthAdjust {
@@ -4678,7 +4512,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::TextLengthAdjust {
         match self {
             Self::Spacing => {
                 let serializer = serializer.serialize_enum(
-                    29usize,
+                    33usize,
                     "textLengthAdjust",
                     "spacing",
                     0usize,
@@ -4688,7 +4522,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::TextLengthAdjust {
             }
             Self::SpacingAndGlyphs => {
                 let serializer = serializer.serialize_enum(
-                    29usize,
+                    33usize,
                     "textLengthAdjust",
                     "spacingAndGlyphs",
                     1usize,
@@ -4749,7 +4583,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::TextLengthAdjust {
                 }
             }
         }
-        deserializer.deserialize_enum(29usize, "textLengthAdjust", V)
+        deserializer.deserialize_enum(33usize, "textLengthAdjust", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::WritingMode {
@@ -4761,32 +4595,32 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::WritingMode {
         match self {
             Self::LrTb => {
                 let serializer =
-                    serializer.serialize_enum(30usize, "writingMode", "lrTb", 0usize, 0usize)?;
+                    serializer.serialize_enum(34usize, "writingMode", "lrTb", 0usize, 0usize)?;
                 serializer.finish()
             }
             Self::RlTb => {
                 let serializer =
-                    serializer.serialize_enum(30usize, "writingMode", "rlTb", 1usize, 0usize)?;
+                    serializer.serialize_enum(34usize, "writingMode", "rlTb", 1usize, 0usize)?;
                 serializer.finish()
             }
             Self::TbRl => {
                 let serializer =
-                    serializer.serialize_enum(30usize, "writingMode", "tbRl", 2usize, 0usize)?;
+                    serializer.serialize_enum(34usize, "writingMode", "tbRl", 2usize, 0usize)?;
                 serializer.finish()
             }
             Self::Lr => {
                 let serializer =
-                    serializer.serialize_enum(30usize, "writingMode", "lr", 3usize, 0usize)?;
+                    serializer.serialize_enum(34usize, "writingMode", "lr", 3usize, 0usize)?;
                 serializer.finish()
             }
             Self::Rl => {
                 let serializer =
-                    serializer.serialize_enum(30usize, "writingMode", "rl", 4usize, 0usize)?;
+                    serializer.serialize_enum(34usize, "writingMode", "rl", 4usize, 0usize)?;
                 serializer.finish()
             }
             Self::Tb => {
                 let serializer =
-                    serializer.serialize_enum(30usize, "writingMode", "tb", 5usize, 0usize)?;
+                    serializer.serialize_enum(34usize, "writingMode", "tb", 5usize, 0usize)?;
                 serializer.finish()
             }
         }
@@ -4847,7 +4681,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::WritingMode {
                 }
             }
         }
-        deserializer.deserialize_enum(30usize, "writingMode", V)
+        deserializer.deserialize_enum(34usize, "writingMode", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::TextDirection {
@@ -4859,12 +4693,12 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::TextDirection {
         match self {
             Self::Ltr => {
                 let serializer =
-                    serializer.serialize_enum(31usize, "textDirection", "ltr", 0usize, 0usize)?;
+                    serializer.serialize_enum(35usize, "textDirection", "ltr", 0usize, 0usize)?;
                 serializer.finish()
             }
             Self::Rtl => {
                 let serializer =
-                    serializer.serialize_enum(31usize, "textDirection", "rtl", 1usize, 0usize)?;
+                    serializer.serialize_enum(35usize, "textDirection", "rtl", 1usize, 0usize)?;
                 serializer.finish()
             }
         }
@@ -4920,7 +4754,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::TextDirection {
                 }
             }
         }
-        deserializer.deserialize_enum(31usize, "textDirection", V)
+        deserializer.deserialize_enum(35usize, "textDirection", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::UnicodeBidi {
@@ -4932,17 +4766,17 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::UnicodeBidi {
         match self {
             Self::Normal => {
                 let serializer =
-                    serializer.serialize_enum(32usize, "unicodeBidi", "normal", 0usize, 0usize)?;
+                    serializer.serialize_enum(36usize, "unicodeBidi", "normal", 0usize, 0usize)?;
                 serializer.finish()
             }
             Self::Embed => {
                 let serializer =
-                    serializer.serialize_enum(32usize, "unicodeBidi", "embed", 1usize, 0usize)?;
+                    serializer.serialize_enum(36usize, "unicodeBidi", "embed", 1usize, 0usize)?;
                 serializer.finish()
             }
             Self::BidiOverride => {
                 let serializer = serializer.serialize_enum(
-                    32usize,
+                    36usize,
                     "unicodeBidi",
                     "bidiOverride",
                     2usize,
@@ -5002,7 +4836,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::UnicodeBidi {
                 }
             }
         }
-        deserializer.deserialize_enum(32usize, "unicodeBidi", V)
+        deserializer.deserialize_enum(36usize, "unicodeBidi", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::TextAnchor {
@@ -5014,17 +4848,17 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::TextAnchor {
         match self {
             Self::Start => {
                 let serializer =
-                    serializer.serialize_enum(33usize, "textAnchor", "start", 0usize, 0usize)?;
+                    serializer.serialize_enum(37usize, "textAnchor", "start", 0usize, 0usize)?;
                 serializer.finish()
             }
             Self::Middle => {
                 let serializer =
-                    serializer.serialize_enum(33usize, "textAnchor", "middle", 1usize, 0usize)?;
+                    serializer.serialize_enum(37usize, "textAnchor", "middle", 1usize, 0usize)?;
                 serializer.finish()
             }
             Self::End => {
                 let serializer =
-                    serializer.serialize_enum(33usize, "textAnchor", "end", 2usize, 0usize)?;
+                    serializer.serialize_enum(37usize, "textAnchor", "end", 2usize, 0usize)?;
                 serializer.finish()
             }
         }
@@ -5078,7 +4912,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::TextAnchor {
                 }
             }
         }
-        deserializer.deserialize_enum(33usize, "textAnchor", V)
+        deserializer.deserialize_enum(37usize, "textAnchor", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::DominantBaseline {
@@ -5090,7 +4924,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::DominantBaseline {
         match self {
             Self::Auto => {
                 let serializer = serializer.serialize_enum(
-                    34usize,
+                    38usize,
                     "dominantBaseline",
                     "auto",
                     0usize,
@@ -5100,7 +4934,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::DominantBaseline {
             }
             Self::UseScript => {
                 let serializer = serializer.serialize_enum(
-                    34usize,
+                    38usize,
                     "dominantBaseline",
                     "useScript",
                     1usize,
@@ -5110,7 +4944,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::DominantBaseline {
             }
             Self::NoChange => {
                 let serializer = serializer.serialize_enum(
-                    34usize,
+                    38usize,
                     "dominantBaseline",
                     "noChange",
                     2usize,
@@ -5120,7 +4954,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::DominantBaseline {
             }
             Self::ResetSize => {
                 let serializer = serializer.serialize_enum(
-                    34usize,
+                    38usize,
                     "dominantBaseline",
                     "resetSize",
                     3usize,
@@ -5130,7 +4964,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::DominantBaseline {
             }
             Self::Ideographic => {
                 let serializer = serializer.serialize_enum(
-                    34usize,
+                    38usize,
                     "dominantBaseline",
                     "ideographic",
                     4usize,
@@ -5140,7 +4974,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::DominantBaseline {
             }
             Self::Alphabetic => {
                 let serializer = serializer.serialize_enum(
-                    34usize,
+                    38usize,
                     "dominantBaseline",
                     "alphabetic",
                     5usize,
@@ -5150,7 +4984,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::DominantBaseline {
             }
             Self::Hanging => {
                 let serializer = serializer.serialize_enum(
-                    34usize,
+                    38usize,
                     "dominantBaseline",
                     "hanging",
                     6usize,
@@ -5160,7 +4994,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::DominantBaseline {
             }
             Self::Mathematical => {
                 let serializer = serializer.serialize_enum(
-                    34usize,
+                    38usize,
                     "dominantBaseline",
                     "mathematical",
                     7usize,
@@ -5170,7 +5004,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::DominantBaseline {
             }
             Self::Central => {
                 let serializer = serializer.serialize_enum(
-                    34usize,
+                    38usize,
                     "dominantBaseline",
                     "central",
                     8usize,
@@ -5180,7 +5014,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::DominantBaseline {
             }
             Self::Middle => {
                 let serializer = serializer.serialize_enum(
-                    34usize,
+                    38usize,
                     "dominantBaseline",
                     "middle",
                     9usize,
@@ -5190,7 +5024,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::DominantBaseline {
             }
             Self::TextAfterEdge => {
                 let serializer = serializer.serialize_enum(
-                    34usize,
+                    38usize,
                     "dominantBaseline",
                     "textAfterEdge",
                     10usize,
@@ -5200,7 +5034,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::DominantBaseline {
             }
             Self::TextBeforeEdge => {
                 let serializer = serializer.serialize_enum(
-                    34usize,
+                    38usize,
                     "dominantBaseline",
                     "textBeforeEdge",
                     11usize,
@@ -5281,7 +5115,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::DominantBaseline {
                 }
             }
         }
-        deserializer.deserialize_enum(34usize, "dominantBaseline", V)
+        deserializer.deserialize_enum(38usize, "dominantBaseline", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::AlignmentBaseline {
@@ -5293,7 +5127,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::AlignmentBaseline {
         match self {
             Self::Auto => {
                 let serializer = serializer.serialize_enum(
-                    35usize,
+                    39usize,
                     "alignmentBaseline",
                     "auto",
                     0usize,
@@ -5303,7 +5137,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::AlignmentBaseline {
             }
             Self::Baseline => {
                 let serializer = serializer.serialize_enum(
-                    35usize,
+                    39usize,
                     "alignmentBaseline",
                     "baseline",
                     1usize,
@@ -5313,7 +5147,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::AlignmentBaseline {
             }
             Self::BeforeEdge => {
                 let serializer = serializer.serialize_enum(
-                    35usize,
+                    39usize,
                     "alignmentBaseline",
                     "beforeEdge",
                     2usize,
@@ -5323,7 +5157,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::AlignmentBaseline {
             }
             Self::TextBeforeEdge => {
                 let serializer = serializer.serialize_enum(
-                    35usize,
+                    39usize,
                     "alignmentBaseline",
                     "textBeforeEdge",
                     3usize,
@@ -5333,7 +5167,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::AlignmentBaseline {
             }
             Self::Middle => {
                 let serializer = serializer.serialize_enum(
-                    35usize,
+                    39usize,
                     "alignmentBaseline",
                     "middle",
                     4usize,
@@ -5343,7 +5177,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::AlignmentBaseline {
             }
             Self::Central => {
                 let serializer = serializer.serialize_enum(
-                    35usize,
+                    39usize,
                     "alignmentBaseline",
                     "central",
                     5usize,
@@ -5353,7 +5187,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::AlignmentBaseline {
             }
             Self::AfterEdge => {
                 let serializer = serializer.serialize_enum(
-                    35usize,
+                    39usize,
                     "alignmentBaseline",
                     "afterEdge",
                     6usize,
@@ -5363,7 +5197,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::AlignmentBaseline {
             }
             Self::TextAfterEdge => {
                 let serializer = serializer.serialize_enum(
-                    35usize,
+                    39usize,
                     "alignmentBaseline",
                     "textAfterEdge",
                     7usize,
@@ -5373,7 +5207,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::AlignmentBaseline {
             }
             Self::Ideographic => {
                 let serializer = serializer.serialize_enum(
-                    35usize,
+                    39usize,
                     "alignmentBaseline",
                     "ideographic",
                     8usize,
@@ -5383,7 +5217,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::AlignmentBaseline {
             }
             Self::Alphabetic => {
                 let serializer = serializer.serialize_enum(
-                    35usize,
+                    39usize,
                     "alignmentBaseline",
                     "alphabetic",
                     9usize,
@@ -5393,7 +5227,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::AlignmentBaseline {
             }
             Self::Hanging => {
                 let serializer = serializer.serialize_enum(
-                    35usize,
+                    39usize,
                     "alignmentBaseline",
                     "hanging",
                     10usize,
@@ -5403,7 +5237,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::AlignmentBaseline {
             }
             Self::Mathematical => {
                 let serializer = serializer.serialize_enum(
-                    35usize,
+                    39usize,
                     "alignmentBaseline",
                     "mathematical",
                     11usize,
@@ -5484,7 +5318,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::AlignmentBaseline {
                 }
             }
         }
-        deserializer.deserialize_enum(35usize, "alignmentBaseline", V)
+        deserializer.deserialize_enum(39usize, "alignmentBaseline", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::BaselineShift {
@@ -5496,7 +5330,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::BaselineShift {
         match self {
             Self::Baseline => {
                 let serializer = serializer.serialize_enum(
-                    36usize,
+                    40usize,
                     "baselineShift",
                     "baseline",
                     0usize,
@@ -5506,7 +5340,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::BaselineShift {
             }
             Self::SubScripts => {
                 let serializer = serializer.serialize_enum(
-                    36usize,
+                    40usize,
                     "baselineShift",
                     "subScripts",
                     1usize,
@@ -5516,7 +5350,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::BaselineShift {
             }
             Self::SuperScripts => {
                 let serializer = serializer.serialize_enum(
-                    36usize,
+                    40usize,
                     "baselineShift",
                     "superScripts",
                     2usize,
@@ -5526,7 +5360,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::BaselineShift {
             }
             Self::Value(p0) => {
                 let mut serializer =
-                    serializer.serialize_enum(36usize, "baselineShift", "value", 3usize, 1usize)?;
+                    serializer.serialize_enum(40usize, "baselineShift", "value", 3usize, 1usize)?;
                 serializer.serialize_field(0usize, None, p0)?;
                 serializer.finish()
             }
@@ -5591,7 +5425,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::BaselineShift {
                 }
             }
         }
-        deserializer.deserialize_enum(36usize, "baselineShift", V)
+        deserializer.deserialize_enum(40usize, "baselineShift", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::TextDecoration {
@@ -5603,7 +5437,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::TextDecoration {
         match self {
             Self::Underline => {
                 let serializer = serializer.serialize_enum(
-                    37usize,
+                    41usize,
                     "textDecoration",
                     "underline",
                     0usize,
@@ -5613,7 +5447,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::TextDecoration {
             }
             Self::Overline => {
                 let serializer = serializer.serialize_enum(
-                    37usize,
+                    41usize,
                     "textDecoration",
                     "overline",
                     1usize,
@@ -5623,7 +5457,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::TextDecoration {
             }
             Self::LineThrough => {
                 let serializer = serializer.serialize_enum(
-                    37usize,
+                    41usize,
                     "textDecoration",
                     "line-through",
                     2usize,
@@ -5633,7 +5467,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::TextDecoration {
             }
             Self::Blink => {
                 let serializer = serializer.serialize_enum(
-                    37usize,
+                    41usize,
                     "textDecoration",
                     "blink",
                     3usize,
@@ -5698,7 +5532,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::TextDecoration {
                 }
             }
         }
-        deserializer.deserialize_enum(37usize, "textDecoration", V)
+        deserializer.deserialize_enum(41usize, "textDecoration", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::TextPathMethod {
@@ -5710,7 +5544,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::TextPathMethod {
         match self {
             Self::Align => {
                 let serializer = serializer.serialize_enum(
-                    38usize,
+                    42usize,
                     "textPathMethod",
                     "align",
                     0usize,
@@ -5720,7 +5554,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::TextPathMethod {
             }
             Self::Stretch => {
                 let serializer = serializer.serialize_enum(
-                    38usize,
+                    42usize,
                     "textPathMethod",
                     "stretch",
                     1usize,
@@ -5781,7 +5615,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::TextPathMethod {
                 }
             }
         }
-        deserializer.deserialize_enum(38usize, "textPathMethod", V)
+        deserializer.deserialize_enum(42usize, "textPathMethod", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::TextPathSpacing {
@@ -5793,7 +5627,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::TextPathSpacing {
         match self {
             Self::Auto => {
                 let serializer = serializer.serialize_enum(
-                    39usize,
+                    43usize,
                     "textPathSpacing",
                     "auto",
                     0usize,
@@ -5803,7 +5637,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::TextPathSpacing {
             }
             Self::Exact => {
                 let serializer = serializer.serialize_enum(
-                    39usize,
+                    43usize,
                     "textPathSpacing",
                     "exact",
                     1usize,
@@ -5864,7 +5698,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::TextPathSpacing {
                 }
             }
         }
-        deserializer.deserialize_enum(39usize, "textPathSpacing", V)
+        deserializer.deserialize_enum(43usize, "textPathSpacing", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::LetterSpacing {
@@ -5876,7 +5710,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::LetterSpacing {
         match self {
             Self::Normal => {
                 let serializer = serializer.serialize_enum(
-                    40usize,
+                    44usize,
                     "letterSpacing",
                     "normal",
                     0usize,
@@ -5886,7 +5720,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::LetterSpacing {
             }
             Self::Length(p0) => {
                 let mut serializer = serializer.serialize_enum(
-                    40usize,
+                    44usize,
                     "letterSpacing",
                     "length",
                     1usize,
@@ -5952,7 +5786,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::LetterSpacing {
                 }
             }
         }
-        deserializer.deserialize_enum(40usize, "letterSpacing", V)
+        deserializer.deserialize_enum(44usize, "letterSpacing", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::WordSpacing {
@@ -5964,12 +5798,12 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::WordSpacing {
         match self {
             Self::Normal => {
                 let serializer =
-                    serializer.serialize_enum(41usize, "wordSpacing", "normal", 0usize, 0usize)?;
+                    serializer.serialize_enum(45usize, "wordSpacing", "normal", 0usize, 0usize)?;
                 serializer.finish()
             }
             Self::Length(p0) => {
                 let mut serializer =
-                    serializer.serialize_enum(41usize, "wordSpacing", "length", 1usize, 1usize)?;
+                    serializer.serialize_enum(45usize, "wordSpacing", "length", 1usize, 1usize)?;
                 serializer.serialize_field(0usize, None, p0)?;
                 serializer.finish()
             }
@@ -6027,7 +5861,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::WordSpacing {
                 }
             }
         }
-        deserializer.deserialize_enum(41usize, "wordSpacing", V)
+        deserializer.deserialize_enum(45usize, "wordSpacing", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::MeetOrSlice {
@@ -6039,12 +5873,12 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::MeetOrSlice {
         match self {
             Self::Meet => {
                 let serializer =
-                    serializer.serialize_enum(42usize, "meetOrSlice", "meet", 0usize, 0usize)?;
+                    serializer.serialize_enum(46usize, "meetOrSlice", "meet", 0usize, 0usize)?;
                 serializer.finish()
             }
             Self::Slice => {
                 let serializer =
-                    serializer.serialize_enum(42usize, "meetOrSlice", "slice", 1usize, 0usize)?;
+                    serializer.serialize_enum(46usize, "meetOrSlice", "slice", 1usize, 0usize)?;
                 serializer.finish()
             }
         }
@@ -6097,7 +5931,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::MeetOrSlice {
                 }
             }
         }
-        deserializer.deserialize_enum(42usize, "meetOrSlice", V)
+        deserializer.deserialize_enum(46usize, "meetOrSlice", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::PreserveAspectRatio {
@@ -6109,7 +5943,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::PreserveAspectRatio 
         match self {
             Self::None => {
                 let serializer = serializer.serialize_enum(
-                    43usize,
+                    47usize,
                     "preserveAspectRatio",
                     "none",
                     0usize,
@@ -6119,7 +5953,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::PreserveAspectRatio 
             }
             Self::XMinYMin(p0) => {
                 let mut serializer = serializer.serialize_enum(
-                    43usize,
+                    47usize,
                     "preserveAspectRatio",
                     "xMinYMin",
                     1usize,
@@ -6130,7 +5964,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::PreserveAspectRatio 
             }
             Self::XMidYMin(p0) => {
                 let mut serializer = serializer.serialize_enum(
-                    43usize,
+                    47usize,
                     "preserveAspectRatio",
                     "xMidYMin",
                     2usize,
@@ -6141,7 +5975,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::PreserveAspectRatio 
             }
             Self::XMaxYMin(p0) => {
                 let mut serializer = serializer.serialize_enum(
-                    43usize,
+                    47usize,
                     "preserveAspectRatio",
                     "xMaxYMin",
                     3usize,
@@ -6152,7 +5986,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::PreserveAspectRatio 
             }
             Self::XMinYMid(p0) => {
                 let mut serializer = serializer.serialize_enum(
-                    43usize,
+                    47usize,
                     "preserveAspectRatio",
                     "xMinYMid",
                     4usize,
@@ -6163,7 +5997,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::PreserveAspectRatio 
             }
             Self::XMidYMid(p0) => {
                 let mut serializer = serializer.serialize_enum(
-                    43usize,
+                    47usize,
                     "preserveAspectRatio",
                     "xMidYMid",
                     5usize,
@@ -6174,7 +6008,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::PreserveAspectRatio 
             }
             Self::XMaxYMid(p0) => {
                 let mut serializer = serializer.serialize_enum(
-                    43usize,
+                    47usize,
                     "preserveAspectRatio",
                     "xMaxYMid",
                     6usize,
@@ -6185,7 +6019,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::PreserveAspectRatio 
             }
             Self::XMinYMax(p0) => {
                 let mut serializer = serializer.serialize_enum(
-                    43usize,
+                    47usize,
                     "preserveAspectRatio",
                     "xMinYMax",
                     7usize,
@@ -6196,7 +6030,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::PreserveAspectRatio 
             }
             Self::XMidYMax(p0) => {
                 let mut serializer = serializer.serialize_enum(
-                    43usize,
+                    47usize,
                     "preserveAspectRatio",
                     "xMidYMax",
                     8usize,
@@ -6207,7 +6041,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::PreserveAspectRatio 
             }
             Self::XMaxYMax(p0) => {
                 let mut serializer = serializer.serialize_enum(
-                    43usize,
+                    47usize,
                     "preserveAspectRatio",
                     "xMaxYMax",
                     9usize,
@@ -6357,7 +6191,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::PreserveAspectRatio
                 }
             }
         }
-        deserializer.deserialize_enum(43usize, "preserveAspectRatio", V)
+        deserializer.deserialize_enum(47usize, "preserveAspectRatio", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::TextLayout {
@@ -6366,7 +6200,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::TextLayout {
         S: mlang_rs::rt::serde::ser::Serializer,
     {
         use mlang_rs::rt::serde::ser::SerializeNode;
-        let mut serializer = serializer.serialize_attr(44usize, "textLayout", 10usize)?;
+        let mut serializer = serializer.serialize_attr(48usize, "textLayout", 10usize)?;
         serializer.serialize_field(0usize, Some("writeMode"), &self.write_mode)?;
         serializer.serialize_field(1usize, Some("direction"), &self.direction)?;
         serializer.serialize_field(2usize, Some("unicodeBidi"), &self.unicode_bidi)?;
@@ -6402,7 +6236,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::TextLayout {
                 Ok(value)
             }
         }
-        deserializer.deserialize_attr(44usize, "textLayout", V)
+        deserializer.deserialize_attr(48usize, "textLayout", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::WithTransform {
@@ -6411,7 +6245,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::WithTransform {
         S: mlang_rs::rt::serde::ser::Serializer,
     {
         use mlang_rs::rt::serde::ser::SerializeNode;
-        let mut serializer = serializer.serialize_attr(45usize, "withTransform", 1usize)?;
+        let mut serializer = serializer.serialize_attr(49usize, "withTransform", 1usize)?;
         serializer.serialize_field(0usize, Some("transform"), &self.0)?;
         serializer.finish()
     }
@@ -6442,7 +6276,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::WithTransform {
                 Ok(value)
             }
         }
-        deserializer.deserialize_attr(45usize, "withTransform", V)
+        deserializer.deserialize_attr(49usize, "withTransform", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::Id {
@@ -6451,7 +6285,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::Id {
         S: mlang_rs::rt::serde::ser::Serializer,
     {
         use mlang_rs::rt::serde::ser::SerializeNode;
-        let mut serializer = serializer.serialize_attr(46usize, "id", 1usize)?;
+        let mut serializer = serializer.serialize_attr(50usize, "id", 1usize)?;
         serializer.serialize_field(0usize, Some("id"), &self.0)?;
         serializer.finish()
     }
@@ -6478,7 +6312,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::Id {
                 Ok(value)
             }
         }
-        deserializer.deserialize_attr(46usize, "id", V)
+        deserializer.deserialize_attr(50usize, "id", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::Fill {
@@ -6487,7 +6321,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::Fill {
         S: mlang_rs::rt::serde::ser::Serializer,
     {
         use mlang_rs::rt::serde::ser::SerializeNode;
-        let mut serializer = serializer.serialize_attr(47usize, "fill", 3usize)?;
+        let mut serializer = serializer.serialize_attr(51usize, "fill", 3usize)?;
         serializer.serialize_field(0usize, Some("fill"), &self.paint)?;
         serializer.serialize_field(1usize, Some("fill-rule"), &self.rule)?;
         serializer.serialize_field(2usize, Some("fill-opacity"), &self.opacity)?;
@@ -6535,7 +6369,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::Fill {
                 Ok(value)
             }
         }
-        deserializer.deserialize_attr(47usize, "fill", V)
+        deserializer.deserialize_attr(51usize, "fill", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::Stroke {
@@ -6544,7 +6378,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::Stroke {
         S: mlang_rs::rt::serde::ser::Serializer,
     {
         use mlang_rs::rt::serde::ser::SerializeNode;
-        let mut serializer = serializer.serialize_attr(48usize, "stroke", 7usize)?;
+        let mut serializer = serializer.serialize_attr(52usize, "stroke", 7usize)?;
         serializer.serialize_field(0usize, Some("stroke"), &self.paint)?;
         serializer.serialize_field(1usize, Some("stroke-width"), &self.width)?;
         serializer.serialize_field(2usize, Some("stroke-linecap"), &self.linecap)?;
@@ -6577,7 +6411,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::Stroke {
                 Ok(value)
             }
         }
-        deserializer.deserialize_attr(48usize, "stroke", V)
+        deserializer.deserialize_attr(52usize, "stroke", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::Font {
@@ -6586,7 +6420,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::Font {
         S: mlang_rs::rt::serde::ser::Serializer,
     {
         use mlang_rs::rt::serde::ser::SerializeNode;
-        let mut serializer = serializer.serialize_attr(49usize, "font", 6usize)?;
+        let mut serializer = serializer.serialize_attr(53usize, "font", 6usize)?;
         serializer.serialize_field(0usize, Some("font-family"), &self.family)?;
         serializer.serialize_field(1usize, Some("font-style"), &self.style)?;
         serializer.serialize_field(2usize, Some("font-variant"), &self.variant)?;
@@ -6618,7 +6452,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::Font {
                 Ok(value)
             }
         }
-        deserializer.deserialize_attr(49usize, "font", V)
+        deserializer.deserialize_attr(53usize, "font", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::EnableBackground {
@@ -6627,7 +6461,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::EnableBackground {
         S: mlang_rs::rt::serde::ser::Serializer,
     {
         use mlang_rs::rt::serde::ser::SerializeNode;
-        let mut serializer = serializer.serialize_attr(50usize, "enableBackground", 1usize)?;
+        let mut serializer = serializer.serialize_attr(54usize, "enableBackground", 1usize)?;
         serializer.serialize_field(0usize, Some("enable-background"), &self.0)?;
         serializer.finish()
     }
@@ -6658,7 +6492,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::EnableBackground {
                 Ok(value)
             }
         }
-        deserializer.deserialize_attr(50usize, "enableBackground", V)
+        deserializer.deserialize_attr(54usize, "enableBackground", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::WithFilter {
@@ -6667,7 +6501,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::WithFilter {
         S: mlang_rs::rt::serde::ser::Serializer,
     {
         use mlang_rs::rt::serde::ser::SerializeNode;
-        let mut serializer = serializer.serialize_attr(51usize, "withFilter", 1usize)?;
+        let mut serializer = serializer.serialize_attr(55usize, "withFilter", 1usize)?;
         serializer.serialize_field(0usize, Some("filter"), &self.0)?;
         serializer.finish()
     }
@@ -6698,7 +6532,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::WithFilter {
                 Ok(value)
             }
         }
-        deserializer.deserialize_attr(51usize, "withFilter", V)
+        deserializer.deserialize_attr(55usize, "withFilter", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::WithClipPath {
@@ -6707,7 +6541,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::WithClipPath {
         S: mlang_rs::rt::serde::ser::Serializer,
     {
         use mlang_rs::rt::serde::ser::SerializeNode;
-        let mut serializer = serializer.serialize_attr(52usize, "withClipPath", 1usize)?;
+        let mut serializer = serializer.serialize_attr(56usize, "withClipPath", 1usize)?;
         serializer.serialize_field(0usize, Some("clip-path"), &self.0)?;
         serializer.finish()
     }
@@ -6738,7 +6572,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::WithClipPath {
                 Ok(value)
             }
         }
-        deserializer.deserialize_attr(52usize, "withClipPath", V)
+        deserializer.deserialize_attr(56usize, "withClipPath", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::WithMask {
@@ -6747,7 +6581,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::WithMask {
         S: mlang_rs::rt::serde::ser::Serializer,
     {
         use mlang_rs::rt::serde::ser::SerializeNode;
-        let mut serializer = serializer.serialize_attr(53usize, "withMask", 1usize)?;
+        let mut serializer = serializer.serialize_attr(57usize, "withMask", 1usize)?;
         serializer.serialize_field(0usize, Some("mask"), &self.0)?;
         serializer.finish()
     }
@@ -6778,7 +6612,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::WithMask {
                 Ok(value)
             }
         }
-        deserializer.deserialize_attr(53usize, "withMask", V)
+        deserializer.deserialize_attr(57usize, "withMask", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::Opacity {
@@ -6787,7 +6621,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::Opacity {
         S: mlang_rs::rt::serde::ser::Serializer,
     {
         use mlang_rs::rt::serde::ser::SerializeNode;
-        let mut serializer = serializer.serialize_attr(54usize, "opacity", 1usize)?;
+        let mut serializer = serializer.serialize_attr(58usize, "opacity", 1usize)?;
         serializer.serialize_field(0usize, Some("opacity"), &self.0)?;
         serializer.finish()
     }
@@ -6815,7 +6649,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::Opacity {
                 Ok(value)
             }
         }
-        deserializer.deserialize_attr(54usize, "opacity", V)
+        deserializer.deserialize_attr(58usize, "opacity", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::ViewBox {
@@ -6824,7 +6658,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::ViewBox {
         S: mlang_rs::rt::serde::ser::Serializer,
     {
         use mlang_rs::rt::serde::ser::SerializeNode;
-        let mut serializer = serializer.serialize_attr(55usize, "viewBox", 5usize)?;
+        let mut serializer = serializer.serialize_attr(59usize, "viewBox", 5usize)?;
         serializer.serialize_field(0usize, Some("minx"), &self.minx)?;
         serializer.serialize_field(1usize, Some("miny"), &self.miny)?;
         serializer.serialize_field(2usize, Some("width"), &self.width)?;
@@ -6855,7 +6689,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::ViewBox {
                 Ok(value)
             }
         }
-        deserializer.deserialize_attr(55usize, "viewBox", V)
+        deserializer.deserialize_attr(59usize, "viewBox", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::Canvas {
@@ -6864,7 +6698,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::Canvas {
         S: mlang_rs::rt::serde::ser::Serializer,
     {
         use mlang_rs::rt::serde::ser::SerializeNode;
-        let mut serializer = serializer.serialize_el(57usize, "svg", 2usize)?;
+        let mut serializer = serializer.serialize_el(61usize, "svg", 2usize)?;
         serializer.serialize_field(0usize, Some("width"), &self.width)?;
         serializer.serialize_field(1usize, Some("height"), &self.height)?;
         serializer.finish()
@@ -6903,7 +6737,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::Canvas {
                 Ok(value)
             }
         }
-        deserializer.deserialize_element(57usize, "svg", V)
+        deserializer.deserialize_element(61usize, "svg", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::Mask {
@@ -6912,7 +6746,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::Mask {
         S: mlang_rs::rt::serde::ser::Serializer,
     {
         use mlang_rs::rt::serde::ser::SerializeNode;
-        let mut serializer = serializer.serialize_el(58usize, "mask", 6usize)?;
+        let mut serializer = serializer.serialize_el(62usize, "mask", 6usize)?;
         serializer.serialize_field(0usize, Some("maskUnits"), &self.units)?;
         serializer.serialize_field(1usize, Some("contentUnits"), &self.content_units)?;
         serializer.serialize_field(2usize, Some("x"), &self.x)?;
@@ -6979,7 +6813,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::Mask {
                 Ok(value)
             }
         }
-        deserializer.deserialize_element(58usize, "mask", V)
+        deserializer.deserialize_element(62usize, "mask", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::ClipPath {
@@ -6988,7 +6822,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::ClipPath {
         S: mlang_rs::rt::serde::ser::Serializer,
     {
         use mlang_rs::rt::serde::ser::SerializeNode;
-        let mut serializer = serializer.serialize_el(59usize, "clipPath", 1usize)?;
+        let mut serializer = serializer.serialize_el(63usize, "clipPath", 1usize)?;
         serializer.serialize_field(0usize, None, &self.0)?;
         serializer.finish()
     }
@@ -7019,7 +6853,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::ClipPath {
                 Ok(value)
             }
         }
-        deserializer.deserialize_element(59usize, "clipPath", V)
+        deserializer.deserialize_element(63usize, "clipPath", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::Filter {
@@ -7028,7 +6862,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::Filter {
         S: mlang_rs::rt::serde::ser::Serializer,
     {
         use mlang_rs::rt::serde::ser::SerializeNode;
-        let mut serializer = serializer.serialize_el(60usize, "filter", 7usize)?;
+        let mut serializer = serializer.serialize_el(64usize, "filter", 7usize)?;
         serializer.serialize_field(0usize, Some("filterUnits"), &self.units)?;
         serializer.serialize_field(1usize, Some("primitiveUnits"), &self.primitive_units)?;
         serializer.serialize_field(2usize, Some("x"), &self.x)?;
@@ -7061,7 +6895,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::Filter {
                 Ok(value)
             }
         }
-        deserializer.deserialize_element(60usize, "filter", V)
+        deserializer.deserialize_element(64usize, "filter", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FeDistantLight {
@@ -7070,7 +6904,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FeDistantLight {
         S: mlang_rs::rt::serde::ser::Serializer,
     {
         use mlang_rs::rt::serde::ser::SerializeNode;
-        let mut serializer = serializer.serialize_leaf(61usize, "feDistantLight", 2usize)?;
+        let mut serializer = serializer.serialize_leaf(65usize, "feDistantLight", 2usize)?;
         serializer.serialize_field(0usize, Some("azimuth"), &self.azimuth)?;
         serializer.serialize_field(1usize, Some("elevation"), &self.elevation)?;
         serializer.finish()
@@ -7111,7 +6945,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::FeDistantLight {
                 Ok(value)
             }
         }
-        deserializer.deserialize_leaf(61usize, "feDistantLight", V)
+        deserializer.deserialize_leaf(65usize, "feDistantLight", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FePointLight {
@@ -7120,7 +6954,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FePointLight {
         S: mlang_rs::rt::serde::ser::Serializer,
     {
         use mlang_rs::rt::serde::ser::SerializeNode;
-        let mut serializer = serializer.serialize_leaf(62usize, "fePointLight", 3usize)?;
+        let mut serializer = serializer.serialize_leaf(66usize, "fePointLight", 3usize)?;
         serializer.serialize_field(0usize, Some("x"), &self.x)?;
         serializer.serialize_field(1usize, Some("y"), &self.y)?;
         serializer.serialize_field(2usize, Some("z"), &self.z)?;
@@ -7165,7 +6999,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::FePointLight {
                 Ok(value)
             }
         }
-        deserializer.deserialize_leaf(62usize, "fePointLight", V)
+        deserializer.deserialize_leaf(66usize, "fePointLight", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FeSpotLight {
@@ -7174,7 +7008,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FeSpotLight {
         S: mlang_rs::rt::serde::ser::Serializer,
     {
         use mlang_rs::rt::serde::ser::SerializeNode;
-        let mut serializer = serializer.serialize_leaf(63usize, "feSpotLight", 8usize)?;
+        let mut serializer = serializer.serialize_leaf(67usize, "feSpotLight", 8usize)?;
         serializer.serialize_field(0usize, Some("x"), &self.x)?;
         serializer.serialize_field(1usize, Some("y"), &self.y)?;
         serializer.serialize_field(2usize, Some("z"), &self.z)?;
@@ -7254,7 +7088,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::FeSpotLight {
                 Ok(value)
             }
         }
-        deserializer.deserialize_leaf(63usize, "feSpotLight", V)
+        deserializer.deserialize_leaf(67usize, "feSpotLight", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FeBlend {
@@ -7263,7 +7097,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FeBlend {
         S: mlang_rs::rt::serde::ser::Serializer,
     {
         use mlang_rs::rt::serde::ser::SerializeNode;
-        let mut serializer = serializer.serialize_leaf(64usize, "feBlend", 8usize)?;
+        let mut serializer = serializer.serialize_leaf(68usize, "feBlend", 8usize)?;
         serializer.serialize_field(0usize, Some("mode"), &self.mode)?;
         serializer.serialize_field(1usize, Some("in"), &self.r#in)?;
         serializer.serialize_field(2usize, Some("in2"), &self.in2)?;
@@ -7342,7 +7176,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::FeBlend {
                 Ok(value)
             }
         }
-        deserializer.deserialize_leaf(64usize, "feBlend", V)
+        deserializer.deserialize_leaf(68usize, "feBlend", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FeColorMatrixValues {
@@ -7354,7 +7188,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FeColorMatrixValues 
         match self {
             Self::Matrix(p0) => {
                 let mut serializer = serializer.serialize_enum(
-                    65usize,
+                    69usize,
                     "feColorMatrixValues",
                     "matrix",
                     0usize,
@@ -7365,7 +7199,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FeColorMatrixValues 
             }
             Self::Saturate(p0) => {
                 let mut serializer = serializer.serialize_enum(
-                    65usize,
+                    69usize,
                     "feColorMatrixValues",
                     "saturate",
                     1usize,
@@ -7376,7 +7210,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FeColorMatrixValues 
             }
             Self::HueRotate(p0) => {
                 let mut serializer = serializer.serialize_enum(
-                    65usize,
+                    69usize,
                     "feColorMatrixValues",
                     "hueRotate",
                     2usize,
@@ -7387,7 +7221,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FeColorMatrixValues 
             }
             Self::LuminanceToAlpha => {
                 let serializer = serializer.serialize_enum(
-                    65usize,
+                    69usize,
                     "feColorMatrixValues",
                     "luminanceToAlpha",
                     3usize,
@@ -7464,7 +7298,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::FeColorMatrixValues
                 }
             }
         }
-        deserializer.deserialize_enum(65usize, "feColorMatrixValues", V)
+        deserializer.deserialize_enum(69usize, "feColorMatrixValues", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FeColorMatrix {
@@ -7473,7 +7307,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FeColorMatrix {
         S: mlang_rs::rt::serde::ser::Serializer,
     {
         use mlang_rs::rt::serde::ser::SerializeNode;
-        let mut serializer = serializer.serialize_leaf(66usize, "feColorMatrix", 7usize)?;
+        let mut serializer = serializer.serialize_leaf(70usize, "feColorMatrix", 7usize)?;
         serializer.serialize_field(0usize, Some("in"), &self.r#in)?;
         serializer.serialize_field(1usize, Some("values"), &self.values)?;
         serializer.serialize_field(2usize, Some("x"), &self.x)?;
@@ -7546,7 +7380,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::FeColorMatrix {
                 Ok(value)
             }
         }
-        deserializer.deserialize_leaf(66usize, "feColorMatrix", V)
+        deserializer.deserialize_leaf(70usize, "feColorMatrix", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FeFunc {
@@ -7558,24 +7392,24 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FeFunc {
         match self {
             Self::Identity => {
                 let serializer =
-                    serializer.serialize_enum(67usize, "feFunc", "identity", 0usize, 0usize)?;
+                    serializer.serialize_enum(71usize, "feFunc", "identity", 0usize, 0usize)?;
                 serializer.finish()
             }
             Self::Table(p0) => {
                 let mut serializer =
-                    serializer.serialize_enum(67usize, "feFunc", "table", 1usize, 1usize)?;
+                    serializer.serialize_enum(71usize, "feFunc", "table", 1usize, 1usize)?;
                 serializer.serialize_field(0usize, None, p0)?;
                 serializer.finish()
             }
             Self::Discrete(p0) => {
                 let mut serializer =
-                    serializer.serialize_enum(67usize, "feFunc", "discrete", 2usize, 1usize)?;
+                    serializer.serialize_enum(71usize, "feFunc", "discrete", 2usize, 1usize)?;
                 serializer.serialize_field(0usize, None, p0)?;
                 serializer.finish()
             }
             Self::Linear { slope, intercept } => {
                 let mut serializer =
-                    serializer.serialize_enum(67usize, "feFunc", "linear", 3usize, 2usize)?;
+                    serializer.serialize_enum(71usize, "feFunc", "linear", 3usize, 2usize)?;
                 serializer.serialize_field(0usize, Some("slope"), slope)?;
                 serializer.serialize_field(1usize, Some("intercept"), intercept)?;
                 serializer.finish()
@@ -7586,7 +7420,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FeFunc {
                 offset,
             } => {
                 let mut serializer =
-                    serializer.serialize_enum(67usize, "feFunc", "gamma", 4usize, 3usize)?;
+                    serializer.serialize_enum(71usize, "feFunc", "gamma", 4usize, 3usize)?;
                 serializer.serialize_field(0usize, Some("amplitude"), amplitude)?;
                 serializer.serialize_field(1usize, Some("exponent"), exponent)?;
                 serializer.serialize_field(2usize, Some("offset"), offset)?;
@@ -7693,7 +7527,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::FeFunc {
                 }
             }
         }
-        deserializer.deserialize_enum(67usize, "feFunc", V)
+        deserializer.deserialize_enum(71usize, "feFunc", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FeCompositeOperator {
@@ -7705,7 +7539,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FeCompositeOperator 
         match self {
             Self::Over => {
                 let serializer = serializer.serialize_enum(
-                    68usize,
+                    72usize,
                     "feCompositeOperator",
                     "over",
                     0usize,
@@ -7715,7 +7549,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FeCompositeOperator 
             }
             Self::In => {
                 let serializer = serializer.serialize_enum(
-                    68usize,
+                    72usize,
                     "feCompositeOperator",
                     "in",
                     1usize,
@@ -7725,7 +7559,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FeCompositeOperator 
             }
             Self::Out => {
                 let serializer = serializer.serialize_enum(
-                    68usize,
+                    72usize,
                     "feCompositeOperator",
                     "out",
                     2usize,
@@ -7735,7 +7569,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FeCompositeOperator 
             }
             Self::Atop => {
                 let serializer = serializer.serialize_enum(
-                    68usize,
+                    72usize,
                     "feCompositeOperator",
                     "atop",
                     3usize,
@@ -7745,7 +7579,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FeCompositeOperator 
             }
             Self::Xor => {
                 let serializer = serializer.serialize_enum(
-                    68usize,
+                    72usize,
                     "feCompositeOperator",
                     "xor",
                     4usize,
@@ -7755,7 +7589,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FeCompositeOperator 
             }
             Self::Arithmetic { k1, k2, k3, k4 } => {
                 let mut serializer = serializer.serialize_enum(
-                    68usize,
+                    72usize,
                     "feCompositeOperator",
                     "arithmetic",
                     5usize,
@@ -7838,7 +7672,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::FeCompositeOperator
                 }
             }
         }
-        deserializer.deserialize_enum(68usize, "feCompositeOperator", V)
+        deserializer.deserialize_enum(72usize, "feCompositeOperator", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FeConvolveMatrixEdgeMode {
@@ -7850,7 +7684,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FeConvolveMatrixEdge
         match self {
             Self::Duplicate => {
                 let serializer = serializer.serialize_enum(
-                    69usize,
+                    73usize,
                     "feConvolveMatrixEdgeMode",
                     "duplicate",
                     0usize,
@@ -7860,7 +7694,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FeConvolveMatrixEdge
             }
             Self::Wrap => {
                 let serializer = serializer.serialize_enum(
-                    69usize,
+                    73usize,
                     "feConvolveMatrixEdgeMode",
                     "wrap",
                     1usize,
@@ -7870,7 +7704,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FeConvolveMatrixEdge
             }
             Self::None => {
                 let serializer = serializer.serialize_enum(
-                    69usize,
+                    73usize,
                     "feConvolveMatrixEdgeMode",
                     "none",
                     2usize,
@@ -7933,7 +7767,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::FeConvolveMatrixEdg
                 }
             }
         }
-        deserializer.deserialize_enum(69usize, "feConvolveMatrixEdgeMode", V)
+        deserializer.deserialize_enum(73usize, "feConvolveMatrixEdgeMode", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FeMorphologyOperator {
@@ -7945,7 +7779,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FeMorphologyOperator
         match self {
             Self::Erode => {
                 let serializer = serializer.serialize_enum(
-                    70usize,
+                    74usize,
                     "feMorphologyOperator",
                     "erode",
                     0usize,
@@ -7955,7 +7789,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FeMorphologyOperator
             }
             Self::Dilate => {
                 let serializer = serializer.serialize_enum(
-                    70usize,
+                    74usize,
                     "feMorphologyOperator",
                     "dilate",
                     1usize,
@@ -8016,7 +7850,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::FeMorphologyOperato
                 }
             }
         }
-        deserializer.deserialize_enum(70usize, "feMorphologyOperator", V)
+        deserializer.deserialize_enum(74usize, "feMorphologyOperator", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FeStitchTiles {
@@ -8028,7 +7862,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FeStitchTiles {
         match self {
             Self::Stitch => {
                 let serializer = serializer.serialize_enum(
-                    71usize,
+                    75usize,
                     "feStitchTiles",
                     "stitch",
                     0usize,
@@ -8038,7 +7872,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FeStitchTiles {
             }
             Self::NoStitch => {
                 let serializer = serializer.serialize_enum(
-                    71usize,
+                    75usize,
                     "feStitchTiles",
                     "noStitch",
                     1usize,
@@ -8099,7 +7933,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::FeStitchTiles {
                 }
             }
         }
-        deserializer.deserialize_enum(71usize, "feStitchTiles", V)
+        deserializer.deserialize_enum(75usize, "feStitchTiles", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FeTurbulenceType {
@@ -8111,7 +7945,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FeTurbulenceType {
         match self {
             Self::FractalNoise => {
                 let serializer = serializer.serialize_enum(
-                    72usize,
+                    76usize,
                     "feTurbulenceType",
                     "fractalNoise",
                     0usize,
@@ -8121,7 +7955,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FeTurbulenceType {
             }
             Self::Turbulence => {
                 let serializer = serializer.serialize_enum(
-                    72usize,
+                    76usize,
                     "feTurbulenceType",
                     "turbulence",
                     1usize,
@@ -8182,7 +8016,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::FeTurbulenceType {
                 }
             }
         }
-        deserializer.deserialize_enum(72usize, "feTurbulenceType", V)
+        deserializer.deserialize_enum(76usize, "feTurbulenceType", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FeComponentTransfer {
@@ -8191,7 +8025,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FeComponentTransfer 
         S: mlang_rs::rt::serde::ser::Serializer,
     {
         use mlang_rs::rt::serde::ser::SerializeNode;
-        let mut serializer = serializer.serialize_el(73usize, "feComponentTransfer", 1usize)?;
+        let mut serializer = serializer.serialize_el(77usize, "feComponentTransfer", 1usize)?;
         serializer.serialize_field(0usize, Some("in"), &self.0)?;
         serializer.finish()
     }
@@ -8222,7 +8056,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::FeComponentTransfer
                 Ok(value)
             }
         }
-        deserializer.deserialize_element(73usize, "feComponentTransfer", V)
+        deserializer.deserialize_element(77usize, "feComponentTransfer", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FeFuncA {
@@ -8231,7 +8065,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FeFuncA {
         S: mlang_rs::rt::serde::ser::Serializer,
     {
         use mlang_rs::rt::serde::ser::SerializeNode;
-        let mut serializer = serializer.serialize_leaf(74usize, "feFuncA", 1usize)?;
+        let mut serializer = serializer.serialize_leaf(78usize, "feFuncA", 1usize)?;
         serializer.serialize_field(0usize, None, &self.0)?;
         serializer.finish()
     }
@@ -8258,7 +8092,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::FeFuncA {
                 Ok(value)
             }
         }
-        deserializer.deserialize_leaf(74usize, "feFuncA", V)
+        deserializer.deserialize_leaf(78usize, "feFuncA", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FeFuncR {
@@ -8267,7 +8101,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FeFuncR {
         S: mlang_rs::rt::serde::ser::Serializer,
     {
         use mlang_rs::rt::serde::ser::SerializeNode;
-        let mut serializer = serializer.serialize_leaf(75usize, "feFuncR", 1usize)?;
+        let mut serializer = serializer.serialize_leaf(79usize, "feFuncR", 1usize)?;
         serializer.serialize_field(0usize, None, &self.0)?;
         serializer.finish()
     }
@@ -8294,7 +8128,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::FeFuncR {
                 Ok(value)
             }
         }
-        deserializer.deserialize_leaf(75usize, "feFuncR", V)
+        deserializer.deserialize_leaf(79usize, "feFuncR", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FeFuncG {
@@ -8303,7 +8137,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FeFuncG {
         S: mlang_rs::rt::serde::ser::Serializer,
     {
         use mlang_rs::rt::serde::ser::SerializeNode;
-        let mut serializer = serializer.serialize_leaf(76usize, "feFuncG", 1usize)?;
+        let mut serializer = serializer.serialize_leaf(80usize, "feFuncG", 1usize)?;
         serializer.serialize_field(0usize, None, &self.0)?;
         serializer.finish()
     }
@@ -8330,7 +8164,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::FeFuncG {
                 Ok(value)
             }
         }
-        deserializer.deserialize_leaf(76usize, "feFuncG", V)
+        deserializer.deserialize_leaf(80usize, "feFuncG", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FeFuncB {
@@ -8339,7 +8173,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FeFuncB {
         S: mlang_rs::rt::serde::ser::Serializer,
     {
         use mlang_rs::rt::serde::ser::SerializeNode;
-        let mut serializer = serializer.serialize_leaf(77usize, "feFuncB", 1usize)?;
+        let mut serializer = serializer.serialize_leaf(81usize, "feFuncB", 1usize)?;
         serializer.serialize_field(0usize, None, &self.0)?;
         serializer.finish()
     }
@@ -8366,7 +8200,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::FeFuncB {
                 Ok(value)
             }
         }
-        deserializer.deserialize_leaf(77usize, "feFuncB", V)
+        deserializer.deserialize_leaf(81usize, "feFuncB", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FeComposite {
@@ -8375,7 +8209,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FeComposite {
         S: mlang_rs::rt::serde::ser::Serializer,
     {
         use mlang_rs::rt::serde::ser::SerializeNode;
-        let mut serializer = serializer.serialize_leaf(78usize, "feComposite", 8usize)?;
+        let mut serializer = serializer.serialize_leaf(82usize, "feComposite", 8usize)?;
         serializer.serialize_field(0usize, Some("in"), &self.r#in)?;
         serializer.serialize_field(1usize, Some("in2"), &self.in2)?;
         serializer.serialize_field(2usize, Some("operator"), &self.operator)?;
@@ -8457,7 +8291,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::FeComposite {
                 Ok(value)
             }
         }
-        deserializer.deserialize_leaf(78usize, "feComposite", V)
+        deserializer.deserialize_leaf(82usize, "feComposite", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FeConvolveMatrix {
@@ -8466,7 +8300,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FeConvolveMatrix {
         S: mlang_rs::rt::serde::ser::Serializer,
     {
         use mlang_rs::rt::serde::ser::SerializeNode;
-        let mut serializer = serializer.serialize_leaf(79usize, "feConvolveMatrix", 15usize)?;
+        let mut serializer = serializer.serialize_leaf(83usize, "feConvolveMatrix", 15usize)?;
         serializer.serialize_field(0usize, Some("in"), &self.r#in)?;
         serializer.serialize_field(1usize, Some("order"), &self.order)?;
         serializer.serialize_field(2usize, Some("kernel"), &self.kernel)?;
@@ -8507,7 +8341,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::FeConvolveMatrix {
                 Ok(value)
             }
         }
-        deserializer.deserialize_leaf(79usize, "feConvolveMatrix", V)
+        deserializer.deserialize_leaf(83usize, "feConvolveMatrix", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FeDiffuseLighting {
@@ -8516,7 +8350,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FeDiffuseLighting {
         S: mlang_rs::rt::serde::ser::Serializer,
     {
         use mlang_rs::rt::serde::ser::SerializeNode;
-        let mut serializer = serializer.serialize_el(80usize, "feDiffuseLighting", 9usize)?;
+        let mut serializer = serializer.serialize_el(84usize, "feDiffuseLighting", 9usize)?;
         serializer.serialize_field(0usize, Some("in"), &self.r#in)?;
         serializer.serialize_field(1usize, Some("surfaceScale"), &self.surface_scale)?;
         serializer.serialize_field(2usize, Some("diffuseConstant"), &self.diffuse_constant)?;
@@ -8607,7 +8441,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::FeDiffuseLighting {
                 Ok(value)
             }
         }
-        deserializer.deserialize_element(80usize, "feDiffuseLighting", V)
+        deserializer.deserialize_element(84usize, "feDiffuseLighting", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FeDisplacementMap {
@@ -8616,7 +8450,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FeDisplacementMap {
         S: mlang_rs::rt::serde::ser::Serializer,
     {
         use mlang_rs::rt::serde::ser::SerializeNode;
-        let mut serializer = serializer.serialize_leaf(81usize, "feDisplacementMap", 10usize)?;
+        let mut serializer = serializer.serialize_leaf(85usize, "feDisplacementMap", 10usize)?;
         serializer.serialize_field(0usize, Some("in"), &self.r#in)?;
         serializer.serialize_field(1usize, Some("in2"), &self.in2)?;
         serializer.serialize_field(2usize, Some("scale"), &self.scale)?;
@@ -8708,7 +8542,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::FeDisplacementMap {
                 Ok(value)
             }
         }
-        deserializer.deserialize_leaf(81usize, "feDisplacementMap", V)
+        deserializer.deserialize_leaf(85usize, "feDisplacementMap", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FeFlood {
@@ -8717,7 +8551,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FeFlood {
         S: mlang_rs::rt::serde::ser::Serializer,
     {
         use mlang_rs::rt::serde::ser::SerializeNode;
-        let mut serializer = serializer.serialize_leaf(82usize, "feFlood", 7usize)?;
+        let mut serializer = serializer.serialize_leaf(86usize, "feFlood", 7usize)?;
         serializer.serialize_field(0usize, Some("color"), &self.color)?;
         serializer.serialize_field(1usize, Some("opacity"), &self.opacity)?;
         serializer.serialize_field(2usize, Some("x"), &self.x)?;
@@ -8791,7 +8625,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::FeFlood {
                 Ok(value)
             }
         }
-        deserializer.deserialize_leaf(82usize, "feFlood", V)
+        deserializer.deserialize_leaf(86usize, "feFlood", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FeGaussianBlur {
@@ -8800,7 +8634,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FeGaussianBlur {
         S: mlang_rs::rt::serde::ser::Serializer,
     {
         use mlang_rs::rt::serde::ser::SerializeNode;
-        let mut serializer = serializer.serialize_leaf(83usize, "feGaussianBlur", 7usize)?;
+        let mut serializer = serializer.serialize_leaf(87usize, "feGaussianBlur", 7usize)?;
         serializer.serialize_field(0usize, Some("in"), &self.r#in)?;
         serializer.serialize_field(1usize, Some("stdDeviation"), &self.std_deviation)?;
         serializer.serialize_field(2usize, Some("x"), &self.x)?;
@@ -8876,7 +8710,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::FeGaussianBlur {
                 Ok(value)
             }
         }
-        deserializer.deserialize_leaf(83usize, "feGaussianBlur", V)
+        deserializer.deserialize_leaf(87usize, "feGaussianBlur", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FeMerge {
@@ -8885,7 +8719,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FeMerge {
         S: mlang_rs::rt::serde::ser::Serializer,
     {
         use mlang_rs::rt::serde::ser::SerializeNode;
-        let mut serializer = serializer.serialize_el(84usize, "feMerge", 5usize)?;
+        let mut serializer = serializer.serialize_el(88usize, "feMerge", 5usize)?;
         serializer.serialize_field(0usize, Some("x"), &self.x)?;
         serializer.serialize_field(1usize, Some("y"), &self.y)?;
         serializer.serialize_field(2usize, Some("width"), &self.width)?;
@@ -8945,7 +8779,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::FeMerge {
                 Ok(value)
             }
         }
-        deserializer.deserialize_element(84usize, "feMerge", V)
+        deserializer.deserialize_element(88usize, "feMerge", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FeMergeNode {
@@ -8954,7 +8788,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FeMergeNode {
         S: mlang_rs::rt::serde::ser::Serializer,
     {
         use mlang_rs::rt::serde::ser::SerializeNode;
-        let mut serializer = serializer.serialize_leaf(85usize, "feMergeNode", 1usize)?;
+        let mut serializer = serializer.serialize_leaf(89usize, "feMergeNode", 1usize)?;
         serializer.serialize_field(0usize, Some("in"), &self.0)?;
         serializer.finish()
     }
@@ -8987,7 +8821,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::FeMergeNode {
                 Ok(value)
             }
         }
-        deserializer.deserialize_leaf(85usize, "feMergeNode", V)
+        deserializer.deserialize_leaf(89usize, "feMergeNode", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FeImage {
@@ -8996,7 +8830,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FeImage {
         S: mlang_rs::rt::serde::ser::Serializer,
     {
         use mlang_rs::rt::serde::ser::SerializeNode;
-        let mut serializer = serializer.serialize_leaf(86usize, "feImage", 7usize)?;
+        let mut serializer = serializer.serialize_leaf(90usize, "feImage", 7usize)?;
         serializer.serialize_field(0usize, Some("href"), &self.href)?;
         serializer.serialize_field(1usize, Some("aspect"), &self.aspect)?;
         serializer.serialize_field(2usize, Some("x"), &self.x)?;
@@ -9029,7 +8863,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::FeImage {
                 Ok(value)
             }
         }
-        deserializer.deserialize_leaf(86usize, "feImage", V)
+        deserializer.deserialize_leaf(90usize, "feImage", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FeMorphology {
@@ -9038,7 +8872,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FeMorphology {
         S: mlang_rs::rt::serde::ser::Serializer,
     {
         use mlang_rs::rt::serde::ser::SerializeNode;
-        let mut serializer = serializer.serialize_leaf(87usize, "feMorphology", 8usize)?;
+        let mut serializer = serializer.serialize_leaf(91usize, "feMorphology", 8usize)?;
         serializer.serialize_field(0usize, Some("in"), &self.r#in)?;
         serializer.serialize_field(1usize, Some("mode"), &self.mode)?;
         serializer.serialize_field(2usize, Some("radius"), &self.radius)?;
@@ -9072,7 +8906,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::FeMorphology {
                 Ok(value)
             }
         }
-        deserializer.deserialize_leaf(87usize, "feMorphology", V)
+        deserializer.deserialize_leaf(91usize, "feMorphology", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FeOffset {
@@ -9081,7 +8915,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FeOffset {
         S: mlang_rs::rt::serde::ser::Serializer,
     {
         use mlang_rs::rt::serde::ser::SerializeNode;
-        let mut serializer = serializer.serialize_leaf(88usize, "feOffset", 8usize)?;
+        let mut serializer = serializer.serialize_leaf(92usize, "feOffset", 8usize)?;
         serializer.serialize_field(0usize, Some("in"), &self.r#in)?;
         serializer.serialize_field(1usize, Some("dx"), &self.dx)?;
         serializer.serialize_field(2usize, Some("dy"), &self.dy)?;
@@ -9159,7 +8993,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::FeOffset {
                 Ok(value)
             }
         }
-        deserializer.deserialize_leaf(88usize, "feOffset", V)
+        deserializer.deserialize_leaf(92usize, "feOffset", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FeSpecularLighting {
@@ -9168,7 +9002,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FeSpecularLighting {
         S: mlang_rs::rt::serde::ser::Serializer,
     {
         use mlang_rs::rt::serde::ser::SerializeNode;
-        let mut serializer = serializer.serialize_el(89usize, "feSpecularLighting", 10usize)?;
+        let mut serializer = serializer.serialize_el(93usize, "feSpecularLighting", 10usize)?;
         serializer.serialize_field(0usize, Some("in"), &self.r#in)?;
         serializer.serialize_field(1usize, Some("surfaceScale"), &self.surface_scale)?;
         serializer.serialize_field(2usize, Some("specularConstant"), &self.specular_constant)?;
@@ -9267,7 +9101,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::FeSpecularLighting 
                 Ok(value)
             }
         }
-        deserializer.deserialize_element(89usize, "feSpecularLighting", V)
+        deserializer.deserialize_element(93usize, "feSpecularLighting", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FeTile {
@@ -9276,7 +9110,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FeTile {
         S: mlang_rs::rt::serde::ser::Serializer,
     {
         use mlang_rs::rt::serde::ser::SerializeNode;
-        let mut serializer = serializer.serialize_leaf(90usize, "feTile", 6usize)?;
+        let mut serializer = serializer.serialize_leaf(94usize, "feTile", 6usize)?;
         serializer.serialize_field(0usize, Some("in"), &self.r#in)?;
         serializer.serialize_field(1usize, Some("x"), &self.x)?;
         serializer.serialize_field(2usize, Some("y"), &self.y)?;
@@ -9342,7 +9176,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::FeTile {
                 Ok(value)
             }
         }
-        deserializer.deserialize_leaf(90usize, "feTile", V)
+        deserializer.deserialize_leaf(94usize, "feTile", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FeTurbulence {
@@ -9351,7 +9185,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::FeTurbulence {
         S: mlang_rs::rt::serde::ser::Serializer,
     {
         use mlang_rs::rt::serde::ser::SerializeNode;
-        let mut serializer = serializer.serialize_leaf(91usize, "feTurbulence", 10usize)?;
+        let mut serializer = serializer.serialize_leaf(95usize, "feTurbulence", 10usize)?;
         serializer.serialize_field(0usize, Some("baseFrequency"), &self.base_frequency)?;
         serializer.serialize_field(1usize, Some("numOctaves"), &self.num_octaves)?;
         serializer.serialize_field(2usize, Some("seed"), &self.seed)?;
@@ -9387,7 +9221,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::FeTurbulence {
                 Ok(value)
             }
         }
-        deserializer.deserialize_leaf(91usize, "feTurbulence", V)
+        deserializer.deserialize_leaf(95usize, "feTurbulence", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::LinearGradient {
@@ -9396,7 +9230,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::LinearGradient {
         S: mlang_rs::rt::serde::ser::Serializer,
     {
         use mlang_rs::rt::serde::ser::SerializeNode;
-        let mut serializer = serializer.serialize_el(92usize, "linearGradient", 8usize)?;
+        let mut serializer = serializer.serialize_el(96usize, "linearGradient", 8usize)?;
         serializer.serialize_field(0usize, Some("gradientUnits"), &self.units)?;
         serializer.serialize_field(1usize, Some("gradientTransform"), &self.transform)?;
         serializer.serialize_field(2usize, Some("x1"), &self.x1)?;
@@ -9430,7 +9264,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::LinearGradient {
                 Ok(value)
             }
         }
-        deserializer.deserialize_element(92usize, "linearGradient", V)
+        deserializer.deserialize_element(96usize, "linearGradient", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::RadialGradient {
@@ -9439,7 +9273,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::RadialGradient {
         S: mlang_rs::rt::serde::ser::Serializer,
     {
         use mlang_rs::rt::serde::ser::SerializeNode;
-        let mut serializer = serializer.serialize_el(93usize, "radialGradient", 9usize)?;
+        let mut serializer = serializer.serialize_el(97usize, "radialGradient", 9usize)?;
         serializer.serialize_field(0usize, Some("gradientUnits"), &self.unit)?;
         serializer.serialize_field(1usize, Some("gradientTransform"), &self.transform)?;
         serializer.serialize_field(2usize, Some("cx"), &self.cx)?;
@@ -9474,7 +9308,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::RadialGradient {
                 Ok(value)
             }
         }
-        deserializer.deserialize_element(93usize, "radialGradient", V)
+        deserializer.deserialize_element(97usize, "radialGradient", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::GradientStop {
@@ -9483,7 +9317,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::GradientStop {
         S: mlang_rs::rt::serde::ser::Serializer,
     {
         use mlang_rs::rt::serde::ser::SerializeNode;
-        let mut serializer = serializer.serialize_leaf(94usize, "stop", 3usize)?;
+        let mut serializer = serializer.serialize_leaf(98usize, "stop", 3usize)?;
         serializer.serialize_field(0usize, Some("offset"), &self.offset)?;
         serializer.serialize_field(1usize, Some("stop-color"), &self.color)?;
         serializer.serialize_field(2usize, Some("stop-opacity"), &self.opacity)?;
@@ -9530,7 +9364,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::GradientStop {
                 Ok(value)
             }
         }
-        deserializer.deserialize_leaf(94usize, "stop", V)
+        deserializer.deserialize_leaf(98usize, "stop", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::Group {
@@ -9539,7 +9373,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::Group {
         S: mlang_rs::rt::serde::ser::Serializer,
     {
         use mlang_rs::rt::serde::ser::SerializeNode;
-        let serializer = serializer.serialize_el(95usize, "g", 0usize)?;
+        let serializer = serializer.serialize_el(99usize, "g", 0usize)?;
         serializer.finish()
     }
 }
@@ -9565,7 +9399,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::Group {
                 Ok(value)
             }
         }
-        deserializer.deserialize_element(95usize, "g", V)
+        deserializer.deserialize_element(99usize, "g", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::Path {
@@ -9574,7 +9408,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::Path {
         S: mlang_rs::rt::serde::ser::Serializer,
     {
         use mlang_rs::rt::serde::ser::SerializeNode;
-        let mut serializer = serializer.serialize_leaf(96usize, "path", 2usize)?;
+        let mut serializer = serializer.serialize_leaf(100usize, "path", 2usize)?;
         serializer.serialize_field(0usize, Some("d"), &self.events)?;
         serializer.serialize_field(1usize, Some("length"), &self.length)?;
         serializer.finish()
@@ -9615,7 +9449,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::Path {
                 Ok(value)
             }
         }
-        deserializer.deserialize_leaf(96usize, "path", V)
+        deserializer.deserialize_leaf(100usize, "path", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::Pattern {
@@ -9624,7 +9458,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::Pattern {
         S: mlang_rs::rt::serde::ser::Serializer,
     {
         use mlang_rs::rt::serde::ser::SerializeNode;
-        let mut serializer = serializer.serialize_el(97usize, "pattern", 8usize)?;
+        let mut serializer = serializer.serialize_el(101usize, "pattern", 8usize)?;
         serializer.serialize_field(0usize, Some("patternUnits"), &self.units)?;
         serializer.serialize_field(1usize, Some("contentUnits"), &self.content_units)?;
         serializer.serialize_field(2usize, Some("transform"), &self.transform)?;
@@ -9704,7 +9538,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::Pattern {
                 Ok(value)
             }
         }
-        deserializer.deserialize_element(97usize, "pattern", V)
+        deserializer.deserialize_element(101usize, "pattern", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::Use {
@@ -9713,7 +9547,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::Use {
         S: mlang_rs::rt::serde::ser::Serializer,
     {
         use mlang_rs::rt::serde::ser::SerializeNode;
-        let mut serializer = serializer.serialize_leaf(98usize, "use", 1usize)?;
+        let mut serializer = serializer.serialize_leaf(102usize, "use", 1usize)?;
         serializer.serialize_field(0usize, Some("xlink:href"), &self.0)?;
         serializer.finish()
     }
@@ -9746,7 +9580,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::Use {
                 Ok(value)
             }
         }
-        deserializer.deserialize_leaf(98usize, "use", V)
+        deserializer.deserialize_leaf(102usize, "use", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::Rect {
@@ -9755,7 +9589,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::Rect {
         S: mlang_rs::rt::serde::ser::Serializer,
     {
         use mlang_rs::rt::serde::ser::SerializeNode;
-        let mut serializer = serializer.serialize_leaf(99usize, "rect", 6usize)?;
+        let mut serializer = serializer.serialize_leaf(103usize, "rect", 6usize)?;
         serializer.serialize_field(0usize, Some("x"), &self.x)?;
         serializer.serialize_field(1usize, Some("y"), &self.y)?;
         serializer.serialize_field(2usize, Some("width"), &self.width)?;
@@ -9818,7 +9652,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::Rect {
                 Ok(value)
             }
         }
-        deserializer.deserialize_leaf(99usize, "rect", V)
+        deserializer.deserialize_leaf(103usize, "rect", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::Circle {
@@ -9827,7 +9661,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::Circle {
         S: mlang_rs::rt::serde::ser::Serializer,
     {
         use mlang_rs::rt::serde::ser::SerializeNode;
-        let mut serializer = serializer.serialize_leaf(100usize, "circle", 3usize)?;
+        let mut serializer = serializer.serialize_leaf(104usize, "circle", 3usize)?;
         serializer.serialize_field(0usize, Some("cx"), &self.cx)?;
         serializer.serialize_field(1usize, Some("cy"), &self.cy)?;
         serializer.serialize_field(2usize, Some("r"), &self.r)?;
@@ -9872,7 +9706,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::Circle {
                 Ok(value)
             }
         }
-        deserializer.deserialize_leaf(100usize, "circle", V)
+        deserializer.deserialize_leaf(104usize, "circle", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::Ellipse {
@@ -9881,7 +9715,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::Ellipse {
         S: mlang_rs::rt::serde::ser::Serializer,
     {
         use mlang_rs::rt::serde::ser::SerializeNode;
-        let mut serializer = serializer.serialize_leaf(101usize, "ellipse", 4usize)?;
+        let mut serializer = serializer.serialize_leaf(105usize, "ellipse", 4usize)?;
         serializer.serialize_field(0usize, Some("cx"), &self.cx)?;
         serializer.serialize_field(1usize, Some("cy"), &self.cy)?;
         serializer.serialize_field(2usize, Some("rx"), &self.rx)?;
@@ -9932,7 +9766,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::Ellipse {
                 Ok(value)
             }
         }
-        deserializer.deserialize_leaf(101usize, "ellipse", V)
+        deserializer.deserialize_leaf(105usize, "ellipse", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::Line {
@@ -9941,7 +9775,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::Line {
         S: mlang_rs::rt::serde::ser::Serializer,
     {
         use mlang_rs::rt::serde::ser::SerializeNode;
-        let mut serializer = serializer.serialize_leaf(102usize, "line", 4usize)?;
+        let mut serializer = serializer.serialize_leaf(106usize, "line", 4usize)?;
         serializer.serialize_field(0usize, Some("x1"), &self.x1)?;
         serializer.serialize_field(1usize, Some("y1"), &self.y1)?;
         serializer.serialize_field(2usize, Some("x2"), &self.x2)?;
@@ -9992,7 +9826,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::Line {
                 Ok(value)
             }
         }
-        deserializer.deserialize_leaf(102usize, "line", V)
+        deserializer.deserialize_leaf(106usize, "line", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::Polyline {
@@ -10001,7 +9835,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::Polyline {
         S: mlang_rs::rt::serde::ser::Serializer,
     {
         use mlang_rs::rt::serde::ser::SerializeNode;
-        let mut serializer = serializer.serialize_leaf(103usize, "polyline", 1usize)?;
+        let mut serializer = serializer.serialize_leaf(107usize, "polyline", 1usize)?;
         serializer.serialize_field(0usize, Some("points"), &self.0)?;
         serializer.finish()
     }
@@ -10034,7 +9868,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::Polyline {
                 Ok(value)
             }
         }
-        deserializer.deserialize_leaf(103usize, "polyline", V)
+        deserializer.deserialize_leaf(107usize, "polyline", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::Polygon {
@@ -10043,7 +9877,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::Polygon {
         S: mlang_rs::rt::serde::ser::Serializer,
     {
         use mlang_rs::rt::serde::ser::SerializeNode;
-        let mut serializer = serializer.serialize_leaf(104usize, "polygon", 1usize)?;
+        let mut serializer = serializer.serialize_leaf(108usize, "polygon", 1usize)?;
         serializer.serialize_field(0usize, Some("points"), &self.0)?;
         serializer.finish()
     }
@@ -10076,7 +9910,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::Polygon {
                 Ok(value)
             }
         }
-        deserializer.deserialize_leaf(104usize, "polygon", V)
+        deserializer.deserialize_leaf(108usize, "polygon", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::Text {
@@ -10085,7 +9919,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::Text {
         S: mlang_rs::rt::serde::ser::Serializer,
     {
         use mlang_rs::rt::serde::ser::SerializeNode;
-        let mut serializer = serializer.serialize_el(106usize, "text", 7usize)?;
+        let mut serializer = serializer.serialize_el(110usize, "text", 7usize)?;
         serializer.serialize_field(0usize, Some("x"), &self.x)?;
         serializer.serialize_field(1usize, Some("y"), &self.y)?;
         serializer.serialize_field(2usize, Some("dx"), &self.dx)?;
@@ -10118,7 +9952,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::Text {
                 Ok(value)
             }
         }
-        deserializer.deserialize_element(106usize, "text", V)
+        deserializer.deserialize_element(110usize, "text", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::TextSpan {
@@ -10127,7 +9961,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::TextSpan {
         S: mlang_rs::rt::serde::ser::Serializer,
     {
         use mlang_rs::rt::serde::ser::SerializeNode;
-        let mut serializer = serializer.serialize_el(107usize, "tspan", 7usize)?;
+        let mut serializer = serializer.serialize_el(111usize, "tspan", 7usize)?;
         serializer.serialize_field(0usize, Some("x"), &self.x)?;
         serializer.serialize_field(1usize, Some("y"), &self.y)?;
         serializer.serialize_field(2usize, Some("dx"), &self.dx)?;
@@ -10160,7 +9994,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::TextSpan {
                 Ok(value)
             }
         }
-        deserializer.deserialize_element(107usize, "tspan", V)
+        deserializer.deserialize_element(111usize, "tspan", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::Characters {
@@ -10169,7 +10003,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::Characters {
         S: mlang_rs::rt::serde::ser::Serializer,
     {
         use mlang_rs::rt::serde::ser::SerializeNode;
-        let mut serializer = serializer.serialize_leaf(108usize, "characters", 1usize)?;
+        let mut serializer = serializer.serialize_leaf(112usize, "characters", 1usize)?;
         serializer.serialize_field(0usize, None, &self.0)?;
         serializer.finish()
     }
@@ -10197,7 +10031,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::Characters {
                 Ok(value)
             }
         }
-        deserializer.deserialize_leaf(108usize, "characters", V)
+        deserializer.deserialize_leaf(112usize, "characters", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::TextPath {
@@ -10206,7 +10040,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::TextPath {
         S: mlang_rs::rt::serde::ser::Serializer,
     {
         use mlang_rs::rt::serde::ser::SerializeNode;
-        let mut serializer = serializer.serialize_el(109usize, "textPath", 4usize)?;
+        let mut serializer = serializer.serialize_el(113usize, "textPath", 4usize)?;
         serializer.serialize_field(0usize, Some("startOffset"), &self.start_offset)?;
         serializer.serialize_field(1usize, Some("method"), &self.method)?;
         serializer.serialize_field(2usize, Some("spacing"), &self.spacing)?;
@@ -10236,7 +10070,7 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::TextPath {
                 Ok(value)
             }
         }
-        deserializer.deserialize_element(109usize, "textPath", V)
+        deserializer.deserialize_element(113usize, "textPath", V)
     }
 }
 impl mlang_rs::rt::serde::ser::Serialize for super::opcode::Opcode {
@@ -10364,155 +10198,155 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::Opcode {
             {
                 use crate::opcode::*;
                 match type_id {
-                    44usize => Ok(Opcode::from(Attr::from(TextLayout::deserialize(
+                    48usize => Ok(Opcode::from(Attr::from(TextLayout::deserialize(
                         deserializer,
                     )?))),
-                    45usize => Ok(Opcode::from(Attr::from(WithTransform::deserialize(
+                    49usize => Ok(Opcode::from(Attr::from(WithTransform::deserialize(
                         deserializer,
                     )?))),
-                    46usize => Ok(Opcode::from(Attr::from(Id::deserialize(deserializer)?))),
-                    47usize => Ok(Opcode::from(Attr::from(Fill::deserialize(deserializer)?))),
-                    48usize => Ok(Opcode::from(Attr::from(Stroke::deserialize(deserializer)?))),
-                    49usize => Ok(Opcode::from(Attr::from(Font::deserialize(deserializer)?))),
-                    50usize => Ok(Opcode::from(Attr::from(EnableBackground::deserialize(
+                    50usize => Ok(Opcode::from(Attr::from(Id::deserialize(deserializer)?))),
+                    51usize => Ok(Opcode::from(Attr::from(Fill::deserialize(deserializer)?))),
+                    52usize => Ok(Opcode::from(Attr::from(Stroke::deserialize(deserializer)?))),
+                    53usize => Ok(Opcode::from(Attr::from(Font::deserialize(deserializer)?))),
+                    54usize => Ok(Opcode::from(Attr::from(EnableBackground::deserialize(
                         deserializer,
                     )?))),
-                    51usize => Ok(Opcode::from(Attr::from(WithFilter::deserialize(
+                    55usize => Ok(Opcode::from(Attr::from(WithFilter::deserialize(
                         deserializer,
                     )?))),
-                    52usize => Ok(Opcode::from(Attr::from(WithClipPath::deserialize(
+                    56usize => Ok(Opcode::from(Attr::from(WithClipPath::deserialize(
                         deserializer,
                     )?))),
-                    53usize => Ok(Opcode::from(Attr::from(WithMask::deserialize(
+                    57usize => Ok(Opcode::from(Attr::from(WithMask::deserialize(
                         deserializer,
                     )?))),
-                    54usize => Ok(Opcode::from(Attr::from(Opacity::deserialize(
+                    58usize => Ok(Opcode::from(Attr::from(Opacity::deserialize(
                         deserializer,
                     )?))),
-                    55usize => Ok(Opcode::from(Attr::from(ViewBox::deserialize(
+                    59usize => Ok(Opcode::from(Attr::from(ViewBox::deserialize(
                         deserializer,
                     )?))),
-                    57usize => Ok(Opcode::from(Element::from(Canvas::deserialize(
+                    61usize => Ok(Opcode::from(Element::from(Canvas::deserialize(
                         deserializer,
                     )?))),
-                    58usize => Ok(Opcode::from(Element::from(Mask::deserialize(
+                    62usize => Ok(Opcode::from(Element::from(Mask::deserialize(
                         deserializer,
                     )?))),
-                    59usize => Ok(Opcode::from(Element::from(ClipPath::deserialize(
+                    63usize => Ok(Opcode::from(Element::from(ClipPath::deserialize(
                         deserializer,
                     )?))),
-                    60usize => Ok(Opcode::from(Element::from(Filter::deserialize(
+                    64usize => Ok(Opcode::from(Element::from(Filter::deserialize(
                         deserializer,
                     )?))),
-                    61usize => Ok(Opcode::from(Leaf::from(FeDistantLight::deserialize(
+                    65usize => Ok(Opcode::from(Leaf::from(FeDistantLight::deserialize(
                         deserializer,
                     )?))),
-                    62usize => Ok(Opcode::from(Leaf::from(FePointLight::deserialize(
+                    66usize => Ok(Opcode::from(Leaf::from(FePointLight::deserialize(
                         deserializer,
                     )?))),
-                    63usize => Ok(Opcode::from(Leaf::from(FeSpotLight::deserialize(
+                    67usize => Ok(Opcode::from(Leaf::from(FeSpotLight::deserialize(
                         deserializer,
                     )?))),
-                    64usize => Ok(Opcode::from(Leaf::from(FeBlend::deserialize(
+                    68usize => Ok(Opcode::from(Leaf::from(FeBlend::deserialize(
                         deserializer,
                     )?))),
-                    66usize => Ok(Opcode::from(Leaf::from(FeColorMatrix::deserialize(
+                    70usize => Ok(Opcode::from(Leaf::from(FeColorMatrix::deserialize(
                         deserializer,
                     )?))),
-                    73usize => Ok(Opcode::from(Element::from(
+                    77usize => Ok(Opcode::from(Element::from(
                         FeComponentTransfer::deserialize(deserializer)?,
                     ))),
-                    74usize => Ok(Opcode::from(Leaf::from(FeFuncA::deserialize(
+                    78usize => Ok(Opcode::from(Leaf::from(FeFuncA::deserialize(
                         deserializer,
                     )?))),
-                    75usize => Ok(Opcode::from(Leaf::from(FeFuncR::deserialize(
+                    79usize => Ok(Opcode::from(Leaf::from(FeFuncR::deserialize(
                         deserializer,
                     )?))),
-                    76usize => Ok(Opcode::from(Leaf::from(FeFuncG::deserialize(
+                    80usize => Ok(Opcode::from(Leaf::from(FeFuncG::deserialize(
                         deserializer,
                     )?))),
-                    77usize => Ok(Opcode::from(Leaf::from(FeFuncB::deserialize(
+                    81usize => Ok(Opcode::from(Leaf::from(FeFuncB::deserialize(
                         deserializer,
                     )?))),
-                    78usize => Ok(Opcode::from(Leaf::from(FeComposite::deserialize(
+                    82usize => Ok(Opcode::from(Leaf::from(FeComposite::deserialize(
                         deserializer,
                     )?))),
-                    79usize => Ok(Opcode::from(Leaf::from(FeConvolveMatrix::deserialize(
+                    83usize => Ok(Opcode::from(Leaf::from(FeConvolveMatrix::deserialize(
                         deserializer,
                     )?))),
-                    80usize => Ok(Opcode::from(Element::from(FeDiffuseLighting::deserialize(
+                    84usize => Ok(Opcode::from(Element::from(FeDiffuseLighting::deserialize(
                         deserializer,
                     )?))),
-                    81usize => Ok(Opcode::from(Leaf::from(FeDisplacementMap::deserialize(
+                    85usize => Ok(Opcode::from(Leaf::from(FeDisplacementMap::deserialize(
                         deserializer,
                     )?))),
-                    82usize => Ok(Opcode::from(Leaf::from(FeFlood::deserialize(
+                    86usize => Ok(Opcode::from(Leaf::from(FeFlood::deserialize(
                         deserializer,
                     )?))),
-                    83usize => Ok(Opcode::from(Leaf::from(FeGaussianBlur::deserialize(
+                    87usize => Ok(Opcode::from(Leaf::from(FeGaussianBlur::deserialize(
                         deserializer,
                     )?))),
-                    84usize => Ok(Opcode::from(Element::from(FeMerge::deserialize(
+                    88usize => Ok(Opcode::from(Element::from(FeMerge::deserialize(
                         deserializer,
                     )?))),
-                    85usize => Ok(Opcode::from(Leaf::from(FeMergeNode::deserialize(
+                    89usize => Ok(Opcode::from(Leaf::from(FeMergeNode::deserialize(
                         deserializer,
                     )?))),
-                    86usize => Ok(Opcode::from(Leaf::from(FeImage::deserialize(
+                    90usize => Ok(Opcode::from(Leaf::from(FeImage::deserialize(
                         deserializer,
                     )?))),
-                    87usize => Ok(Opcode::from(Leaf::from(FeMorphology::deserialize(
+                    91usize => Ok(Opcode::from(Leaf::from(FeMorphology::deserialize(
                         deserializer,
                     )?))),
-                    88usize => Ok(Opcode::from(Leaf::from(FeOffset::deserialize(
+                    92usize => Ok(Opcode::from(Leaf::from(FeOffset::deserialize(
                         deserializer,
                     )?))),
-                    89usize => Ok(Opcode::from(Element::from(
+                    93usize => Ok(Opcode::from(Element::from(
                         FeSpecularLighting::deserialize(deserializer)?,
                     ))),
-                    90usize => Ok(Opcode::from(Leaf::from(FeTile::deserialize(deserializer)?))),
-                    91usize => Ok(Opcode::from(Leaf::from(FeTurbulence::deserialize(
+                    94usize => Ok(Opcode::from(Leaf::from(FeTile::deserialize(deserializer)?))),
+                    95usize => Ok(Opcode::from(Leaf::from(FeTurbulence::deserialize(
                         deserializer,
                     )?))),
-                    92usize => Ok(Opcode::from(Element::from(LinearGradient::deserialize(
+                    96usize => Ok(Opcode::from(Element::from(LinearGradient::deserialize(
                         deserializer,
                     )?))),
-                    93usize => Ok(Opcode::from(Element::from(RadialGradient::deserialize(
+                    97usize => Ok(Opcode::from(Element::from(RadialGradient::deserialize(
                         deserializer,
                     )?))),
-                    94usize => Ok(Opcode::from(Leaf::from(GradientStop::deserialize(
+                    98usize => Ok(Opcode::from(Leaf::from(GradientStop::deserialize(
                         deserializer,
                     )?))),
-                    95usize => Ok(Opcode::from(Element::from(Group::deserialize(
+                    99usize => Ok(Opcode::from(Element::from(Group::deserialize(
                         deserializer,
                     )?))),
-                    96usize => Ok(Opcode::from(Leaf::from(Path::deserialize(deserializer)?))),
-                    97usize => Ok(Opcode::from(Element::from(Pattern::deserialize(
+                    100usize => Ok(Opcode::from(Leaf::from(Path::deserialize(deserializer)?))),
+                    101usize => Ok(Opcode::from(Element::from(Pattern::deserialize(
                         deserializer,
                     )?))),
-                    98usize => Ok(Opcode::from(Leaf::from(Use::deserialize(deserializer)?))),
-                    99usize => Ok(Opcode::from(Leaf::from(Rect::deserialize(deserializer)?))),
-                    100usize => Ok(Opcode::from(Leaf::from(Circle::deserialize(deserializer)?))),
-                    101usize => Ok(Opcode::from(Leaf::from(Ellipse::deserialize(
+                    102usize => Ok(Opcode::from(Leaf::from(Use::deserialize(deserializer)?))),
+                    103usize => Ok(Opcode::from(Leaf::from(Rect::deserialize(deserializer)?))),
+                    104usize => Ok(Opcode::from(Leaf::from(Circle::deserialize(deserializer)?))),
+                    105usize => Ok(Opcode::from(Leaf::from(Ellipse::deserialize(
                         deserializer,
                     )?))),
-                    102usize => Ok(Opcode::from(Leaf::from(Line::deserialize(deserializer)?))),
-                    103usize => Ok(Opcode::from(Leaf::from(Polyline::deserialize(
+                    106usize => Ok(Opcode::from(Leaf::from(Line::deserialize(deserializer)?))),
+                    107usize => Ok(Opcode::from(Leaf::from(Polyline::deserialize(
                         deserializer,
                     )?))),
-                    104usize => Ok(Opcode::from(Leaf::from(Polygon::deserialize(
+                    108usize => Ok(Opcode::from(Leaf::from(Polygon::deserialize(
                         deserializer,
                     )?))),
-                    106usize => Ok(Opcode::from(Element::from(Text::deserialize(
+                    110usize => Ok(Opcode::from(Element::from(Text::deserialize(
                         deserializer,
                     )?))),
-                    107usize => Ok(Opcode::from(Element::from(TextSpan::deserialize(
+                    111usize => Ok(Opcode::from(Element::from(TextSpan::deserialize(
                         deserializer,
                     )?))),
-                    108usize => Ok(Opcode::from(Leaf::from(Characters::deserialize(
+                    112usize => Ok(Opcode::from(Leaf::from(Characters::deserialize(
                         deserializer,
                     )?))),
-                    109usize => Ok(Opcode::from(Element::from(TextPath::deserialize(
+                    113usize => Ok(Opcode::from(Element::from(TextPath::deserialize(
                         deserializer,
                     )?))),
                     _ => {
