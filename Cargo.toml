@@ -2,6 +2,7 @@
 description = "Fast and simple vector graphics programming language and svg-compatible high-level virtual machine."
 documentation = "https://docs.rs/vglang"
 edition = "2021"
+license = "MIT"
 name = "vglang"
 repository = "https://github.com/styles-lab/vglang"
 version = "0.1.0"
