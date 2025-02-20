@@ -10004,7 +10004,7 @@ impl mlang_rs::rt::serde::ser::Serialize for super::opcode::Characters {
     {
         use mlang_rs::rt::serde::ser::SerializeNode;
         let mut serializer = serializer.serialize_leaf(112usize, "characters", 1usize)?;
-        serializer.serialize_field(0usize, None, &self.0)?;
+        serializer.serialize_field(0usize, Some("value"), &self.0)?;
         serializer.finish()
     }
 }
@@ -10026,8 +10026,11 @@ impl mlang_rs::rt::serde::de::Deserialize for super::opcode::Characters {
             {
                 let _ = data;
                 use super::opcode::*;
-                let value =
-                    Characters(data.deserialize_field::<String>("characters", 0usize, None)?);
+                let value = Characters(data.deserialize_field::<String>(
+                    "characters",
+                    0usize,
+                    Some("value"),
+                )?);
                 Ok(value)
             }
         }

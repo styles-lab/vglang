@@ -2468,7 +2468,7 @@ el Text mixin MixinText;
 el TextSpan mixin MixinText;
 
 /// Text content chars.
-leaf Characters(string);
+leaf Characters(#[rename("value")] string);
 
 /// In addition to text drawn in a straight line, SVG also includes the ability to place text along the
 /// shape of a ‘path’ element. To specify that a block of text is to be rendered along the shape of a ‘path’,

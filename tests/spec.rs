@@ -74,22 +74,19 @@
 //     std::fs::write(output, to_svg(opcodes).unwrap()).unwrap();
 // }
 
-// #[test]
-// fn test_lyon_logo() {
-//     _ = pretty_env_logger::try_init();
+use std::{fs::create_dir_all, path::PathBuf};
 
-//     let output_dir = PathBuf::from(env!("CARGO_TARGET_TMPDIR")).join("spec");
+use vglang::svg::reader::from_svg;
 
-//     if !output_dir.exists() {
-//         create_dir_all(&output_dir).unwrap();
-//     }
+#[test]
+fn test_lyon_logo() {
+    _ = pretty_env_logger::try_init();
 
-//     let opcodes = from_svg(include_str!("./lyon.svg")).unwrap();
+    let output_dir = PathBuf::from(env!("CARGO_TARGET_TMPDIR")).join("spec");
 
-//     std::fs::write(output_dir.join("lyon.svg"), to_svg(&opcodes).unwrap()).unwrap();
-//     // std::fs::write(
-//     //     output_dir.join("lyon.json"),
-//     //     serde_json::to_string_pretty(&opcodes).unwrap(),
-//     // )
-//     // .unwrap();
-// }
+    if !output_dir.exists() {
+        create_dir_all(&output_dir).unwrap();
+    }
+
+    let _ = from_svg(include_str!("./lyon.svg")).unwrap();
+}
