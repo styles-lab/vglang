@@ -9,7 +9,10 @@ use xml_dom::{
 use crate::{
     opcode::Opcode,
     svg::reader::{
-        state::{LengthDecoder, ReadingCode, TransformListDecoder, ViewBoxDecoder},
+        state::{
+            LengthDecoder, PaintDecoder, ReadingCode, StrokeLineJoinDecoder, TransformListDecoder,
+            VariantDecoder, ViewBoxDecoder,
+        },
         SVG_READ_REPORT,
     },
 };
@@ -190,6 +193,15 @@ impl<'a> Deserializer for &'a mut SvgReader {
         V: mlang_rs::rt::serde::de::Visitor,
     {
         log::trace!(target: SVG_READ_REPORT,"deserialize vglang data({})", name);
+
+        match self.state.top() {
+            Some(ReadingCode::Data(v)) => {
+                assert_eq!(name, v);
+                self.state.pop();
+            }
+            _ => {}
+        }
+
         visitor.visit_node(&mut *self)
     }
 
@@ -221,17 +233,26 @@ impl<'a> Deserializer for &'a mut SvgReader {
                 "length" => {
                     self.state.decode::<LengthDecoder>()?;
                 }
-                _ => {}
+                "paint" => {
+                    self.state.decode::<PaintDecoder>()?;
+                }
+                "stroke-linejoin" => {
+                    self.state.decode::<StrokeLineJoinDecoder>()?;
+                }
+                _ => {
+                    self.state.decode::<VariantDecoder>()?;
+                }
             },
         }
 
         match self.state.pop() {
             Some(ReadingCode::Variant(variant)) => visitor.visit_enum_with(&variant, &mut *self),
             code => {
-                panic!(
-                    "{:?} unhandle enum `{}`: {:?}",
-                    self.state.codes, name, code
+                log::error!(
+                    target: SVG_READ_REPORT,
+                    "{:?} unhandle variant({}) = {:?}", self.state.codes, name,code
                 );
+                panic!("inner error: unhandle variant(`{}`)", name);
             }
         }
     }
