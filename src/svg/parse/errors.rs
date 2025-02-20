@@ -5,7 +5,6 @@ pub enum ParseError {
     Failed(ParseKind, String),
     #[error("failed parsing svg `{0}` value, overflow: {0}")]
     Overflow(ParseKind, String),
-
     #[error("failed parsing svg `{0}` value, unparsing: `{0}`")]
     Unparsed(ParseKind, String),
 }
@@ -65,6 +64,8 @@ pub enum ParseKind {
     TransformList,
     #[error("background")]
     Background,
+    #[error("path-event")]
+    PathEvent,
     #[error("path-event-list")]
     PathEvents,
 }

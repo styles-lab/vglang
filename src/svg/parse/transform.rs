@@ -133,7 +133,7 @@ pub(super) fn parse_transform_list(ctx: &mut ParseContext<'_>) -> parserc::Resul
         .or(parse_transform_two_params("scale").map(|(one, two)| Transform::Scale(one, two)))
         .or(parse_rotate)
         .or(parse_transform_one_param("skewX").map(|one| Transform::SkewX(one)))
-        .or(parse_transform_one_param("skewX").map(|one| Transform::SkewY(one)))
+        .or(parse_transform_one_param("skewY").map(|one| Transform::SkewY(one)))
         .ok()
         .parse(ctx)?
     {
@@ -197,6 +197,12 @@ mod tests {
                 },
                 Transform::Translate(5., Some(10.)),
             ]),
+        );
+
+        assert_eq!("skewX(10)".parse_svg(), Ok(vec![Transform::SkewX(10.)]));
+        assert_eq!(
+            "skewY(-10.1e-10)".parse_svg(),
+            Ok(vec![Transform::SkewY(-10.1E-10)])
         );
     }
 }

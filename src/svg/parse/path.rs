@@ -319,6 +319,23 @@ pub(super) fn parse_path_event_list(ctx: &mut ParseContext<'_>) -> parserc::Resu
     Ok(events)
 }
 
+impl FromSvg for PathEvent {
+    type Err = ParseError;
+
+    fn from_svg(s: &str) -> std::result::Result<Self, Self::Err> {
+        let mut ctx = ParseContext::from(s.trim()).with_debug(SVG_PARSE_ERROR);
+
+        let v =
+            parse_path_event(&mut ctx).map_err(|_| ParseError::failed(ParseKind::PathEvent, s))?;
+
+        if ctx.remaining() > 0 {
+            return Err(ParseError::unparsed(ParseKind::PathEvent, ctx.unparsed()));
+        }
+
+        Ok(v)
+    }
+}
+
 impl FromSvg for Vec<PathEvent> {
     type Err = ParseError;
 
@@ -634,6 +651,85 @@ mod tests {
                 PathEvent::Horizontal(20., false),
                 PathEvent::Vertical(1e10, true)
             ])
+        );
+    }
+
+    #[test]
+    fn test_path_events2() {
+        assert_eq!("z".parse_svg(), Ok(PathEvent::Close));
+        assert_eq!("Z".parse_svg(), Ok(PathEvent::Close));
+
+        assert_eq!(
+            "M10.1,20e-10".parse_svg(),
+            Ok(PathEvent::MoveTo {
+                points: vec![Point(10.1, 20e-10)],
+                relative: false
+            })
+        );
+        assert_eq!(
+            "m10.1,20e-10".parse_svg(),
+            Ok(PathEvent::MoveTo {
+                points: vec![Point(10.1, 20e-10)],
+                relative: true
+            })
+        );
+
+        assert_eq!(
+            "L10.1,20e-10".parse_svg(),
+            Ok(PathEvent::LineTo {
+                points: vec![Point(10.1, 20e-10)],
+                relative: false
+            })
+        );
+        assert_eq!(
+            "l 10.1,20e-10".parse_svg(),
+            Ok(PathEvent::LineTo {
+                points: vec![Point(10.1, 20e-10)],
+                relative: true
+            })
+        );
+
+        assert_eq!(
+            "M100,200 c100,100 250,100,\n\t250,200 s400,300 400,200".parse_svg(),
+            Ok(vec![
+                PathEvent::MoveTo {
+                    points: vec![Point(100., 200.)],
+                    relative: false
+                },
+                PathEvent::CubicBezier(
+                    vec![CubicBezier {
+                        ctrl1: Point(100., 100.),
+                        ctrl2: Point(250., 100.),
+                        to: Point(250., 200.)
+                    }],
+                    true
+                ),
+                PathEvent::CubicBezierSmooth(
+                    vec![CubicBezierSmooth {
+                        ctrl2: Point(400., 300.),
+                        to: Point(400., 200.)
+                    }],
+                    true
+                ),
+            ]),
+        );
+
+        assert_eq!(
+            "M200,300 q400,50 600,300 t1000,300".parse_svg(),
+            Ok(vec![
+                PathEvent::MoveTo {
+                    points: vec![Point(200., 300.)],
+                    relative: false
+                },
+                PathEvent::QuadraticBezier(
+                    vec![QuadraticBezier {
+                        ctrl: Point(400., 50.),
+                        to: Point(600., 300.)
+                    }],
+                    true
+                ),
+                PathEvent::QuadraticBezierSmooth(vec![Point(1000., 300.)], true),
+            ]),
         );
     }
 }
