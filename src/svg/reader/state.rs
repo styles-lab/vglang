@@ -6,7 +6,7 @@ use mlang_rs::rt::{opcode::Variable, serde::ser::Serialize};
 use xml_dom::level2::{Attribute, Element, Node, NodeType, RefNode};
 
 use crate::{
-    opcode::{PreserveAspectRatio, ViewBox},
+    opcode::{Length, PreserveAspectRatio, Transform, ViewBox},
     svg::{
         parse::{FromSvg, ParseError, ParseSvg},
         reader::{ReadingError, SVG_READ_REPORT},
@@ -49,7 +49,7 @@ pub enum ReadingCode {
 impl Debug for ReadingCode {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            ReadingCode::Value(v) => write!(f, "value({})", v),
+            ReadingCode::Value(v) => write!(f, "value('{}')", v),
             ReadingCode::None => write!(f, "value(none)"),
             ReadingCode::Elem(v) => write!(f, "el({})", v),
             ReadingCode::Leaf(v) => write!(f, "leaf({})", v),
@@ -357,6 +357,38 @@ impl Decoder for ViewBoxDecoder {
         let mut writer = ReadingCodeWriter::default();
 
         viewbox.serialize(&mut writer)?;
+
+        state.push_codes(writer);
+
+        Ok(())
+    }
+}
+
+pub(super) struct LengthDecoder;
+
+impl Decoder for LengthDecoder {
+    fn decode(state: &mut ReadingState) -> Result<()> {
+        let length = state.parse::<Length>()?;
+
+        let mut writer = ReadingCodeWriter::default();
+
+        length.serialize(&mut writer)?;
+
+        state.push_codes(writer);
+
+        Ok(())
+    }
+}
+
+pub(super) struct TransformListDecoder;
+
+impl Decoder for TransformListDecoder {
+    fn decode(state: &mut ReadingState) -> Result<()> {
+        let transforms = state.parse::<Vec<Transform>>()?;
+
+        let mut writer = ReadingCodeWriter::default();
+
+        transforms.serialize(&mut writer)?;
 
         state.push_codes(writer);
 

@@ -9,7 +9,7 @@ use xml_dom::{
 use crate::{
     opcode::Opcode,
     svg::reader::{
-        state::{ReadingCode, ViewBoxDecoder},
+        state::{LengthDecoder, ReadingCode, TransformListDecoder, ViewBoxDecoder},
         SVG_READ_REPORT,
     },
 };
@@ -127,11 +127,11 @@ impl<'a> Deserializer for &'a mut SvgReader {
             "deserialize vglang el({})", name
         );
 
-        let value = visitor.visit_node(&mut *self)?;
+        let v = visitor.visit_node(&mut *self)?;
 
         assert_eq!(self.state.pop(), Some(ReadingCode::Elem(name.to_string())));
 
-        Ok(value)
+        Ok(v)
     }
 
     fn deserialize_leaf<V>(
@@ -172,17 +172,12 @@ impl<'a> Deserializer for &'a mut SvgReader {
         match name {
             "viewBox" => {
                 self.state.decode::<ViewBoxDecoder>()?;
+                assert_eq!(self.state.pop(), Some(ReadingCode::Attr(name.to_string())));
             }
-            _ => {
-                self.state.push(ReadingCode::Attr(name.to_string()));
-            }
+            _ => {}
         }
 
-        let value = visitor.visit_node(&mut *self)?;
-
-        assert_eq!(self.state.pop(), Some(ReadingCode::Attr(name.to_string())));
-
-        Ok(value)
+        visitor.visit_node(&mut *self)
     }
 
     fn deserialize_data<V>(
@@ -194,7 +189,7 @@ impl<'a> Deserializer for &'a mut SvgReader {
     where
         V: mlang_rs::rt::serde::de::Visitor,
     {
-        log::trace!("deserialize vglang data({})", name);
+        log::trace!(target: SVG_READ_REPORT,"deserialize vglang data({})", name);
         visitor.visit_node(&mut *self)
     }
 
@@ -207,18 +202,59 @@ impl<'a> Deserializer for &'a mut SvgReader {
     where
         V: mlang_rs::rt::serde::de::Visitor,
     {
-        log::trace!("deserialize vglang enum({})", name);
+        log::trace!(target: SVG_READ_REPORT, "deserialize vglang enum({})", name);
 
-        visitor.visit_node(&mut *self)
+        match self.state.top() {
+            Some(ReadingCode::Variant(_)) => {}
+            Some(ReadingCode::SeqStart) => {
+                self.state.pop();
+
+                match name {
+                    "transform" => {
+                        self.state.decode::<TransformListDecoder>()?;
+                        assert_eq!(self.state.pop(), Some(ReadingCode::SeqStart));
+                    }
+                    _ => {}
+                }
+            }
+            _ => match name {
+                "length" => {
+                    self.state.decode::<LengthDecoder>()?;
+                }
+                _ => {}
+            },
+        }
+
+        match self.state.pop() {
+            Some(ReadingCode::Variant(variant)) => visitor.visit_enum_with(&variant, &mut *self),
+            code => {
+                panic!(
+                    "{:?} unhandle enum `{}`: {:?}",
+                    self.state.codes, name, code
+                );
+            }
+        }
     }
 
     fn deserialize_seq<V>(self, visitor: V) -> std::result::Result<V::Value, Self::Error>
     where
         V: mlang_rs::rt::serde::de::Visitor,
     {
-        self.state.pop_seq_start();
+        match self.state.pop() {
+            Some(ReadingCode::SeqStart) => {}
+            Some(ReadingCode::None) => return Err(ReadingError::None),
+            Some(code) => {
+                self.state.push(code);
+                self.state.push_seq_start();
+            }
+            None => return Err(ReadingError::None),
+        }
 
-        visitor.visit_seq(self)
+        let v = visitor.visit_seq(&mut *self)?;
+
+        assert_eq!(self.state.pop(), Some(ReadingCode::SeqEnd));
+
+        Ok(v)
     }
 
     fn deserialize_option<V>(self, visitor: V) -> std::result::Result<Option<V::Value>, Self::Error>
@@ -333,47 +369,25 @@ impl<'a> NodeAccess for &'a mut SvgReader {
 
     fn deserialize_field<T>(
         &mut self,
-        ty: &str,
-        index: usize,
+        _: &str,
+        _: usize,
         field_name: Option<&str>,
     ) -> std::result::Result<T::Value, Self::Error>
     where
         T: mlang_rs::rt::serde::de::Deserialize,
     {
         match self.state.top() {
-            Some(ReadingCode::Elem(name))
-            | Some(ReadingCode::Leaf(name))
-            | Some(ReadingCode::Attr(name)) => {
-                assert_eq!(
-                    name, ty,
-                    "check the deserializing stack: {:?}",
-                    self.state.codes
-                );
-
-                self.state.push(ReadingCode::Field {
-                    name: field_name.map(|v| v.to_string()),
-                    index,
-                });
-
+            Some(ReadingCode::Field { name: _, index: _ }) => {
+                self.state.pop();
+            }
+            _ => {
                 if let Some(name) = field_name {
                     self.state.load(name);
                 }
             }
-            _ => {}
         }
 
-        let result = T::deserialize(&mut **self);
-
-        // check field code.
-        assert_eq!(
-            self.state.pop(),
-            Some(ReadingCode::Field {
-                name: field_name.map(|v| v.to_string()),
-                index,
-            })
-        );
-
-        result
+        T::deserialize(&mut **self)
     }
 }
 
