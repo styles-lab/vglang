@@ -76,7 +76,7 @@
 
 use std::{fs::create_dir_all, path::PathBuf};
 
-use vglang::svg::reader::from_svg;
+use vglang::svg::{reader::from_svg, writer::to_svg};
 
 #[test]
 fn test_lyon_logo() {
@@ -88,5 +88,7 @@ fn test_lyon_logo() {
         create_dir_all(&output_dir).unwrap();
     }
 
-    let _ = from_svg(include_str!("./lyon.svg")).unwrap();
+    let opcodes = from_svg(include_str!("./lyon.svg")).unwrap();
+
+    std::fs::write(output_dir.join("./lyon.svg"), to_svg(opcodes).unwrap()).unwrap();
 }

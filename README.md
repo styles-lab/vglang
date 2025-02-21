@@ -1,7 +1,7 @@
-# vglang
+# VGLANG
 
-Fast and simple vector graphics programming language and svg-compatible high-level opcodes.
+Fast and simple **v**ector **g**raphics programming **lang**uage and svg-compatible high-level opcodes.
 
 # LICENSE
 
-In the vast majority of cases you are free to use vglang based on the MIT licence, with the exception of blockchain usages.
+In the vast majority of cases you are free to use `vglang` under the [`MIT licence`](./LICENSE), with the exception of blockchain usages.

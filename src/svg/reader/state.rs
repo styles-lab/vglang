@@ -6,7 +6,7 @@ use mlang_rs::rt::{opcode::Variable, serde::ser::Serialize};
 use xml_dom::level2::{Attribute, Element, Node, NodeType, RefNode};
 
 use crate::{
-    opcode::{Length, Paint, PreserveAspectRatio, Transform, ViewBox},
+    opcode::{Color, Iri, Length, Paint, PathEvent, PreserveAspectRatio, Transform, ViewBox},
     svg::{
         parse::{FromSvg, ParseError, ParseSvg},
         reader::{ReadingError, SVG_READ_REPORT},
@@ -435,6 +435,54 @@ impl Decoder for VariantDecoder {
         let value = state.pop_value()?;
 
         state.push_variant(value);
+
+        Ok(())
+    }
+}
+
+pub(super) struct PathEventsDecoder;
+
+impl Decoder for PathEventsDecoder {
+    fn decode(state: &mut ReadingState) -> Result<()> {
+        let value = state.parse::<Vec<PathEvent>>()?;
+
+        let mut writer = ReadingCodeWriter::default();
+
+        value.serialize(&mut writer)?;
+
+        state.push_codes(writer);
+
+        Ok(())
+    }
+}
+
+pub(super) struct ColorDecoder;
+
+impl Decoder for ColorDecoder {
+    fn decode(state: &mut ReadingState) -> Result<()> {
+        let value = state.parse::<Color>()?;
+
+        let mut writer = ReadingCodeWriter::default();
+
+        value.serialize(&mut writer)?;
+
+        state.push_codes(writer);
+
+        Ok(())
+    }
+}
+
+pub(super) struct IriDecoder;
+
+impl Decoder for IriDecoder {
+    fn decode(state: &mut ReadingState) -> Result<()> {
+        let value = state.parse::<Iri>()?;
+
+        let mut writer = ReadingCodeWriter::default();
+
+        value.serialize(&mut writer)?;
+
+        state.push_codes(writer);
 
         Ok(())
     }

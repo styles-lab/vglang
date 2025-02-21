@@ -10,8 +10,8 @@ use crate::{
     opcode::Opcode,
     svg::reader::{
         state::{
-            LengthDecoder, PaintDecoder, ReadingCode, StrokeLineJoinDecoder, TransformListDecoder,
-            VariantDecoder, ViewBoxDecoder,
+            ColorDecoder, IriDecoder, LengthDecoder, PaintDecoder, PathEventsDecoder, ReadingCode,
+            StrokeLineJoinDecoder, TransformListDecoder, VariantDecoder, ViewBoxDecoder,
         },
         SVG_READ_REPORT,
     },
@@ -79,6 +79,7 @@ impl<'a> Deserializer for &'a mut SvgReader {
             let mut children = node
                 .child_nodes()
                 .into_iter()
+                .rev()
                 .map(|node| {
                     if child_of_defs {
                         Reading::ChildOfDefs(node)
@@ -125,11 +126,6 @@ impl<'a> Deserializer for &'a mut SvgReader {
     where
         V: mlang_rs::rt::serde::de::Visitor,
     {
-        log::trace!(
-            target: SVG_READ_REPORT,
-            "deserialize vglang el({})", name
-        );
-
         let v = visitor.visit_node(&mut *self)?;
 
         assert_eq!(self.state.pop(), Some(ReadingCode::Elem(name.to_string())));
@@ -146,11 +142,6 @@ impl<'a> Deserializer for &'a mut SvgReader {
     where
         V: mlang_rs::rt::serde::de::Visitor,
     {
-        log::trace!(
-            target: SVG_READ_REPORT,
-            "deserialize vglang leaf({})", name
-        );
-
         let value = visitor.visit_node(&mut *self)?;
 
         assert_eq!(self.state.pop(), Some(ReadingCode::Leaf(name.to_string())));
@@ -167,11 +158,6 @@ impl<'a> Deserializer for &'a mut SvgReader {
     where
         V: mlang_rs::rt::serde::de::Visitor,
     {
-        log::trace!(
-            target: SVG_READ_REPORT,
-            "deserialize vglang attr({})", name
-        );
-
         match name {
             "viewBox" => {
                 self.state.decode::<ViewBoxDecoder>()?;
@@ -192,11 +178,12 @@ impl<'a> Deserializer for &'a mut SvgReader {
     where
         V: mlang_rs::rt::serde::de::Visitor,
     {
-        log::trace!(target: SVG_READ_REPORT,"deserialize vglang data({})", name);
-
         match self.state.top() {
             Some(ReadingCode::Data(v)) => {
                 assert_eq!(name, v);
+                self.state.pop();
+            }
+            Some(ReadingCode::SeqStart) => {
                 self.state.pop();
             }
             _ => {}
@@ -214,20 +201,24 @@ impl<'a> Deserializer for &'a mut SvgReader {
     where
         V: mlang_rs::rt::serde::de::Visitor,
     {
-        log::trace!(target: SVG_READ_REPORT, "deserialize vglang enum({})", name);
-
         match self.state.top() {
             Some(ReadingCode::Variant(_)) => {}
             Some(ReadingCode::SeqStart) => {
                 self.state.pop();
 
                 match name {
+                    "pathEvent" => {
+                        self.state.decode::<PathEventsDecoder>()?;
+                    }
                     "transform" => {
                         self.state.decode::<TransformListDecoder>()?;
-                        assert_eq!(self.state.pop(), Some(ReadingCode::SeqStart));
                     }
-                    _ => {}
+                    _ => {
+                        panic!("unhandle variant({})", name);
+                    }
                 }
+
+                assert_eq!(self.state.pop(), Some(ReadingCode::SeqStart));
             }
             _ => match name {
                 "length" => {
@@ -236,9 +227,13 @@ impl<'a> Deserializer for &'a mut SvgReader {
                 "paint" => {
                     self.state.decode::<PaintDecoder>()?;
                 }
+                "color" => {
+                    self.state.decode::<ColorDecoder>()?;
+                }
                 "stroke-linejoin" => {
                     self.state.decode::<StrokeLineJoinDecoder>()?;
                 }
+                "iri" => self.state.decode::<IriDecoder>()?,
                 _ => {
                     self.state.decode::<VariantDecoder>()?;
                 }
