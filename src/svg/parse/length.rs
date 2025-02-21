@@ -93,5 +93,8 @@ mod tests {
                 Length::Px(-8e10)
             ])
         );
+
+        assert_eq!("1em".parse_svg(), Ok(vec![Length::Em(1.)]));
+        assert_eq!("1.2em".parse_svg(), Ok(vec![Length::Em(1.2)]));
     }
 }

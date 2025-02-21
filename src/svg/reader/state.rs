@@ -6,7 +6,10 @@ use mlang_rs::rt::{opcode::Variable, serde::ser::Serialize};
 use xml_dom::level2::{Attribute, Element, Node, NodeType, RefNode};
 
 use crate::{
-    opcode::{Color, Iri, Length, Paint, PathEvent, PreserveAspectRatio, Transform, ViewBox},
+    opcode::{
+        Angle, Color, FontFamily, FuncIri, Iri, Length, NumberOptNumber, Paint, PathEvent, Point,
+        PreserveAspectRatio, Transform, ViewBox,
+    },
     svg::{
         parse::{FromSvg, ParseError, ParseSvg},
         reader::{ReadingError, SVG_READ_REPORT},
@@ -483,6 +486,329 @@ impl Decoder for IriDecoder {
         value.serialize(&mut writer)?;
 
         state.push_codes(writer);
+
+        Ok(())
+    }
+}
+
+pub(super) struct FeColorMatrixDecoder;
+
+impl Decoder for FeColorMatrixDecoder {
+    fn decode(state: &mut ReadingState) -> Result<()> {
+        state.load("type");
+
+        let ty = state.pop_value()?;
+
+        let ty = ty.trim();
+
+        match ty {
+            "matrix" => {
+                let values = state.parse::<Vec<f32>>()?;
+                state.push_seq_end();
+                for value in values.into_iter().rev() {
+                    state.push_value(value.to_string());
+                }
+                state.push_seq_start();
+                state.push(ReadingCode::Field {
+                    name: None,
+                    index: 0,
+                });
+                state.push_variant("matrix");
+            }
+            "saturate" => {
+                let value = state.parse::<f32>()?;
+
+                state.push_value(value.to_string());
+                state.push(ReadingCode::Field {
+                    name: None,
+                    index: 0,
+                });
+                state.push_variant("saturate");
+            }
+            "hueRotate" => {
+                let value = state.parse::<f32>()?;
+
+                state.push_value(value.to_string());
+
+                state.push(ReadingCode::Field {
+                    name: None,
+                    index: 0,
+                });
+
+                state.push_variant("hueRotate");
+            }
+            "luminanceToAlpha" => {
+                assert_eq!(state.pop(), Some(ReadingCode::None));
+                state.push_variant("luminanceToAlpha");
+            }
+            variant => {
+                log::error!(target: SVG_READ_REPORT, "unknown feColorMatrix variant `{}`",variant);
+            }
+        }
+
+        Ok(())
+    }
+}
+
+pub(super) struct FontFamilyListDecoder;
+
+impl Decoder for FontFamilyListDecoder {
+    fn decode(state: &mut ReadingState) -> Result<()> {
+        let value = state.parse::<Vec<FontFamily>>()?;
+
+        let mut writer = ReadingCodeWriter::default();
+
+        value.serialize(&mut writer)?;
+
+        state.push_codes(writer);
+
+        Ok(())
+    }
+}
+
+pub(super) struct AngleListDecoder;
+
+impl Decoder for AngleListDecoder {
+    fn decode(state: &mut ReadingState) -> Result<()> {
+        let value = state.parse::<Vec<Angle>>()?;
+
+        let mut writer = ReadingCodeWriter::default();
+
+        value.serialize(&mut writer)?;
+
+        state.push_codes(writer);
+
+        Ok(())
+    }
+}
+
+pub(super) struct LengthListDecoder;
+
+impl Decoder for LengthListDecoder {
+    fn decode(state: &mut ReadingState) -> Result<()> {
+        let value = state.parse::<Vec<Length>>()?;
+
+        let mut writer = ReadingCodeWriter::default();
+
+        value.serialize(&mut writer)?;
+
+        state.push_codes(writer);
+
+        Ok(())
+    }
+}
+
+pub(super) struct AngleDecoder;
+
+impl Decoder for AngleDecoder {
+    fn decode(state: &mut ReadingState) -> Result<()> {
+        let value = state.parse::<Angle>()?;
+
+        let mut writer = ReadingCodeWriter::default();
+
+        value.serialize(&mut writer)?;
+
+        state.push_codes(writer);
+
+        Ok(())
+    }
+}
+
+pub(super) struct FeFuncDecoder;
+
+impl Decoder for FeFuncDecoder {
+    fn decode(state: &mut ReadingState) -> Result<()> {
+        state.load("type");
+
+        let ty = state.pop_value()?;
+
+        match ty.as_str() {
+            "identity" => {}
+            "table" => {
+                state.load("tableValues");
+                let values = state.parse::<Vec<f32>>()?;
+
+                state.push_seq_end();
+
+                for number in values.into_iter().rev() {
+                    state.push_value(number.to_string());
+                }
+
+                state.push_seq_start();
+                state.push(ReadingCode::Field {
+                    name: None,
+                    index: 0,
+                });
+            }
+            "discrete" => {
+                state.load("tableValues");
+                let values = state.parse::<Vec<f32>>()?;
+
+                state.push_seq_end();
+
+                for number in values.into_iter().rev() {
+                    state.push_value(number.to_string());
+                }
+
+                state.push_seq_start();
+
+                state.push(ReadingCode::Field {
+                    name: None,
+                    index: 0,
+                });
+            }
+            "linear" => {
+                state.load("slope");
+                let slope = state.parse::<f32>()?;
+
+                state.load("intercept");
+                let intercept = state.parse::<f32>()?;
+
+                state.push_value(intercept.to_string());
+                state.push(ReadingCode::Field {
+                    name: Some("intercept".to_string()),
+                    index: 1,
+                });
+                state.push_value(slope.to_string());
+                state.push(ReadingCode::Field {
+                    name: Some("slope".to_string()),
+                    index: 0,
+                });
+            }
+            "gamma" => {
+                state.load("amplitude");
+                let amplitude = state.parse::<f32>()?;
+                state.load("exponent");
+                let exponent = state.parse::<f32>()?;
+
+                state.load("offset");
+                let offset = state.parse::<f32>()?;
+
+                state.push_value(offset.to_string());
+                state.push(ReadingCode::Field {
+                    name: Some("offset".to_string()),
+                    index: 2,
+                });
+                state.push_value(exponent.to_string());
+                state.push(ReadingCode::Field {
+                    name: Some("exponent".to_string()),
+                    index: 1,
+                });
+                state.push_value(amplitude.to_string());
+                state.push(ReadingCode::Field {
+                    name: Some("amplitude".to_string()),
+                    index: 0,
+                });
+            }
+            name => {
+                log::error!(target: SVG_READ_REPORT, "unknown feFunc type {}",name);
+            }
+        }
+
+        state.push_variant(ty);
+        Ok(())
+    }
+}
+
+pub(super) struct PointDecoder;
+
+impl Decoder for PointDecoder {
+    fn decode(state: &mut ReadingState) -> Result<()> {
+        let value = state.parse::<Point>()?;
+
+        let mut writer = ReadingCodeWriter::default();
+
+        value.serialize(&mut writer)?;
+
+        state.push_codes(writer);
+
+        Ok(())
+    }
+}
+
+pub(super) struct PointListDecoder;
+
+impl Decoder for PointListDecoder {
+    fn decode(state: &mut ReadingState) -> Result<()> {
+        let value = state.parse::<Vec<Point>>()?;
+
+        let mut writer = ReadingCodeWriter::default();
+
+        value.serialize(&mut writer)?;
+
+        state.push_codes(writer);
+
+        Ok(())
+    }
+}
+
+pub(super) struct FuncIriDecoder;
+
+impl Decoder for FuncIriDecoder {
+    fn decode(state: &mut ReadingState) -> Result<()> {
+        let value = state.parse::<FuncIri>()?;
+
+        let mut writer = ReadingCodeWriter::default();
+
+        value.serialize(&mut writer)?;
+
+        state.push_codes(writer);
+
+        Ok(())
+    }
+}
+
+pub(super) struct NumberOptNumberDecoder;
+
+impl Decoder for NumberOptNumberDecoder {
+    fn decode(state: &mut ReadingState) -> Result<()> {
+        let value = state.parse::<NumberOptNumber>()?;
+
+        let mut writer = ReadingCodeWriter::default();
+
+        value.serialize(&mut writer)?;
+
+        state.push_codes(writer);
+
+        Ok(())
+    }
+}
+
+pub(super) struct CharactersDecoder;
+
+impl Decoder for CharactersDecoder {
+    fn decode(state: &mut ReadingState) -> Result<()> {
+        state.load("value");
+        state.push(ReadingCode::Field {
+            name: None,
+            index: 0,
+        });
+        Ok(())
+    }
+}
+
+pub(super) struct FeInDecoder;
+
+impl Decoder for FeInDecoder {
+    fn decode(state: &mut ReadingState) -> Result<()> {
+        let value = state.pop_value()?;
+
+        let value = value.trim();
+
+        match value {
+            "SourceGraphic" | "SourceAlpha" | "BackgroundImage" | "BackgroundAlpha"
+            | "FillPaint" | "StrokePaint" => {
+                state.push_variant(value);
+            }
+            _ => {
+                state.push_value(value);
+                state.push(ReadingCode::Field {
+                    name: None,
+                    index: 0,
+                });
+                state.push_variant("result");
+            }
+        }
 
         Ok(())
     }

@@ -10,14 +10,22 @@ use crate::{
     opcode::Opcode,
     svg::reader::{
         state::{
-            ColorDecoder, IriDecoder, LengthDecoder, PaintDecoder, PathEventsDecoder, ReadingCode,
-            StrokeLineJoinDecoder, TransformListDecoder, VariantDecoder, ViewBoxDecoder,
+            AngleListDecoder, CharactersDecoder, ColorDecoder, FontFamilyListDecoder, IriDecoder,
+            LengthDecoder, LengthListDecoder, PaintDecoder, PathEventsDecoder, PointDecoder,
+            ReadingCode, StrokeLineJoinDecoder, TransformListDecoder, VariantDecoder,
+            ViewBoxDecoder,
         },
         SVG_READ_REPORT,
     },
 };
 
-use super::{state::ReadingState, ReadingError, Result};
+use super::{
+    state::{
+        AngleDecoder, FeColorMatrixDecoder, FeFuncDecoder, FeInDecoder, FuncIriDecoder,
+        NumberOptNumberDecoder, PointListDecoder, ReadingState,
+    },
+    ReadingError, Result,
+};
 
 enum Reading {
     Normal(RefNode),
@@ -90,29 +98,29 @@ impl<'a> Deserializer for &'a mut SvgReader {
                 .collect::<Vec<_>>();
 
             // skip deserializing `defs` elem.
-            if node.tag_name() == "defs" {
+            if tag_name == "defs" {
                 self.reading_stack.append(&mut children);
                 continue;
             }
 
             self.state = ReadingState::from_xml_node(&node, child_of_defs);
 
-            if visitor.is_element(self.state.opcode_name()) {
+            let opcode_name = self.state.opcode_name().to_string();
+
+            if visitor.is_element(&opcode_name) {
                 self.reading_stack.push(Reading::Handled);
-                self.state
-                    .push(ReadingCode::Elem(self.state.opcode_name().to_string()));
-            } else if !visitor.is_leaf(self.state.opcode_name()) {
+                self.state.push(ReadingCode::Elem(opcode_name.clone()));
+            } else if !visitor.is_leaf(&opcode_name) {
                 log::debug!("skip unknown elm {}", self.state.opcode_name());
                 continue;
             } else {
-                self.state
-                    .push(ReadingCode::Leaf(self.state.opcode_name().to_string()));
+                self.state.push(ReadingCode::Leaf(opcode_name.clone()));
             }
 
             self.reading_stack.append(&mut children);
 
             return visitor
-                .visit_opcode_with_attrs(&tag_name, &mut *self)
+                .visit_opcode_with_attrs(&opcode_name, &mut *self)
                 .map(|opcodes| Some(opcodes));
         }
     }
@@ -142,6 +150,13 @@ impl<'a> Deserializer for &'a mut SvgReader {
     where
         V: mlang_rs::rt::serde::de::Visitor,
     {
+        match name {
+            "characters" => {
+                self.state.decode::<CharactersDecoder>()?;
+            }
+            _ => {}
+        }
+
         let value = visitor.visit_node(&mut *self)?;
 
         assert_eq!(self.state.pop(), Some(ReadingCode::Leaf(name.to_string())));
@@ -181,13 +196,42 @@ impl<'a> Deserializer for &'a mut SvgReader {
         match self.state.top() {
             Some(ReadingCode::Data(v)) => {
                 assert_eq!(name, v);
-                self.state.pop();
             }
             Some(ReadingCode::SeqStart) => {
                 self.state.pop();
+
+                match name {
+                    "point" => {
+                        self.state.decode::<PointListDecoder>()?;
+                    }
+                    _ => {
+                        panic!("unhandle data({}) list", name);
+                    }
+                }
+
+                assert_eq!(self.state.pop(), Some(ReadingCode::SeqStart));
             }
-            _ => {}
+            _ => match name {
+                "funcIri" => {
+                    self.state.decode::<FuncIriDecoder>()?;
+                }
+                "point" => {
+                    self.state.decode::<PointDecoder>()?;
+                }
+                "numberOptNumber" => {
+                    self.state.decode::<NumberOptNumberDecoder>()?;
+                }
+                "backgroundNew" => {
+                    self.state
+                        .push(ReadingCode::Data("backgroundNew".to_string()));
+                }
+                _ => {
+                    panic!("unhandle data({})", name);
+                }
+            },
         }
+
+        assert_eq!(self.state.pop(), Some(ReadingCode::Data(name.to_string())));
 
         visitor.visit_node(&mut *self)
     }
@@ -213,6 +257,15 @@ impl<'a> Deserializer for &'a mut SvgReader {
                     "transform" => {
                         self.state.decode::<TransformListDecoder>()?;
                     }
+                    "fontFamily" => {
+                        self.state.decode::<FontFamilyListDecoder>()?;
+                    }
+                    "angle" => {
+                        self.state.decode::<AngleListDecoder>()?;
+                    }
+                    "length" => {
+                        self.state.decode::<LengthListDecoder>()?;
+                    }
                     _ => {
                         panic!("unhandle variant({})", name);
                     }
@@ -233,7 +286,24 @@ impl<'a> Deserializer for &'a mut SvgReader {
                 "stroke-linejoin" => {
                     self.state.decode::<StrokeLineJoinDecoder>()?;
                 }
-                "iri" => self.state.decode::<IriDecoder>()?,
+                "iri" => {
+                    self.state.decode::<IriDecoder>()?;
+                }
+                "feColorMatrixValues" => {
+                    self.state.decode::<FeColorMatrixDecoder>()?;
+                }
+                "angle" => {
+                    self.state.decode::<AngleDecoder>()?;
+                }
+                "transform" => {
+                    self.state.decode::<TransformListDecoder>()?;
+                }
+                "feFunc" => {
+                    self.state.decode::<FeFuncDecoder>()?;
+                }
+                "feIn" => {
+                    self.state.decode::<FeInDecoder>()?;
+                }
                 _ => {
                     self.state.decode::<VariantDecoder>()?;
                 }

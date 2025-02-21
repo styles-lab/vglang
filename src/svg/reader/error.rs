@@ -16,7 +16,13 @@ pub enum ReadingError {
     LoadSvgElement,
 
     #[error(transparent)]
-    DerError(#[from] mlang_rs::rt::serde::de::Error),
+    DerError(mlang_rs::rt::serde::de::Error),
+}
+
+impl From<mlang_rs::rt::serde::de::Error> for ReadingError {
+    fn from(value: mlang_rs::rt::serde::de::Error) -> Self {
+        ReadingError::DerError(value)
+    }
 }
 
 /// Reading result returns by functions in this module .

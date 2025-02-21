@@ -62,9 +62,7 @@ pub(super) fn parse_integer(ctx: &mut ParseContext<'_>) -> parserc::Result<i32> 
 pub(super) fn parse_exponent(ctx: &mut ParseContext<'_>) -> parserc::Result<Span> {
     let start = ensure_char('E').or(ensure_char('e')).parse(ctx)?;
 
-    let integer = parse_integer_prv
-        .fatal("failed parsing exponent integer part.", ctx.span())
-        .parse(ctx)?;
+    let integer = parse_integer_prv.parse(ctx)?;
 
     Ok(start.extend_to_inclusive(integer))
 }
