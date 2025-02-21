@@ -3,7 +3,11 @@
 #![cfg_attr(docsrs, feature(doc_cfg))]
 
 mod ml;
-pub use ml::opcode;
+
+/// Svg-compatible high-level opcodes.
+pub mod opcode {
+    pub use super::ml::opcode::*;
+}
 
 #[cfg(feature = "svg")]
 #[cfg_attr(docsrs, doc(cfg(feature = "svg")))]

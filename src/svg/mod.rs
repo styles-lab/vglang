@@ -1,4 +1,6 @@
-//! This module provides svg format serialization/deserialization supports for the vglang opcode.
+//! This module provides [`opcode`]-based svg serialisation/deserialisation support.
+//!
+//! [`opcode`]: super::opcode
 
 pub mod parse;
 pub mod reader;
