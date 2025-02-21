@@ -108,6 +108,8 @@ impl WriteState {
 
         let encoder = encoder.unwrap();
 
+        log::trace!(target: SVG_WRITE_REPORT, "encode: {:?} {:?}",encoder,params);
+
         encoder.encode(params, self);
 
         Ok(())
@@ -189,25 +191,34 @@ impl WriteState {
     }
 }
 
-#[derive(Debug)]
 pub(super) struct CharactersWriter {
     pub(super) document: RefNode,
     pub(super) node: RefNode,
+}
+
+impl Debug for CharactersWriter {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "CharactersWriter({})", self.node.tag_name())
+    }
 }
 
 impl Encoder for CharactersWriter {
     fn encode(&self, params: Vec<Option<String>>, _: &mut WriteState) {
         assert_eq!(params.len(), 2, "encode(Characters): params != 1");
 
+        let text = params[1]
+            .as_ref()
+            .expect("encode(Characters): value is none.");
+
+        log::trace!("CharactersWriter: {}", text);
+
+        let text_node = self.document.create_text_node(text);
+
+        log::trace!("CharactersWriter: {}", text_node.to_string());
+
         self.node
             .clone()
-            .append_child(
-                self.document.create_text_node(
-                    params[1]
-                        .as_ref()
-                        .expect("encode(Characters): value is none."),
-                ),
-            )
+            .append_child(text_node)
             .expect("insert characters");
     }
 }

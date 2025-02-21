@@ -64,18 +64,33 @@ fn test_spec() {
         // test_svg(svg, output);
     }
 
-    println!("spec result: ok {} passed; {} failed;", succ, faileds);
+    if faileds > 0 {
+        panic!("spec result: ok {} passed; {} failed;", succ, faileds);
+    } else {
+        println!("spec result: ok {} passed; {} failed;", succ, faileds);
+    }
 }
 
-fn test_svg(svg: impl AsRef<Path>, output: impl AsRef<Path>) {
-    let opcodes = from_svg(std::fs::read_to_string(svg).unwrap()).unwrap();
+fn test_svg(input: impl AsRef<Path>, output: impl AsRef<Path>) {
+    let opcodes = from_svg(std::fs::read_to_string(&input).unwrap()).unwrap();
 
-    std::fs::write(output, to_svg(opcodes).unwrap()).unwrap();
+    let svg = to_svg(&opcodes).unwrap();
+
+    std::fs::write(output, &svg).unwrap();
+
+    // TODO: fix the escape Character bug of the `xml_dom` crate.
+    if input.as_ref().file_name().unwrap() != "rtl_text.svg" {
+        assert_eq!(from_svg(svg).unwrap(), opcodes);
+    }
 }
 
 #[test]
 fn test_lyon_logo() {
     // _ = pretty_env_logger::try_init();
+
+    let opcodes = from_svg(include_str!("./lyon.svg")).unwrap();
+
+    let svg = to_svg(&opcodes).unwrap();
 
     let output_dir = PathBuf::from(env!("CARGO_TARGET_TMPDIR")).join("spec");
 
@@ -83,7 +98,7 @@ fn test_lyon_logo() {
         create_dir_all(&output_dir).unwrap();
     }
 
-    let opcodes = from_svg(include_str!("./lyon.svg")).unwrap();
+    std::fs::write(output_dir.join("./lyon.svg"), &svg).unwrap();
 
-    std::fs::write(output_dir.join("./lyon.svg"), to_svg(opcodes).unwrap()).unwrap();
+    assert_eq!(from_svg(svg).unwrap(), opcodes);
 }

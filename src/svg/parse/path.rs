@@ -223,6 +223,8 @@ fn parse_quadratic_smooth(ctx: &mut ParseContext<'_>) -> parserc::Result<PathEve
         .or(ensure_char('t').map(|_| true))
         .parse(ctx)?;
 
+    parse_sep.ok().parse(ctx)?;
+
     let params = parse_point_list(ctx)?;
 
     if params.is_empty() {
@@ -731,5 +733,12 @@ mod tests {
                 PathEvent::QuadraticBezierSmooth(vec![Point(1000., 300.)], true),
             ]),
         );
+    }
+
+    #[test]
+    fn test_quad_01() {
+        "M 200 300 Q 400 50 600 300 T 1000 300"
+            .parse_svg::<Vec<PathEvent>>()
+            .unwrap();
     }
 }

@@ -74,7 +74,7 @@ impl<'a> Deserializer for &'a mut SvgReader {
                 Some(Reading::Normal(node)) => (node, false),
                 Some(Reading::ChildOfDefs(node)) => (node, true),
                 Some(Reading::Handled) => {
-                    log::trace!("deserialize pop");
+                    log::trace!(target: SVG_READ_REPORT, "deserialize pop");
                     return visitor.visit_pop().map(|v| Some(vec![v]));
                 }
                 None => return Ok(None),
