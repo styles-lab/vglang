@@ -1,4 +1,4 @@
-//! This module provides binary format serialisation/deserialisation support for [`opcode`].
+//! This module provides serialisation/deserialisation support for opcodes in binary format.
 //!
 //! [`opcode`]: super::opcode
 

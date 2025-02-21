@@ -425,7 +425,7 @@ impl<'a> SerializeNode for &'a mut SvgWriter {
     }
 }
 
-/// Convert vglang opcodes into svg image.
+/// Encodes `opcodes` into svg format.
 pub fn to_svg(opcodes: impl AsRef<[Opcode]>) -> Result<Vec<u8>> {
     let mut writer = SvgWriter::new();
     let mut attrs = vec![];

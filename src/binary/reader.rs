@@ -583,7 +583,7 @@ impl<'a> SeqAccess for &'a mut BinaryReader {
     }
 }
 
-/// Decode opcodes from binary format.
+/// Decodes `opcodes` from binary format.
 pub fn from_binary(data: impl ToOwned<Owned = Vec<u8>>) -> Result<Vec<Opcode>, ReadError> {
     let mut reader = BinaryReader {
         buf: data.to_owned().into(),

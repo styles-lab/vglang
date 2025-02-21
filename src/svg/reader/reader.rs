@@ -525,7 +525,7 @@ impl<'a> AttrsNodeAccess for &'a mut SvgReader {
     }
 }
 
-/// Deserialize `vglang` opcodes from svg format.
+/// Decodes `opcodes` from svg format.
 pub fn from_svg(xml: impl AsRef<[u8]>) -> Result<Vec<Opcode>> {
     let mut reader = SvgReader::parse(xml)?;
 

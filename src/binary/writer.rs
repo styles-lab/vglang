@@ -348,7 +348,7 @@ impl<'a> SerializeSeq for &'a mut BinaryWriter {
     }
 }
 
-/// Decode opcodes from binary format.
+/// Encodes `opcodes` into binary format.
 pub fn to_binary(opcodes: impl AsRef<[Opcode]>) -> Result<Vec<u8>, WriteError> {
     let mut writer = BinaryWriter::default();
 

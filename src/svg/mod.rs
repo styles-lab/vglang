@@ -1,4 +1,4 @@
-//! This module provides [`opcode`]-based svg serialisation/deserialisation support.
+//! This module provides [`opcode`]-based serialisation/deserialisation support for svg format.
 //!
 //! [`opcode`]: super::opcode
 
