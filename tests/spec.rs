@@ -4,7 +4,10 @@ use std::{
     path::{Path, PathBuf},
 };
 
-use vglang::svg::{reader::from_svg, writer::to_svg};
+use vglang::{
+    binary::{from_binary, to_binary},
+    svg::{reader::from_svg, writer::to_svg},
+};
 #[test]
 fn test_spec() {
     // _ = pretty_env_logger::try_init();
@@ -74,9 +77,12 @@ fn test_spec() {
 fn test_svg(input: impl AsRef<Path>, output: impl AsRef<Path>) {
     let opcodes = from_svg(std::fs::read_to_string(&input).unwrap()).unwrap();
 
-    let svg = to_svg(&opcodes).unwrap();
+    let binary = to_binary(&opcodes).unwrap();
+    std::fs::write(output.as_ref().with_extension("bsvg"), &binary).unwrap();
 
-    std::fs::write(output, &svg).unwrap();
+    let svg = to_svg(from_binary(binary).unwrap()).unwrap();
+
+    std::fs::write(output.as_ref(), &svg).unwrap();
 
     // TODO: fix the escape Character bug of the `xml_dom` crate.
     if input.as_ref().file_name().unwrap() != "rtl_text.svg" {
@@ -88,17 +94,23 @@ fn test_svg(input: impl AsRef<Path>, output: impl AsRef<Path>) {
 fn test_lyon_logo() {
     // _ = pretty_env_logger::try_init();
 
-    let opcodes = from_svg(include_str!("./lyon.svg")).unwrap();
-
-    let svg = to_svg(&opcodes).unwrap();
-
     let output_dir = PathBuf::from(env!("CARGO_TARGET_TMPDIR")).join("spec");
 
     if !output_dir.exists() {
         create_dir_all(&output_dir).unwrap();
     }
 
+    let opcodes = from_svg(include_str!("./lyon.svg")).unwrap();
+
+    let svg = to_svg(&opcodes).unwrap();
+
+    assert_eq!(from_svg(&svg).unwrap(), opcodes);
+
     std::fs::write(output_dir.join("./lyon.svg"), &svg).unwrap();
 
-    assert_eq!(from_svg(svg).unwrap(), opcodes);
+    let binary = to_binary(&opcodes).unwrap();
+
+    assert_eq!(from_binary(binary.clone()).unwrap(), opcodes);
+
+    std::fs::write(output_dir.join("./lyon.bsvg"), binary).unwrap();
 }

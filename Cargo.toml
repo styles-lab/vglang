@@ -10,6 +10,7 @@ version = "0.1.1"
 [dependencies]
 thiserror = {version = "^2.0"}
 
+bytes = {version = "1.10.0", optional = true}
 heck = {version = "^0.5", optional = true}
 log = {version = "^0.4", features = ["kv"], optional = true}
 mlang-rs = {version = "^0.2", features = ["rt", "rt_serde"]}
@@ -26,7 +27,9 @@ serde_json = {version = "^1"}
 mlang-rs = {version = "^0.2", features = ["lang"]}
 
 [features]
-default = ["serde", "svg"]
+default = ["serde", "svg", "binary"]
+
+binary = ["bytes"]
 serde = ["dep:serde", "parserc/serde", "mlang-rs/serde"]
 svg = ["xml_dom", "heck", "log"]
 

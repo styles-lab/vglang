@@ -1,3 +1,5 @@
+//! A serializer for svg.
+
 mod error;
 pub use error::*;
 

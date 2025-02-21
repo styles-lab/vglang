@@ -1,4 +1,4 @@
-//! A deserializer of svg format.
+//! A deserializer for svg.
 
 mod error;
 pub use error::*;
