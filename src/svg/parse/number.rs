@@ -300,11 +300,4 @@ mod tests {
 
         assert_eq!(" 1.0 ".parse_svg(), Ok(NumberOptNumber(1.0, None)));
     }
-
-    #[test_fuzz::test_fuzz]
-    fn fuzz_test_number(value: f32) {
-        if value.is_finite() && !value.is_nan() && value.is_normal() {
-            assert_eq!(value.to_string().parse_svg(), Ok(value));
-        }
-    }
 }

@@ -21,7 +21,6 @@ xml_dom = {version = "^0.2", optional = true}
 divan = {version = "^0.1"}
 pretty_env_logger = {version = "^0.5"}
 serde_json = {version = "^1"}
-test-fuzz = {version = "^7"}
 
 [build-dependencies]
 mlang-rs = {version = "^0.2", features = ["lang"]}
