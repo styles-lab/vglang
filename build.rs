@@ -1,7 +1,3 @@
-#[cfg(docsrs)]
-fn ml_gen() {}
-
-#[cfg(not(docsrs))]
 fn ml_gen() {
     use std::path::PathBuf;
 
@@ -17,6 +13,8 @@ fn ml_gen() {
 }
 
 fn main() {
-    println!("cargo::rerun-if-changed=vglang.ml");
-    ml_gen();
+    if !std::env::var("DOCS_RS").is_ok() {
+        println!("cargo::rerun-if-changed=vglang.ml");
+        ml_gen();
+    }
 }
