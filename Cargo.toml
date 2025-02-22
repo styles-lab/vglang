@@ -1,7 +1,7 @@
 [package]
 description = "Fast and simple vector graphics programming language and svg-compatible high-level virtual machine."
 documentation = "https://docs.rs/vglang"
-edition = "2021"
+edition = "2024"
 license = "MIT"
 name = "vglang"
 repository = "https://github.com/styles-lab/vglang"
