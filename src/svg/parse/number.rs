@@ -11,7 +11,10 @@ use super::{FromSvg, ParseKind};
 pub(super) fn parse_digits(ctx: &mut ParseContext<'_>) -> parserc::Result<Span, ParseError> {
     take_while(|c| c.is_ascii_digit())
         .parse(ctx)?
-        .ok_or(ControlFlow::Recoverable(None))
+        .ok_or(ControlFlow::Recoverable(ParseError::failed(
+            ParseKind::Number,
+            ctx.unparsed(),
+        )))
 }
 
 /// parse numeric signature char: `+` or `-`.
@@ -37,12 +40,8 @@ fn parse_integer_prv(ctx: &mut ParseContext<'_>) -> parserc::Result<Span, ParseE
 pub(super) fn parse_integer(ctx: &mut ParseContext<'_>) -> parserc::Result<i32, ParseError> {
     let span = parse_integer_prv(ctx)?;
 
-    i32::from_str_radix(ctx.as_str(span), 10).map_err(|_| {
-        ControlFlow::Fatal(Some(ParseError::failed(
-            ParseKind::Integer,
-            ctx.as_str(span),
-        )))
-    })
+    i32::from_str_radix(ctx.as_str(span), 10)
+        .map_err(|_| ControlFlow::Fatal(ParseError::failed(ParseKind::Integer, ctx.as_str(span))))
 }
 
 /// parse exponent: `E-10` or `e100`
@@ -84,9 +83,9 @@ fn parse_number_prv(ctx: &mut ParseContext<'_>) -> parserc::Result<Span, ParseEr
                     target: SVG_PARSE_ERROR,span:serde = ctx.span();
                     "expect number trunc part."
                 );
-                ControlFlow::Fatal(Some(ParseError::failed(ParseKind::Number, ctx.unparsed())))
+                ControlFlow::Fatal(ParseError::failed(ParseKind::Number, ctx.unparsed()))
             } else {
-                ControlFlow::Recoverable(None)
+                ControlFlow::Recoverable(ParseError::failed(ParseKind::Number, ctx.unparsed()))
             }
         })?;
 
@@ -105,9 +104,9 @@ fn parse_number_prv(ctx: &mut ParseContext<'_>) -> parserc::Result<Span, ParseEr
 pub(super) fn parse_number(ctx: &mut ParseContext<'_>) -> parserc::Result<f32, ParseError> {
     let span = parse_number_prv(ctx)?;
 
-    ctx.as_str(span).parse().map_err(|_| {
-        ControlFlow::Fatal(Some(ParseError::failed(ParseKind::Number, ctx.unparsed())))
-    })
+    ctx.as_str(span)
+        .parse()
+        .map_err(|_| ControlFlow::Fatal(ParseError::failed(ParseKind::Number, ctx.unparsed())))
 }
 
 /// Parse svg value: `0` or `1` as bool value.
@@ -128,10 +127,10 @@ pub(super) fn parse_number_opt_number(
             target: SVG_PARSE_ERROR, span:serde = x;
             "failed parsing the first argument of number_opt_number: {}",err
         );
-        ControlFlow::Fatal(Some(ParseError::failed(
+        ControlFlow::Fatal(ParseError::failed(
             ParseKind::NumberOptNumber,
             ctx.as_str(x),
-        )))
+        ))
     })?;
 
     if let Some(_) = parse_sep.ok().parse(ctx)? {
@@ -142,10 +141,10 @@ pub(super) fn parse_number_opt_number(
                 target: SVG_PARSE_ERROR, span:serde = y;
                 "failed parsing the first argument of number_opt_number: {}",err
             );
-            ControlFlow::Fatal(Some(ParseError::failed(
+            ControlFlow::Fatal(ParseError::failed(
                 ParseKind::NumberOptNumber,
                 ctx.as_str(y),
-            )))
+            ))
         })?;
 
         Ok(NumberOptNumber(x, Some(y)))

@@ -22,7 +22,10 @@ pub(super) fn parse_font_family(
 
     let span = take_till(|c| c.is_ascii_whitespace() || c == ',')
         .parse(ctx)?
-        .ok_or_else(|| ControlFlow::Recoverable(None))?;
+        .ok_or(ControlFlow::Recoverable(ParseError::failed(
+            ParseKind::FontFamily,
+            ctx.unparsed(),
+        )))?;
 
     Ok(FontFamily::Generic(ctx.as_str(span).to_string()))
 }

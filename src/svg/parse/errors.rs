@@ -7,7 +7,11 @@ pub enum ParseError {
     Overflow(ParseKind, String),
     #[error("failed parsing svg `{0}` value, unparsing: `{0}`")]
     Unparsed(ParseKind, String),
+    #[error(transparent)]
+    Parserc(#[from] parserc::Kind),
 }
+
+impl parserc::ParseError for ParseError {}
 
 impl ParseError {
     pub(crate) fn failed(kind: ParseKind, source: impl AsRef<str>) -> Self {
@@ -26,6 +30,10 @@ impl ParseError {
 /// svg attribute value parsing error.
 #[derive(Debug, thiserror::Error, PartialEq, Clone)]
 pub enum ParseKind {
+    #[error("ws")]
+    Ws,
+    #[error("[ws],[ws]")]
+    Sep,
     #[error("integer")]
     Integer,
     #[error("number")]

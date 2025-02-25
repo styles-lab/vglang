@@ -35,10 +35,10 @@ pub(super) fn parse_background(
                 "the counter of the background new params is mismatch({}), expect 0 or 4.",
                 len
             );
-            return Err(ControlFlow::Fatal(Some(ParseError::failed(
+            return Err(ControlFlow::Fatal(ParseError::failed(
                 ParseKind::Background,
                 ctx.as_str(start),
-            ))));
+            )));
         }
     }
 }

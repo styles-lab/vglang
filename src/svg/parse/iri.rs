@@ -22,10 +22,10 @@ pub(super) fn parse_iri_prv(
 
     let body = take_till(|c| c.is_whitespace())
         .parse(ctx)?
-        .ok_or(ControlFlow::Fatal(Some(ParseError::failed(
+        .ok_or(ControlFlow::Fatal(ParseError::failed(
             ParseKind::Iri,
             ctx.as_str(start),
-        ))))?;
+        )))?;
 
     Ok((body, local))
 }
@@ -43,10 +43,10 @@ pub(super) fn parse_func_iri_prv(
 
     let span = take_while(|c| c != ')' && !c.is_whitespace())
         .parse(ctx)?
-        .ok_or(ControlFlow::Fatal(Some(ParseError::failed(
+        .ok_or(ControlFlow::Fatal(ParseError::failed(
             ParseKind::FuncIri,
             ctx.as_str(start),
-        ))))?;
+        )))?;
 
     skip_ws.ok().parse(ctx)?;
     ensure_char(')').parse(ctx)?;
