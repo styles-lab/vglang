@@ -1,5 +1,5 @@
 use mlang_rs::rt::opcode::Variable;
-use parserc::{ensure_keyword, ControlFlow, ParseContext, Parser, ParserExt};
+use parserc::{ParseContext, Parser, ParserExt, ensure_keyword};
 
 use crate::{
     opcode::{MeetOrSlice, PreserveAspectRatio, ViewBox},
@@ -9,17 +9,29 @@ use crate::{
     },
 };
 
-use super::{FromSvg, ParseError, ParseKind, SVG_PARSE_ERROR};
+use super::{FromSvg, ParseError, ParseKind};
 
 /// parse `viewBox` attribute value.
-pub(super) fn parse_viewbox(ctx: &mut ParseContext<'_>) -> parserc::Result<ViewBox> {
+pub(super) fn parse_viewbox(ctx: &mut ParseContext<'_>) -> parserc::Result<ViewBox, ParseError> {
     let minx = parse_number(ctx)?;
-    parse_sep(ctx).map_err(|_| ControlFlow::Fatal)?;
-    let miny = parse_number(ctx).map_err(|_| ControlFlow::Fatal)?;
-    parse_sep(ctx).map_err(|_| ControlFlow::Fatal)?;
-    let width = parse_number(ctx).map_err(|_| ControlFlow::Fatal)?;
-    parse_sep(ctx).map_err(|_| ControlFlow::Fatal)?;
-    let height = parse_number(ctx).map_err(|_| ControlFlow::Fatal)?;
+    parse_sep
+        .fatal(ParseError::failed(ParseKind::ViewBox, ctx.unparsed()))
+        .parse(ctx)?;
+    let miny = parse_number
+        .fatal(ParseError::failed(ParseKind::ViewBox, ctx.unparsed()))
+        .parse(ctx)?;
+    parse_sep
+        .fatal(ParseError::failed(ParseKind::ViewBox, ctx.unparsed()))
+        .parse(ctx)?;
+    let width = parse_number
+        .fatal(ParseError::failed(ParseKind::ViewBox, ctx.unparsed()))
+        .parse(ctx)?;
+    parse_sep
+        .fatal(ParseError::failed(ParseKind::ViewBox, ctx.unparsed()))
+        .parse(ctx)?;
+    let height = parse_number
+        .fatal(ParseError::failed(ParseKind::ViewBox, ctx.unparsed()))
+        .parse(ctx)?;
 
     Ok(ViewBox {
         minx: Variable::Constant(minx),
@@ -32,7 +44,8 @@ pub(super) fn parse_viewbox(ctx: &mut ParseContext<'_>) -> parserc::Result<ViewB
 
 pub(super) fn parse_preserve_aspect_ratio(
     ctx: &mut ParseContext<'_>,
-) -> parserc::Result<PreserveAspectRatio> {
+) -> parserc::Result<PreserveAspectRatio, ParseError> {
+    let start = ctx.span();
     // ignore `defer` keyword.
     ensure_keyword("defer").ok().parse(ctx)?;
     skip_ws.ok().parse(ctx)?;
@@ -47,10 +60,7 @@ pub(super) fn parse_preserve_aspect_ratio(
         .or(ensure_keyword("xMinYMax"))
         .or(ensure_keyword("xMidYMax"))
         .or(ensure_keyword("xMaxYMax"))
-        .fatal(
-            "failed parsing preserveAspectRatio: miss <align>.",
-            ctx.span(),
-        )
+        .fatal(ParseError::failed(ParseKind::ViewBox, ctx.as_str(start)))
         .parse(ctx)?;
 
     let align = ctx.as_str(align);
@@ -92,7 +102,7 @@ impl FromSvg for ViewBox {
     type Err = ParseError;
 
     fn from_svg(s: &str) -> std::result::Result<Self, Self::Err> {
-        let mut ctx = ParseContext::from(s.trim()).with_debug(SVG_PARSE_ERROR);
+        let mut ctx = ParseContext::from(s.trim());
 
         let v = parse_viewbox(&mut ctx).map_err(|_| ParseError::failed(ParseKind::ViewBox, s))?;
 
@@ -108,7 +118,7 @@ impl FromSvg for PreserveAspectRatio {
     type Err = ParseError;
 
     fn from_svg(s: &str) -> std::result::Result<Self, Self::Err> {
-        let mut ctx = ParseContext::from(s.trim()).with_debug(SVG_PARSE_ERROR);
+        let mut ctx = ParseContext::from(s.trim());
 
         let v = parse_preserve_aspect_ratio(&mut ctx)
             .map_err(|_| ParseError::failed(ParseKind::PreserveAspectRatio, s))?;

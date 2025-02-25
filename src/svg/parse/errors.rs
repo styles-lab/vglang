@@ -1,5 +1,5 @@
 /// svg attribute value parsing error.
-#[derive(Debug, thiserror::Error, PartialEq)]
+#[derive(Debug, thiserror::Error, PartialEq, Clone)]
 pub enum ParseError {
     #[error("failed parsing svg `{0}` value: `{1}`")]
     Failed(ParseKind, String),
@@ -24,7 +24,7 @@ impl ParseError {
     }
 }
 /// svg attribute value parsing error.
-#[derive(Debug, thiserror::Error, PartialEq)]
+#[derive(Debug, thiserror::Error, PartialEq, Clone)]
 pub enum ParseKind {
     #[error("integer")]
     Integer,

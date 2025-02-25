@@ -1,12 +1,10 @@
-use parserc::{ensure_keyword, ParseContext, Parser, ParserExt};
+use parserc::{ParseContext, Parser, ParserExt, ensure_keyword};
 
 use crate::opcode::Length;
 
-use super::{
-    number::parse_number, sep::parse_sep, FromSvg, ParseError, ParseKind, SVG_PARSE_ERROR,
-};
+use super::{FromSvg, ParseError, ParseKind, number::parse_number, sep::parse_sep};
 
-pub(super) fn parse_length(ctx: &mut ParseContext<'_>) -> parserc::Result<Length> {
+pub(super) fn parse_length(ctx: &mut ParseContext<'_>) -> parserc::Result<Length, ParseError> {
     let num = parse_number(ctx)?;
     if let Some(length) = ensure_keyword("px")
         .map(|_| Length::Px(num))
@@ -27,7 +25,9 @@ pub(super) fn parse_length(ctx: &mut ParseContext<'_>) -> parserc::Result<Length
     Ok(Length::Px(num))
 }
 
-pub(super) fn parse_length_list(ctx: &mut ParseContext<'_>) -> parserc::Result<Vec<Length>> {
+pub(super) fn parse_length_list(
+    ctx: &mut ParseContext<'_>,
+) -> parserc::Result<Vec<Length>, ParseError> {
     let mut values = vec![];
 
     while let Some(angle) = parse_length.ok().parse(ctx)? {
@@ -45,7 +45,7 @@ impl FromSvg for Length {
     type Err = ParseError;
 
     fn from_svg(s: &str) -> std::result::Result<Self, Self::Err> {
-        let mut ctx = ParseContext::from(s.trim()).with_debug(SVG_PARSE_ERROR);
+        let mut ctx = ParseContext::from(s.trim());
 
         let v = parse_length(&mut ctx).map_err(|_| ParseError::failed(ParseKind::Length, s))?;
 
@@ -61,7 +61,7 @@ impl FromSvg for Vec<Length> {
     type Err = ParseError;
 
     fn from_svg(s: &str) -> std::result::Result<Self, Self::Err> {
-        let mut ctx = ParseContext::from(s.trim()).with_debug(SVG_PARSE_ERROR);
+        let mut ctx = ParseContext::from(s.trim());
 
         let v =
             parse_length_list(&mut ctx).map_err(|_| ParseError::failed(ParseKind::Lengths, s))?;

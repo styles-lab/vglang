@@ -1,10 +1,12 @@
-use parserc::{ensure_keyword, take_till, ControlFlow, ParseContext, Parser, ParserExt};
+use parserc::{ControlFlow, ParseContext, Parser, ParserExt, ensure_keyword, take_till};
 
 use crate::opcode::FontFamily;
 
-use super::{sep::parse_sep, FromSvg, ParseError, ParseKind, SVG_PARSE_ERROR};
+use super::{FromSvg, ParseError, ParseKind, sep::parse_sep};
 
-pub(super) fn parse_font_family(ctx: &mut ParseContext<'_>) -> parserc::Result<FontFamily> {
+pub(super) fn parse_font_family(
+    ctx: &mut ParseContext<'_>,
+) -> parserc::Result<FontFamily, ParseError> {
     let keyword = ensure_keyword("serif")
         .map(|_| FontFamily::Serif)
         .or(ensure_keyword("sansSerif").map(|_| FontFamily::SansSerif))
@@ -20,12 +22,14 @@ pub(super) fn parse_font_family(ctx: &mut ParseContext<'_>) -> parserc::Result<F
 
     let span = take_till(|c| c.is_ascii_whitespace() || c == ',')
         .parse(ctx)?
-        .ok_or_else(|| ControlFlow::Recoverable)?;
+        .ok_or_else(|| ControlFlow::Recoverable(None))?;
 
     Ok(FontFamily::Generic(ctx.as_str(span).to_string()))
 }
 
-fn parse_font_family_list(ctx: &mut ParseContext<'_>) -> parserc::Result<Vec<FontFamily>> {
+fn parse_font_family_list(
+    ctx: &mut ParseContext<'_>,
+) -> parserc::Result<Vec<FontFamily>, ParseError> {
     let mut families = vec![];
 
     while let Some(family) = parse_font_family.ok().parse(ctx)? {
@@ -43,7 +47,7 @@ impl FromSvg for Vec<FontFamily> {
     type Err = ParseError;
 
     fn from_svg(s: &str) -> std::result::Result<Self, Self::Err> {
-        let mut ctx = ParseContext::from(s.trim()).with_debug(SVG_PARSE_ERROR);
+        let mut ctx = ParseContext::from(s.trim());
 
         let v = parse_font_family_list(&mut ctx)
             .map_err(|_| ParseError::failed(ParseKind::FontFamily, s))?;

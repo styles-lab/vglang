@@ -1,12 +1,10 @@
-use parserc::{ensure_keyword, ParseContext, Parser, ParserExt};
+use parserc::{ParseContext, Parser, ParserExt, ensure_keyword};
 
 use crate::opcode::Angle;
 
-use super::{
-    number::parse_number, sep::parse_sep, FromSvg, ParseError, ParseKind, SVG_PARSE_ERROR,
-};
+use super::{FromSvg, ParseError, ParseKind, number::parse_number, sep::parse_sep};
 
-pub(super) fn parse_angle(ctx: &mut ParseContext<'_>) -> parserc::Result<Angle> {
+pub(super) fn parse_angle(ctx: &mut ParseContext<'_>) -> parserc::Result<Angle, ParseError> {
     let num = parse_number(ctx)?;
     if let Some(angle) = ensure_keyword("deg")
         .map(|_| Angle::Deg(num))
@@ -21,7 +19,9 @@ pub(super) fn parse_angle(ctx: &mut ParseContext<'_>) -> parserc::Result<Angle> 
     Ok(Angle::Deg(num))
 }
 
-pub(super) fn parse_angle_list(ctx: &mut ParseContext<'_>) -> parserc::Result<Vec<Angle>> {
+pub(super) fn parse_angle_list(
+    ctx: &mut ParseContext<'_>,
+) -> parserc::Result<Vec<Angle>, ParseError> {
     let mut values = vec![];
 
     while let Some(angle) = parse_angle.ok().parse(ctx)? {
@@ -39,7 +39,7 @@ impl FromSvg for Angle {
     type Err = ParseError;
 
     fn from_svg(s: &str) -> std::result::Result<Self, Self::Err> {
-        let mut ctx = ParseContext::from(s.trim()).with_debug(SVG_PARSE_ERROR);
+        let mut ctx = ParseContext::from(s.trim());
 
         let v = parse_angle(&mut ctx).map_err(|_| ParseError::failed(ParseKind::Angle, s))?;
 
@@ -55,7 +55,7 @@ impl FromSvg for Vec<Angle> {
     type Err = ParseError;
 
     fn from_svg(s: &str) -> std::result::Result<Self, Self::Err> {
-        let mut ctx = ParseContext::from(s.trim()).with_debug(SVG_PARSE_ERROR);
+        let mut ctx = ParseContext::from(s.trim());
 
         let v = parse_angle_list(&mut ctx).map_err(|_| ParseError::failed(ParseKind::Angles, s))?;
 

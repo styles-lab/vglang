@@ -1,16 +1,16 @@
-use parserc::{ensure_char, ensure_keyword, ControlFlow, ParseContext, Parser, ParserExt};
+use parserc::{ParseContext, Parser, ParserExt, ensure_char, ensure_keyword};
 
 use crate::opcode::Transform;
 
 use super::{
+    FromSvg, ParseError, ParseKind,
     number::parse_number,
     point::parse_point,
     sep::{parse_sep, skip_ws},
-    FromSvg, ParseError, ParseKind, SVG_PARSE_ERROR,
 };
 
-fn parse_transform_matrix(ctx: &mut ParseContext<'_>) -> parserc::Result<Transform> {
-    ensure_keyword("matrix(").parse(ctx)?;
+fn parse_transform_matrix(ctx: &mut ParseContext<'_>) -> parserc::Result<Transform, ParseError> {
+    let start = ensure_keyword("matrix(").parse(ctx)?;
 
     skip_ws.ok().parse(ctx)?;
 
@@ -18,42 +18,62 @@ fn parse_transform_matrix(ctx: &mut ParseContext<'_>) -> parserc::Result<Transfo
 
     for i in 0..6 {
         values[i] = parse_number
-            .fatal(format!("expect matrix value({})", i), ctx.span())
+            .fatal(ParseError::failed(
+                ParseKind::TransformList,
+                ctx.as_str(start),
+            ))
             .parse(ctx)?;
 
         if i == 5 {
             skip_ws.ok().parse(ctx)?;
         } else {
             parse_sep
-                .fatal("expect whitespace or/and comma", ctx.span())
+                .fatal(ParseError::failed(
+                    ParseKind::TransformList,
+                    ctx.as_str(start),
+                ))
                 .parse(ctx)?;
         }
     }
 
     ensure_char(')')
-        .fatal("expect matrix func ')'", ctx.span())
+        .fatal(ParseError::failed(
+            ParseKind::TransformList,
+            ctx.as_str(start),
+        ))
         .parse(ctx)?;
 
     Ok(Transform::Matrix(values))
 }
 
-fn parse_rotate(ctx: &mut ParseContext<'_>) -> parserc::Result<Transform> {
-    ensure_keyword("rotate").parse(ctx)?;
+fn parse_rotate(ctx: &mut ParseContext<'_>) -> parserc::Result<Transform, ParseError> {
+    let start = ensure_keyword("rotate").parse(ctx)?;
 
     ensure_char('(')
-        .parse(ctx)
-        .map_err(|_| ControlFlow::Fatal)?;
+        .fatal(ParseError::failed(
+            ParseKind::TransformList,
+            ctx.as_str(start),
+        ))
+        .parse(ctx)?;
 
     skip_ws.ok().parse(ctx)?;
 
-    let one = parse_number(ctx).map_err(|_| ControlFlow::Fatal)?;
+    let one = parse_number
+        .fatal(ParseError::failed(
+            ParseKind::TransformList,
+            ctx.as_str(start),
+        ))
+        .parse(ctx)?;
 
     if let Some(_) = parse_sep.ok().parse(ctx)? {
         let c = parse_point(ctx)?;
 
         ensure_char(')')
-            .parse(ctx)
-            .map_err(|_| ControlFlow::Fatal)?;
+            .fatal(ParseError::failed(
+                ParseKind::TransformList,
+                ctx.as_str(start),
+            ))
+            .parse(ctx)?;
 
         Ok(Transform::Rotate {
             angle: one,
@@ -63,8 +83,11 @@ fn parse_rotate(ctx: &mut ParseContext<'_>) -> parserc::Result<Transform> {
         skip_ws.ok().parse(ctx)?;
 
         ensure_char(')')
-            .parse(ctx)
-            .map_err(|_| ControlFlow::Fatal)?;
+            .fatal(ParseError::failed(
+                ParseKind::TransformList,
+                ctx.as_str(start),
+            ))
+            .parse(ctx)?;
 
         Ok(Transform::Rotate {
             angle: one,
@@ -74,17 +97,25 @@ fn parse_rotate(ctx: &mut ParseContext<'_>) -> parserc::Result<Transform> {
 }
 fn parse_transform_two_params(
     name: &str,
-) -> impl parserc::Parser<Output = (f32, Option<f32>)> + Clone + use<'_> {
+) -> impl parserc::Parser<Output = (f32, Option<f32>), Error = ParseError> + Clone + use<'_> {
     move |ctx: &mut ParseContext<'_>| {
-        ensure_keyword(name).parse(ctx)?;
+        let start = ensure_keyword(name).parse(ctx)?;
 
         ensure_char('(')
-            .parse(ctx)
-            .map_err(|_| ControlFlow::Fatal)?;
+            .fatal(ParseError::failed(
+                ParseKind::TransformList,
+                ctx.as_str(start),
+            ))
+            .parse(ctx)?;
 
         skip_ws.ok().parse(ctx)?;
 
-        let one = parse_number(ctx).map_err(|_| ControlFlow::Fatal)?;
+        let one = parse_number
+            .fatal(ParseError::failed(
+                ParseKind::TransformList,
+                ctx.as_str(start),
+            ))
+            .parse(ctx)?;
 
         let two = if let Some(_) = parse_sep.ok().parse(ctx)? {
             parse_number.ok().parse(ctx)?
@@ -95,36 +126,54 @@ fn parse_transform_two_params(
         skip_ws.ok().parse(ctx)?;
 
         ensure_char(')')
-            .parse(ctx)
-            .map_err(|_| ControlFlow::Fatal)?;
+            .fatal(ParseError::failed(
+                ParseKind::TransformList,
+                ctx.as_str(start),
+            ))
+            .parse(ctx)?;
 
         Ok((one, two))
     }
 }
 
-fn parse_transform_one_param(name: &str) -> impl parserc::Parser<Output = f32> + Clone + use<'_> {
+fn parse_transform_one_param(
+    name: &str,
+) -> impl parserc::Parser<Output = f32, Error = ParseError> + Clone + use<'_> {
     move |ctx: &mut ParseContext<'_>| {
-        ensure_keyword(name).parse(ctx)?;
+        let start = ensure_keyword(name).parse(ctx)?;
 
         ensure_char('(')
-            .parse(ctx)
-            .map_err(|_| ControlFlow::Fatal)?;
+            .fatal(ParseError::failed(
+                ParseKind::TransformList,
+                ctx.as_str(start),
+            ))
+            .parse(ctx)?;
 
         skip_ws.ok().parse(ctx)?;
 
-        let one = parse_number(ctx).map_err(|_| ControlFlow::Fatal)?;
+        let one = parse_number
+            .fatal(ParseError::failed(
+                ParseKind::TransformList,
+                ctx.as_str(start),
+            ))
+            .parse(ctx)?;
 
         skip_ws.ok().parse(ctx)?;
 
         ensure_char(')')
-            .parse(ctx)
-            .map_err(|_| ControlFlow::Fatal)?;
+            .fatal(ParseError::failed(
+                ParseKind::TransformList,
+                ctx.as_str(start),
+            ))
+            .parse(ctx)?;
 
         Ok(one)
     }
 }
 
-pub(super) fn parse_transform_list(ctx: &mut ParseContext<'_>) -> parserc::Result<Vec<Transform>> {
+pub(super) fn parse_transform_list(
+    ctx: &mut ParseContext<'_>,
+) -> parserc::Result<Vec<Transform>, ParseError> {
     let mut values = vec![];
 
     while let Some(transform) = parse_transform_matrix
@@ -151,7 +200,7 @@ impl FromSvg for Vec<Transform> {
     type Err = ParseError;
 
     fn from_svg(s: &str) -> std::result::Result<Self, Self::Err> {
-        let mut ctx = ParseContext::from(s.trim()).with_debug(SVG_PARSE_ERROR);
+        let mut ctx = ParseContext::from(s.trim());
 
         let v = parse_transform_list(&mut ctx)
             .map_err(|_| ParseError::failed(ParseKind::TransformList, s))?;

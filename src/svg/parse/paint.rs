@@ -1,7 +1,7 @@
 use mlang_rs::rt::serde::de::Deserialize;
 use parserc::{
-    ensure_char, ensure_keyword, ensure_keyword_insensitive, take_while, ControlFlow, ParseContext,
-    Parser, ParserExt, Span,
+    ControlFlow, ParseContext, Parser, ParserExt, Span, ensure_char, ensure_keyword,
+    ensure_keyword_insensitive, take_while,
 };
 
 use crate::{
@@ -10,12 +10,12 @@ use crate::{
 };
 
 use super::{
-    iri::parse_func_iri_prv, number::parse_digits, sep::skip_ws, variant::Variant, FromSvg,
-    ParseError,
+    FromSvg, ParseError, iri::parse_func_iri_prv, number::parse_digits, sep::skip_ws,
+    variant::Variant,
 };
 
-fn parse_rgb(ctx: &mut ParseContext<'_>) -> parserc::Result<Color> {
-    ensure_keyword_insensitive("rgb(").parse(ctx)?;
+fn parse_rgb(ctx: &mut ParseContext<'_>) -> parserc::Result<Color, ParseError> {
+    let start = ensure_keyword_insensitive("rgb(").parse(ctx)?;
 
     skip_ws.ok().parse(ctx)?;
 
@@ -34,7 +34,9 @@ fn parse_rgb(ctx: &mut ParseContext<'_>) -> parserc::Result<Color> {
             rgb[i] = span;
         } else {
             if is_percent {
-                _ = ensure_char('%').fatal("expect %", span).parse(ctx)?;
+                _ = ensure_char('%')
+                    .fatal(ParseError::failed(ParseKind::Color, ctx.as_str(span)))
+                    .parse(ctx)?;
             }
 
             rgb[i] = span;
@@ -44,7 +46,7 @@ fn parse_rgb(ctx: &mut ParseContext<'_>) -> parserc::Result<Color> {
 
         if i != 2 {
             ensure_char(',')
-                .fatal("expect whitespace and/or a comma", ctx.span())
+                .fatal(ParseError::failed(ParseKind::Color, ctx.as_str(span)))
                 .parse(ctx)?;
 
             skip_ws.ok().parse(ctx)?;
@@ -52,15 +54,18 @@ fn parse_rgb(ctx: &mut ParseContext<'_>) -> parserc::Result<Color> {
     }
 
     ensure_char(')')
-        .parse(ctx)
-        .map_err(|_| ControlFlow::Fatal)?;
+        .fatal(ParseError::failed(ParseKind::Color, ctx.as_str(start)))
+        .parse(ctx)?;
 
     let r = u8::from_str_radix(ctx.as_str(rgb[0]), 10).map_err(|err| {
         log::error!(
             target: SVG_PARSE_ERROR, span:serde =  rgb[0];
             "failed parsing red component: {}",err
         );
-        ControlFlow::Fatal
+        ControlFlow::Fatal(Some(ParseError::failed(
+            ParseKind::Color,
+            ctx.as_str(start),
+        )))
     })?;
 
     let g = u8::from_str_radix(ctx.as_str(rgb[1]), 10).map_err(|err| {
@@ -68,7 +73,10 @@ fn parse_rgb(ctx: &mut ParseContext<'_>) -> parserc::Result<Color> {
             target: SVG_PARSE_ERROR, span:serde =  rgb[1];
             "failed parsing green component: {}",err
         );
-        ControlFlow::Fatal
+        ControlFlow::Fatal(Some(ParseError::failed(
+            ParseKind::Color,
+            ctx.as_str(start),
+        )))
     })?;
 
     let b = u8::from_str_radix(ctx.as_str(rgb[2]), 10).map_err(|err| {
@@ -76,7 +84,10 @@ fn parse_rgb(ctx: &mut ParseContext<'_>) -> parserc::Result<Color> {
             target: SVG_PARSE_ERROR, span:serde =  rgb[2];
             "failed parsing blue component: {}",err
         );
-        ControlFlow::Fatal
+        ControlFlow::Fatal(Some(ParseError::failed(
+            ParseKind::Color,
+            ctx.as_str(start),
+        )))
     })?;
 
     if is_percent {
@@ -85,7 +96,10 @@ fn parse_rgb(ctx: &mut ParseContext<'_>) -> parserc::Result<Color> {
                 target: SVG_PARSE_ERROR, span:serde =  rgb[0];
                 "failed parsing red component: out of range."
             );
-            return Err(ControlFlow::Fatal);
+            return Err(ControlFlow::Fatal(Some(ParseError::failed(
+                ParseKind::Color,
+                ctx.as_str(start),
+            ))));
         }
 
         if g > 100 {
@@ -93,7 +107,10 @@ fn parse_rgb(ctx: &mut ParseContext<'_>) -> parserc::Result<Color> {
                 target: SVG_PARSE_ERROR, span:serde =  rgb[1];
                 "failed parsing green component: out of range."
             );
-            return Err(ControlFlow::Fatal);
+            return Err(ControlFlow::Fatal(Some(ParseError::failed(
+                ParseKind::Color,
+                ctx.as_str(start),
+            ))));
         }
 
         if b > 100 {
@@ -101,7 +118,10 @@ fn parse_rgb(ctx: &mut ParseContext<'_>) -> parserc::Result<Color> {
                 target: SVG_PARSE_ERROR, span:serde =  rgb[2];
                 "failed parsing blue component: out of range."
             );
-            return Err(ControlFlow::Fatal);
+            return Err(ControlFlow::Fatal(Some(ParseError::failed(
+                ParseKind::Color,
+                ctx.as_str(start),
+            ))));
         }
 
         Ok(Color::Rgb(
@@ -114,8 +134,8 @@ fn parse_rgb(ctx: &mut ParseContext<'_>) -> parserc::Result<Color> {
     }
 }
 
-fn parse_hexadecimal_notation(ctx: &mut ParseContext<'_>) -> parserc::Result<Color> {
-    ensure_char('#').parse(ctx)?;
+fn parse_hexadecimal_notation(ctx: &mut ParseContext<'_>) -> parserc::Result<Color, ParseError> {
+    let start = ensure_char('#').parse(ctx)?;
 
     let span = take_while(|c| c.is_ascii_hexdigit()).parse(ctx)?;
 
@@ -145,7 +165,10 @@ fn parse_hexadecimal_notation(ctx: &mut ParseContext<'_>) -> parserc::Result<Col
                     "color hexadecimal notation length is 3 or 6, but got {}",
                     len,
                 );
-                return Err(ControlFlow::Fatal);
+                return Err(ControlFlow::Fatal(Some(ParseError::failed(
+                    ParseKind::Color,
+                    ctx.as_str(start),
+                ))));
             }
         },
         _ => {
@@ -154,33 +177,37 @@ fn parse_hexadecimal_notation(ctx: &mut ParseContext<'_>) -> parserc::Result<Col
                 "miss hexadecimal notation body."
             );
 
-            return Err(ControlFlow::Fatal);
+            return Err(ControlFlow::Fatal(Some(ParseError::failed(
+                ParseKind::Color,
+                ctx.as_str(start),
+            ))));
         }
     }
 }
 
-fn parse_recognized_keyword(ctx: &mut ParseContext<'_>) -> parserc::Result<Color> {
+fn parse_recognized_keyword(ctx: &mut ParseContext<'_>) -> parserc::Result<Color, ParseError> {
     let span = take_while(|c| c.is_ascii_alphabetic())
         .parse(ctx)?
-        .ok_or(ControlFlow::Recoverable)?;
+        .ok_or(ControlFlow::Recoverable(None))?;
 
     let value = ctx.as_str(span);
 
     let mut deser = Variant(value);
 
-    let keyword = ColorKeyWord::deserialize(&mut deser).map_err(|_| ControlFlow::Recoverable)?;
+    let keyword =
+        ColorKeyWord::deserialize(&mut deser).map_err(|_| ControlFlow::Recoverable(None))?;
 
     Ok(Color::Keyword(keyword))
 }
 
-pub(super) fn parse_color_prv(ctx: &mut ParseContext<'_>) -> parserc::Result<Color> {
+pub(super) fn parse_color_prv(ctx: &mut ParseContext<'_>) -> parserc::Result<Color, ParseError> {
     parse_rgb
         .or(parse_hexadecimal_notation)
         .or(parse_recognized_keyword)
         .parse(ctx)
 }
 
-pub(super) fn parse_paint_prv(ctx: &mut ParseContext<'_>) -> parserc::Result<Paint> {
+pub(super) fn parse_paint_prv(ctx: &mut ParseContext<'_>) -> parserc::Result<Paint, ParseError> {
     ensure_keyword("none")
         .map(|_| Paint::None)
         .or(parse_color_prv.map(|color| Paint::Color(color)))
@@ -191,7 +218,7 @@ pub(super) fn parse_paint_prv(ctx: &mut ParseContext<'_>) -> parserc::Result<Pai
 impl FromSvg for Color {
     type Err = ParseError;
     fn from_svg(value: &str) -> Result<Self, Self::Err> {
-        let mut ctx = ParseContext::from(value.trim()).with_debug(SVG_PARSE_ERROR);
+        let mut ctx = ParseContext::from(value.trim());
 
         let color =
             parse_color_prv(&mut ctx).map_err(|_| ParseError::failed(ParseKind::Color, value))?;
@@ -207,7 +234,7 @@ impl FromSvg for Color {
 impl FromSvg for Paint {
     type Err = ParseError;
     fn from_svg(value: &str) -> Result<Self, Self::Err> {
-        let mut ctx = ParseContext::from(value.trim()).with_debug(SVG_PARSE_ERROR);
+        let mut ctx = ParseContext::from(value.trim());
 
         let paint =
             parse_paint_prv(&mut ctx).map_err(|_| ParseError::failed(ParseKind::Paint, value))?;

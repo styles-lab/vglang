@@ -1,6 +1,6 @@
 use parserc::{
-    ensure_char, ensure_keyword, take_till, take_while, ControlFlow, ParseContext, Parser,
-    ParserExt, Span,
+    ControlFlow, ParseContext, Parser, ParserExt, Span, ensure_char, ensure_keyword, take_till,
+    take_while,
 };
 
 use crate::{
@@ -8,9 +8,12 @@ use crate::{
     svg::parse::ParseKind,
 };
 
-use super::{sep::skip_ws, FromSvg, ParseError, SVG_PARSE_ERROR};
+use super::{FromSvg, ParseError, sep::skip_ws};
 
-pub(super) fn parse_iri_prv(ctx: &mut ParseContext<'_>) -> parserc::Result<(Span, bool)> {
+pub(super) fn parse_iri_prv(
+    ctx: &mut ParseContext<'_>,
+) -> parserc::Result<(Span, bool), ParseError> {
+    let start = ctx.span();
     let local = if let Some(_) = ensure_char('#').ok().parse(ctx)? {
         true
     } else {
@@ -19,13 +22,18 @@ pub(super) fn parse_iri_prv(ctx: &mut ParseContext<'_>) -> parserc::Result<(Span
 
     let body = take_till(|c| c.is_whitespace())
         .parse(ctx)?
-        .ok_or(ControlFlow::Fatal)?;
+        .ok_or(ControlFlow::Fatal(Some(ParseError::failed(
+            ParseKind::Iri,
+            ctx.as_str(start),
+        ))))?;
 
     Ok((body, local))
 }
 
-pub(super) fn parse_func_iri_prv(ctx: &mut ParseContext<'_>) -> parserc::Result<FuncIri> {
-    ensure_keyword("url").parse(ctx)?;
+pub(super) fn parse_func_iri_prv(
+    ctx: &mut ParseContext<'_>,
+) -> parserc::Result<FuncIri, ParseError> {
+    let start = ensure_keyword("url").parse(ctx)?;
     skip_ws.ok().parse(ctx)?;
     ensure_char('(').parse(ctx)?;
 
@@ -35,7 +43,10 @@ pub(super) fn parse_func_iri_prv(ctx: &mut ParseContext<'_>) -> parserc::Result<
 
     let span = take_while(|c| c != ')' && !c.is_whitespace())
         .parse(ctx)?
-        .ok_or(ControlFlow::Fatal)?;
+        .ok_or(ControlFlow::Fatal(Some(ParseError::failed(
+            ParseKind::FuncIri,
+            ctx.as_str(start),
+        ))))?;
 
     skip_ws.ok().parse(ctx)?;
     ensure_char(')').parse(ctx)?;
@@ -46,7 +57,7 @@ pub(super) fn parse_func_iri_prv(ctx: &mut ParseContext<'_>) -> parserc::Result<
 impl FromSvg for Iri {
     type Err = ParseError;
     fn from_svg(s: &str) -> Result<Self, Self::Err> {
-        let mut ctx = ParseContext::from(s.trim()).with_debug(SVG_PARSE_ERROR);
+        let mut ctx = ParseContext::from(s.trim());
 
         let (v, local) =
             parse_iri_prv(&mut ctx).map_err(|_| ParseError::failed(ParseKind::Iri, s))?;
@@ -66,7 +77,7 @@ impl FromSvg for Iri {
 impl FromSvg for FuncIri {
     type Err = ParseError;
     fn from_svg(s: &str) -> Result<Self, Self::Err> {
-        let mut ctx = ParseContext::from(s.trim()).with_debug(SVG_PARSE_ERROR);
+        let mut ctx = ParseContext::from(s.trim());
 
         let v =
             parse_func_iri_prv(&mut ctx).map_err(|_| ParseError::failed(ParseKind::FuncIri, s))?;

@@ -1,6 +1,6 @@
 use std::vec;
 
-use parserc::{ensure_char, ControlFlow, ParseContext, Parser, ParserExt};
+use parserc::{ControlFlow, ParseContext, Parser, ParserExt, ensure_char};
 
 use crate::{
     opcode::{Arc, CubicBezier, CubicBezierSmooth, PathEvent, QuadraticBezier},
@@ -8,14 +8,15 @@ use crate::{
 };
 
 use super::{
+    FromSvg, ParseError, ParseKind,
     number::{parse_bool, parse_number, parse_number_list},
     point::{parse_point, parse_point_list},
     sep::{parse_sep, skip_ws},
-    FromSvg, ParseError, ParseKind,
 };
 
 /// Parse `M (x y)+` or `m (x y)+`.
-fn parse_move_to(ctx: &mut ParseContext<'_>) -> parserc::Result<PathEvent> {
+fn parse_move_to(ctx: &mut ParseContext<'_>) -> parserc::Result<PathEvent, ParseError> {
+    let start = ctx.span();
     let relative = ensure_char('M')
         .map(|_| false)
         .or(ensure_char('m').map(|_| true))
@@ -30,21 +31,25 @@ fn parse_move_to(ctx: &mut ParseContext<'_>) -> parserc::Result<PathEvent> {
             target: SVG_PARSE_ERROR, span:serde = ctx.span();
             "failed parsing `moveTo` directive: parameter list is none."
         );
-        return Err(ControlFlow::Fatal);
+        return Err(ControlFlow::Fatal(Some(ParseError::failed(
+            ParseKind::PathEvent,
+            ctx.as_str(start),
+        ))));
     }
 
     Ok(PathEvent::MoveTo { points, relative })
 }
 
 /// Parse `Z` or `z`.
-fn parse_close(ctx: &mut ParseContext<'_>) -> parserc::Result<PathEvent> {
+fn parse_close(ctx: &mut ParseContext<'_>) -> parserc::Result<PathEvent, ParseError> {
     _ = ensure_char('Z').or(ensure_char('z')).parse(ctx)?;
 
     Ok(PathEvent::Close)
 }
 
 /// Parse `L (x y)+` or `l (x y)+`
-fn parse_line_to(ctx: &mut ParseContext<'_>) -> parserc::Result<PathEvent> {
+fn parse_line_to(ctx: &mut ParseContext<'_>) -> parserc::Result<PathEvent, ParseError> {
+    let start = ctx.span();
     let relative = ensure_char('L')
         .map(|_| false)
         .or(ensure_char('l').map(|_| true))
@@ -58,14 +63,19 @@ fn parse_line_to(ctx: &mut ParseContext<'_>) -> parserc::Result<PathEvent> {
             target: SVG_PARSE_ERROR, span:serde = ctx.span();
             "failed parsing `lineTo` directive: parameter list is none."
         );
-        return Err(ControlFlow::Fatal);
+        return Err(ControlFlow::Fatal(Some(ParseError::failed(
+            ParseKind::PathEvent,
+            ctx.as_str(start),
+        ))));
     }
 
     Ok(PathEvent::LineTo { points, relative })
 }
 
 /// Parse `H (x y)+` or `h (x y)+`
-fn parse_horizontal(ctx: &mut ParseContext<'_>) -> parserc::Result<PathEvent> {
+fn parse_horizontal(ctx: &mut ParseContext<'_>) -> parserc::Result<PathEvent, ParseError> {
+    let start = ctx.span();
+
     let relative = ensure_char('H')
         .map(|_| false)
         .or(ensure_char('h').map(|_| true))
@@ -79,14 +89,18 @@ fn parse_horizontal(ctx: &mut ParseContext<'_>) -> parserc::Result<PathEvent> {
             target: SVG_PARSE_ERROR, span:serde = ctx.span();
             "failed parsing `horizontal` directive: parameter list is none."
         );
-        return Err(ControlFlow::Fatal);
+        return Err(ControlFlow::Fatal(Some(ParseError::failed(
+            ParseKind::PathEvent,
+            ctx.as_str(start),
+        ))));
     }
 
     Ok(PathEvent::Horizontal(*points.last().unwrap(), relative))
 }
 
 /// Parse `V (x y)+` or `v (x y)+`
-fn parse_vertical(ctx: &mut ParseContext<'_>) -> parserc::Result<PathEvent> {
+fn parse_vertical(ctx: &mut ParseContext<'_>) -> parserc::Result<PathEvent, ParseError> {
+    let start = ctx.span();
     let relative = ensure_char('V')
         .map(|_| false)
         .or(ensure_char('v').map(|_| true))
@@ -100,13 +114,16 @@ fn parse_vertical(ctx: &mut ParseContext<'_>) -> parserc::Result<PathEvent> {
             target: SVG_PARSE_ERROR, span:serde = ctx.span();
             "failed parsing `Vertical` directive: parameter list is none."
         );
-        return Err(ControlFlow::Fatal);
+        return Err(ControlFlow::Fatal(Some(ParseError::failed(
+            ParseKind::PathEvent,
+            ctx.as_str(start),
+        ))));
     }
 
     Ok(PathEvent::Vertical(*points.last().unwrap(), relative))
 }
 
-fn parse_cubic_param(ctx: &mut ParseContext<'_>) -> parserc::Result<CubicBezier> {
+fn parse_cubic_param(ctx: &mut ParseContext<'_>) -> parserc::Result<CubicBezier, ParseError> {
     parse_sep.ok().parse(ctx)?;
     let ctrl1 = parse_point(ctx)?;
     parse_sep(ctx)?;
@@ -117,7 +134,9 @@ fn parse_cubic_param(ctx: &mut ParseContext<'_>) -> parserc::Result<CubicBezier>
     Ok(CubicBezier { ctrl1, ctrl2, to })
 }
 
-fn parse_cubic_smooth_param(ctx: &mut ParseContext<'_>) -> parserc::Result<CubicBezierSmooth> {
+fn parse_cubic_smooth_param(
+    ctx: &mut ParseContext<'_>,
+) -> parserc::Result<CubicBezierSmooth, ParseError> {
     parse_sep.ok().parse(ctx)?;
     let ctrl2 = parse_point(ctx)?;
     parse_sep(ctx)?;
@@ -127,7 +146,8 @@ fn parse_cubic_smooth_param(ctx: &mut ParseContext<'_>) -> parserc::Result<Cubic
 }
 
 /// Parse `C (x1 y1 x2 y2 x y)+`,`c (x1 y1 x2 y2 x y)+`,`S (x2 y2 x y)+` or `s (x2 y2 x y)+`
-fn parse_cubic(ctx: &mut ParseContext<'_>) -> parserc::Result<PathEvent> {
+fn parse_cubic(ctx: &mut ParseContext<'_>) -> parserc::Result<PathEvent, ParseError> {
+    let start = ctx.span();
     let relative = ensure_char('C')
         .map(|_| false)
         .or(ensure_char('c').map(|_| true))
@@ -148,13 +168,17 @@ fn parse_cubic(ctx: &mut ParseContext<'_>) -> parserc::Result<PathEvent> {
             target: SVG_PARSE_ERROR, span:serde = ctx.span();
             "failed parsing `curveto` directive: parameter list is none."
         );
-        return Err(ControlFlow::Fatal);
+        return Err(ControlFlow::Fatal(Some(ParseError::failed(
+            ParseKind::PathEvent,
+            ctx.as_str(start),
+        ))));
     }
 
     Ok(PathEvent::CubicBezier(params, relative))
 }
 
-fn parse_cubic_smooth(ctx: &mut ParseContext<'_>) -> parserc::Result<PathEvent> {
+fn parse_cubic_smooth(ctx: &mut ParseContext<'_>) -> parserc::Result<PathEvent, ParseError> {
+    let start = ctx.span();
     let relative = ensure_char('S')
         .map(|_| false)
         .or(ensure_char('s').map(|_| true))
@@ -175,13 +199,18 @@ fn parse_cubic_smooth(ctx: &mut ParseContext<'_>) -> parserc::Result<PathEvent> 
             target: SVG_PARSE_ERROR, span:serde = ctx.span();
             "failed parsing `smooth curveto` directive: parameter list is none."
         );
-        return Err(ControlFlow::Fatal);
+        return Err(ControlFlow::Fatal(Some(ParseError::failed(
+            ParseKind::PathEvent,
+            ctx.as_str(start),
+        ))));
     }
 
     Ok(PathEvent::CubicBezierSmooth(params, relative))
 }
 
-fn parse_quadratic_param(ctx: &mut ParseContext<'_>) -> parserc::Result<QuadraticBezier> {
+fn parse_quadratic_param(
+    ctx: &mut ParseContext<'_>,
+) -> parserc::Result<QuadraticBezier, ParseError> {
     parse_sep.ok().parse(ctx)?;
     let ctrl = parse_point(ctx)?;
     parse_sep(ctx)?;
@@ -190,7 +219,8 @@ fn parse_quadratic_param(ctx: &mut ParseContext<'_>) -> parserc::Result<Quadrati
     Ok(QuadraticBezier { ctrl, to })
 }
 
-fn parse_quadratic(ctx: &mut ParseContext<'_>) -> parserc::Result<PathEvent> {
+fn parse_quadratic(ctx: &mut ParseContext<'_>) -> parserc::Result<PathEvent, ParseError> {
+    let start = ctx.span();
     let relative = ensure_char('Q')
         .map(|_| false)
         .or(ensure_char('q').map(|_| true))
@@ -211,13 +241,17 @@ fn parse_quadratic(ctx: &mut ParseContext<'_>) -> parserc::Result<PathEvent> {
             target: SVG_PARSE_ERROR, span:serde = ctx.span();
             "failed parsing `quadratic curveto` directive: parameter list is none."
         );
-        return Err(ControlFlow::Fatal);
+        return Err(ControlFlow::Fatal(Some(ParseError::failed(
+            ParseKind::PathEvent,
+            ctx.as_str(start),
+        ))));
     }
 
     Ok(PathEvent::QuadraticBezier(params, relative))
 }
 
-fn parse_quadratic_smooth(ctx: &mut ParseContext<'_>) -> parserc::Result<PathEvent> {
+fn parse_quadratic_smooth(ctx: &mut ParseContext<'_>) -> parserc::Result<PathEvent, ParseError> {
+    let start = ctx.span();
     let relative = ensure_char('T')
         .map(|_| false)
         .or(ensure_char('t').map(|_| true))
@@ -232,13 +266,16 @@ fn parse_quadratic_smooth(ctx: &mut ParseContext<'_>) -> parserc::Result<PathEve
             target: SVG_PARSE_ERROR, span:serde = ctx.span();
             "failed parsing `smooth quadratic curveto` directive: parameter list is none."
         );
-        return Err(ControlFlow::Fatal);
+        return Err(ControlFlow::Fatal(Some(ParseError::failed(
+            ParseKind::PathEvent,
+            ctx.as_str(start),
+        ))));
     }
 
     Ok(PathEvent::QuadraticBezierSmooth(params, relative))
 }
 
-fn parse_arc_param(ctx: &mut ParseContext<'_>) -> parserc::Result<Arc> {
+fn parse_arc_param(ctx: &mut ParseContext<'_>) -> parserc::Result<Arc, ParseError> {
     parse_sep.ok().parse(ctx)?;
     let rx = parse_number(ctx)?;
     parse_sep(ctx)?;
@@ -262,7 +299,8 @@ fn parse_arc_param(ctx: &mut ParseContext<'_>) -> parserc::Result<Arc> {
     })
 }
 
-fn parse_arc(ctx: &mut ParseContext<'_>) -> parserc::Result<PathEvent> {
+fn parse_arc(ctx: &mut ParseContext<'_>) -> parserc::Result<PathEvent, ParseError> {
+    let start = ctx.span();
     let relative = ensure_char('A')
         .map(|_| false)
         .or(ensure_char('a').map(|_| true))
@@ -272,11 +310,12 @@ fn parse_arc(ctx: &mut ParseContext<'_>) -> parserc::Result<PathEvent> {
 
     let mut params = vec![];
 
-    while let Some(param) = parse_arc_param
-        .ok()
-        .parse(ctx)
-        .map_err(|_| ControlFlow::Fatal)?
-    {
+    while let Some(param) = parse_arc_param.ok().parse(ctx).map_err(|_| {
+        ControlFlow::Fatal(Some(ParseError::failed(
+            ParseKind::PathEvent,
+            ctx.as_str(start),
+        )))
+    })? {
         params.push(param);
 
         if parse_sep.ok().parse(ctx)?.is_none() {
@@ -289,13 +328,18 @@ fn parse_arc(ctx: &mut ParseContext<'_>) -> parserc::Result<PathEvent> {
             target: SVG_PARSE_ERROR, span:serde = ctx.span();
             "failed parsing `quadratic curveto` directive: parameter list is none."
         );
-        return Err(ControlFlow::Fatal);
+        return Err(ControlFlow::Fatal(Some(ParseError::failed(
+            ParseKind::PathEvent,
+            ctx.as_str(start),
+        ))));
     }
 
     Ok(PathEvent::Arc(params, relative))
 }
 
-pub(super) fn parse_path_event(ctx: &mut ParseContext<'_>) -> parserc::Result<PathEvent> {
+pub(super) fn parse_path_event(
+    ctx: &mut ParseContext<'_>,
+) -> parserc::Result<PathEvent, ParseError> {
     parse_close
         .or(parse_move_to)
         .or(parse_line_to)
@@ -309,7 +353,9 @@ pub(super) fn parse_path_event(ctx: &mut ParseContext<'_>) -> parserc::Result<Pa
         .parse(ctx)
 }
 
-pub(super) fn parse_path_event_list(ctx: &mut ParseContext<'_>) -> parserc::Result<Vec<PathEvent>> {
+pub(super) fn parse_path_event_list(
+    ctx: &mut ParseContext<'_>,
+) -> parserc::Result<Vec<PathEvent>, ParseError> {
     let mut events = vec![];
 
     while let Some(event) = parse_path_event.ok().parse(ctx)? {
@@ -325,7 +371,7 @@ impl FromSvg for PathEvent {
     type Err = ParseError;
 
     fn from_svg(s: &str) -> std::result::Result<Self, Self::Err> {
-        let mut ctx = ParseContext::from(s.trim()).with_debug(SVG_PARSE_ERROR);
+        let mut ctx = ParseContext::from(s.trim());
 
         let v =
             parse_path_event(&mut ctx).map_err(|_| ParseError::failed(ParseKind::PathEvent, s))?;
@@ -342,7 +388,7 @@ impl FromSvg for Vec<PathEvent> {
     type Err = ParseError;
 
     fn from_svg(s: &str) -> std::result::Result<Self, Self::Err> {
-        let mut ctx = ParseContext::from(s.trim()).with_debug(SVG_PARSE_ERROR);
+        let mut ctx = ParseContext::from(s.trim());
 
         let v = parse_path_event_list(&mut ctx)
             .map_err(|_| ParseError::failed(ParseKind::PathEvents, s))?;

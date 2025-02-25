@@ -2,27 +2,29 @@ use parserc::{ParseContext, Parser, ParserExt};
 
 use crate::{
     opcode::Point,
-    svg::parse::{sep::parse_sep, ParseError, ParseKind},
+    svg::parse::{ParseError, ParseKind, sep::parse_sep},
 };
 
-use super::{number::parse_number, FromSvg, SVG_PARSE_ERROR};
+use super::{FromSvg, number::parse_number};
 
 /// Parse a point value: `x,y`.
-pub(super) fn parse_point(ctx: &mut ParseContext<'_>) -> parserc::Result<Point> {
+pub(super) fn parse_point(ctx: &mut ParseContext<'_>) -> parserc::Result<Point, ParseError> {
     let x = parse_number(ctx)?;
 
     let _ = parse_sep
-        .fatal("failed parsing point value: expect `,`.", ctx.span())
+        .fatal(ParseError::failed(ParseKind::Point, ctx.unparsed()))
         .parse(ctx)?;
 
     let y = parse_number
-        .fatal("failed parsing point value: expect `y` value.", ctx.span())
+        .fatal(ParseError::failed(ParseKind::Point, ctx.unparsed()))
         .parse(ctx)?;
 
     Ok(Point(x, y))
 }
 
-pub(super) fn parse_point_list(ctx: &mut ParseContext<'_>) -> parserc::Result<Vec<Point>> {
+pub(super) fn parse_point_list(
+    ctx: &mut ParseContext<'_>,
+) -> parserc::Result<Vec<Point>, ParseError> {
     let mut values = vec![];
 
     while let Some(v) = parse_point.ok().parse(ctx)? {
@@ -38,7 +40,7 @@ pub(super) fn parse_point_list(ctx: &mut ParseContext<'_>) -> parserc::Result<Ve
 impl FromSvg for Point {
     type Err = ParseError;
     fn from_svg(value: &str) -> std::result::Result<Self, Self::Err> {
-        let mut ctx = ParseContext::from(value.trim()).with_debug(SVG_PARSE_ERROR);
+        let mut ctx = ParseContext::from(value.trim());
 
         let v = parse_point(&mut ctx).map_err(|_| ParseError::failed(ParseKind::Point, value))?;
 
@@ -53,7 +55,7 @@ impl FromSvg for Point {
 impl FromSvg for Vec<Point> {
     type Err = ParseError;
     fn from_svg(value: &str) -> std::result::Result<Self, Self::Err> {
-        let mut ctx = ParseContext::from(value.trim()).with_debug(SVG_PARSE_ERROR);
+        let mut ctx = ParseContext::from(value.trim());
 
         let v =
             parse_point_list(&mut ctx).map_err(|_| ParseError::failed(ParseKind::Points, value))?;

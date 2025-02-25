@@ -1,13 +1,15 @@
-use parserc::{ensure_keyword, ControlFlow, ParseContext, Parser, ParserExt};
+use parserc::{ControlFlow, ParseContext, Parser, ParserExt, ensure_keyword};
 
 use crate::{
     opcode::{Background, BackgroundNew},
     svg::parse::SVG_PARSE_ERROR,
 };
 
-use super::{number::parse_number_list, sep::skip_ws, FromSvg, ParseError, ParseKind};
+use super::{FromSvg, ParseError, ParseKind, number::parse_number_list, sep::skip_ws};
 
-pub(super) fn parse_background(ctx: &mut ParseContext<'_>) -> parserc::Result<Background> {
+pub(super) fn parse_background(
+    ctx: &mut ParseContext<'_>,
+) -> parserc::Result<Background, ParseError> {
     if let Some(_) = ensure_keyword("accumulate").ok().parse(ctx)? {
         return Ok(Background::Accumulate);
     }
@@ -33,7 +35,10 @@ pub(super) fn parse_background(ctx: &mut ParseContext<'_>) -> parserc::Result<Ba
                 "the counter of the background new params is mismatch({}), expect 0 or 4.",
                 len
             );
-            return Err(ControlFlow::Fatal);
+            return Err(ControlFlow::Fatal(Some(ParseError::failed(
+                ParseKind::Background,
+                ctx.as_str(start),
+            ))));
         }
     }
 }
@@ -42,7 +47,7 @@ impl FromSvg for Background {
     type Err = ParseError;
 
     fn from_svg(s: &str) -> std::result::Result<Self, Self::Err> {
-        let mut ctx = ParseContext::from(s.trim()).with_debug(SVG_PARSE_ERROR);
+        let mut ctx = ParseContext::from(s.trim());
 
         let v =
             parse_background(&mut ctx).map_err(|_| ParseError::failed(ParseKind::Background, s))?;
